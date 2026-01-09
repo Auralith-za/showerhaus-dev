@@ -1,13 +1,13 @@
-import {redirect, useLoaderData} from 'react-router';
-import type {Route} from './+types/collections.$handle';
-import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {ProductItem} from '~/components/ProductItem';
-import type {ProductItemFragment} from 'storefrontapi.generated';
+import { redirect, useLoaderData } from 'react-router';
+import type { Route } from './+types/collections.$handle';
+import { getPaginationVariables, Analytics } from '@shopify/hydrogen';
+import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import { ProductItem } from '~/components/ProductItem';
+import type { ProductItemFragment } from 'storefrontapi.generated';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [{ title: `Hydrogen | ${data?.collection.title ?? ''} Collection` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -17,16 +17,16 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
-  const {handle} = params;
-  const {storefront} = context;
+async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
+  const { handle } = params;
+  const { storefront } = context;
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
@@ -35,9 +35,9 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     throw redirect('/collections');
   }
 
-  const [{collection}] = await Promise.all([
+  const [{ collection }] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
-      variables: {handle, ...paginationVariables},
+      variables: { handle, ...paginationVariables },
       // Add other queries here, so that they are loaded in parallel
     }),
   ]);
@@ -49,7 +49,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   }
 
   // The API handle might be localized, so redirect to the localized handle
-  redirectIfHandleIsLocalized(request, {handle, data: collection});
+  redirectIfHandleIsLocalized(request, { handle, data: collection });
 
   return {
     collection,
@@ -61,37 +61,85 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: Route.LoaderArgs) {
+function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
 export default function Collection() {
-  const {collection} = useLoaderData<typeof loader>();
+  const { collection } = useLoaderData<typeof loader>();
 
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
-      <PaginatedResourceSection<ProductItemFragment>
-        connection={collection.products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
-      <Analytics.CollectionView
-        data={{
-          collection: {
-            id: collection.id,
-            handle: collection.handle,
-          },
-        }}
-      />
+    <div className="collection-page py-12 bg-white">
+      <div className="container mx-auto px-6">
+
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="font-display text-4xl text-primary mb-4">{collection.title}</h1>
+          {collection.description && (
+            <div className="font-sans text-gray-500 max-w-2xl mx-auto font-light leading-relaxed">
+              {collection.description}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-12">
+
+          {/* Sidebar */}
+          <aside className="w-full lg:w-64 flex-shrink-0">
+            <div className="sticky top-32">
+              <h3 className="font-display text-lg text-primary border-b border-gray-200 pb-2 mb-6">Categories</h3>
+              <ul className="space-y-3 font-sans text-sm text-gray-600 font-light">
+                {/* Mock Categories matching Header */}
+                <li><a href="/collections/baths" className="hover:text-primary transition-colors">Baths</a></li>
+                <li><a href="/collections/showers" className="hover:text-primary transition-colors">Showers</a></li>
+                <li><a href="/collections/basins" className="hover:text-primary transition-colors">Basins</a></li>
+                <li><a href="/collections/toilets" className="hover:text-primary transition-colors">Toilets</a></li>
+                <li><a href="/collections/taps" className="hover:text-primary transition-colors">Taps & Mixers</a></li>
+                <li><a href="/collections/accessories" className="hover:text-primary transition-colors">Accessories</a></li>
+              </ul>
+
+              <h3 className="font-display text-lg text-primary border-b border-gray-200 pb-2 mb-6 mt-10">Filter By</h3>
+              {/* Mock Filters */}
+              <div className="space-y-4 font-sans text-sm text-gray-600 font-light">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" />
+                  In Stock
+                </label>
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" />
+                  On Sale
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          {/* Product Grid */}
+          <div className="flex-1">
+            <PaginatedResourceSection<ProductItemFragment>
+              connection={collection.products}
+              resourcesClassName="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
+            >
+              {({ node: product, index }) => (
+                <ProductItem
+                  key={product.id}
+                  product={product}
+                  loading={index < 8 ? 'eager' : undefined}
+                />
+              )}
+            </PaginatedResourceSection>
+          </div>
+
+        </div>
+
+        <Analytics.CollectionView
+          data={{
+            collection: {
+              id: collection.id,
+              handle: collection.handle,
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }

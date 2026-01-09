@@ -4,3 +4,14 @@
  */
 
 @import 'tailwindcss';
+
+@theme {
+  --color-showerhaus-blue: #001664;
+  --color-showerhaus-light: #21759b;
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  
+  /* Extend generic colors if needed */
+  --color-primary: var(--color-showerhaus-blue);
+  --color-secondary: var(--color-showerhaus-light);
+}
