@@ -35,8 +35,6 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   ssr: {
-    // Force bundling of all dependencies for the Oxygen worker environment
-    noExternal: true,
     optimizeDeps: {
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },

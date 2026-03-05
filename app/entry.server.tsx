@@ -1,7 +1,6 @@
 import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
-import ReactDOMServer from 'react-dom/server';
-const { renderToReadableStream } = ReactDOMServer;
+import { renderToReadableStream } from 'react-dom/server';
 import {
   createContentSecurityPolicy,
   type HydrogenRouterContextProvider,
