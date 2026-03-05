@@ -26,9 +26,8 @@ export default defineConfig({
     },
     tailwindcss(),
     hydrogen(),
-    oxygen(),
-    netlify(),
     reactRouter(),
+    netlify(),
     tsconfigPaths(),
   ],
   build: {
