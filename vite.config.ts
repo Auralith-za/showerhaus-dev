@@ -37,10 +37,11 @@ export default defineConfig({
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
     target: 'esnext',
+    minify: false,
   },
   ssr: {
     target: 'node',
-    noExternal: ['react-dom', 'react-dom/server'],
+    noExternal: true,
 
     optimizeDeps: {
       include: ['set-cookie-parser', 'cookie', 'react-router'],

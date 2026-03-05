@@ -6,6 +6,22 @@ import type { EntryContext } from 'react-router';
 import ReactDOMServer from 'react-dom/server';
 const { renderToReadableStream } = ReactDOMServer;
 
+// Netlify-specific load context injector
+// This is exported so it can be used by the external server.js entry point
+export async function getLoadContext(request: Request) {
+  const env = {
+    SESSION_SECRET: process.env.SESSION_SECRET ?? '',
+    PUBLIC_STORE_DOMAIN: process.env.PUBLIC_STORE_DOMAIN ?? '',
+    PUBLIC_STOREFRONT_API_TOKEN: process.env.PUBLIC_STOREFRONT_API_TOKEN ?? '',
+    PUBLIC_STOREFRONT_ID: process.env.PUBLIC_STOREFRONT_ID ?? '',
+    PUBLIC_CHECKOUT_DOMAIN: process.env.PUBLIC_CHECKOUT_DOMAIN ?? '',
+  } as any;
+
+  // These will be bundled because entry.server.tsx is part of the app
+  const { createHydrogenRouterContext } = await import('~/lib/context');
+  return createHydrogenRouterContext(request, env);
+}
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
