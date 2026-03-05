@@ -4,7 +4,8 @@ import { oxygen } from '@shopify/mini-oxygen/vite';
 import { reactRouter } from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
-import netlify from '@netlify/vite-plugin-react-router';
+import netlifyReactRouter from '@netlify/vite-plugin-react-router';
+import netlify from '@netlify/vite-plugin';
 
 export default defineConfig({
   plugins: [
@@ -27,6 +28,7 @@ export default defineConfig({
     tailwindcss(),
     hydrogen(),
     reactRouter(),
+    netlifyReactRouter(),
     netlify(),
     tsconfigPaths(),
   ],
