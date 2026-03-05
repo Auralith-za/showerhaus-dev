@@ -4,8 +4,6 @@ import { oxygen } from '@shopify/mini-oxygen/vite';
 import { reactRouter } from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
-import netlifyReactRouter from '@netlify/vite-plugin-react-router';
-import netlify from '@netlify/vite-plugin';
 
 export default defineConfig({
   plugins: [
@@ -28,22 +26,26 @@ export default defineConfig({
     tailwindcss(),
     hydrogen(),
     reactRouter(),
-    netlifyReactRouter(),
-    netlify(),
+    process.env.NODE_ENV === 'development' ? oxygen() : null,
     tsconfigPaths(),
   ],
   build: {
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
-    target: 'esnext',
-    minify: false,
   },
   ssr: {
-    target: 'node',
-    noExternal: true,
-
     optimizeDeps: {
+      /**
+       * Include dependencies here if they throw CJS<>ESM errors.
+       * For example, for the following error:
+       *
+       * > ReferenceError: module is not defined
+       * >   at /Users/.../node_modules/example-dep/index.js:1:1
+       *
+       * Include 'example-dep' in the array below.
+       * @see https://vitejs.dev/config/dep-optimization-options
+       */
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },
   },

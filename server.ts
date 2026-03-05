@@ -1,25 +1,23 @@
-// Netlify-compatible server entry for Shopify Hydrogen
-import { storefrontRedirect } from '@shopify/hydrogen';
-import { createRequestHandler } from '@netlify/vite-plugin-react-router/serverless';
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+import * as build from 'virtual:react-router/server-build';
+import { createRequestHandler } from 'react-router';
 import { createHydrogenRouterContext } from '~/lib/context';
 
-// The Netlify plugin generates the server-build automatically.
-// We export a handler that injects the Hydrogen context via getLoadContext.
-export default createRequestHandler({
-  // eslint-disable-next-line import/no-unresolved
-  build: await import('virtual:react-router/server-build'),
-  getLoadContext: async (request: Request) => {
-    // Env variables are available via process.env on Node.js
-    const env = {
-      SESSION_SECRET: process.env.SESSION_SECRET ?? '',
-      PUBLIC_STORE_DOMAIN: process.env.PUBLIC_STORE_DOMAIN ?? '',
-      PUBLIC_STOREFRONT_API_TOKEN: process.env.PUBLIC_STOREFRONT_API_TOKEN ?? '',
-      PUBLIC_STOREFRONT_ID: process.env.PUBLIC_STOREFRONT_ID ?? '',
-      PUBLIC_CHECKOUT_DOMAIN: process.env.PUBLIC_CHECKOUT_DOMAIN ?? '',
-    } as unknown as Env;
+export default {
+  async fetch(request: Request, env: Env, executionContext: ExecutionContext): Promise<Response> {
+    try {
+      const appLoadContext = await createHydrogenRouterContext(request, env, executionContext);
 
-    const hydrogenContext = await createHydrogenRouterContext(request, env);
+      const handleRequest = createRequestHandler(build, 'production');
 
-    return hydrogenContext;
+      const response = await handleRequest(request, appLoadContext);
+
+      return response;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      return new Response('An unexpected error occurred', { status: 500 });
+    }
   },
-});
+};

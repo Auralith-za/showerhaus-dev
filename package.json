@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "build": "shopify hydrogen build --codegen",
-    "build:netlify": "shopify hydrogen codegen && react-router typegen && react-router build && node ./scripts/netlify-post-build.mjs",
     "dev": "shopify hydrogen dev --codegen",
     "preview": "shopify hydrogen preview --build",
     "lint": "eslint --no-error-on-unmatched-pattern .",
@@ -30,8 +29,6 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@graphql-codegen/cli": "5.0.2",
-    "@netlify/vite-plugin": "^2.10.5",
-    "@netlify/vite-plugin-react-router": "^3.0.0",
     "@react-router/dev": "7.9.2",
     "@react-router/fs-routes": "7.9.2",
     "@shopify/cli": "3.85.4",
