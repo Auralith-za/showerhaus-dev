@@ -23,7 +23,7 @@ export function HeaderMenuMega() {
                                 {/* Links Column */}
                                 <div className="col-span-8 grid grid-cols-2 gap-8">
                                     <div>
-                                        <h4 className="font-display text-xl text-primary mb-6">{item.title}</h4>
+                                        <h4 className="font-sans text-[10px] tracking-[0.3em] uppercase font-bold text-primary mb-8 underline underline-offset-8 decoration-primary/10">{item.title}</h4>
                                         <ul className="space-y-4">
                                             {item.items?.map((subItem) => (
                                                 <li key={subItem.handle}>
@@ -50,8 +50,8 @@ export function HeaderMenuMega() {
                                         />
                                         <div className="absolute inset-0 bg-black/10"></div>
                                         <div className="absolute bottom-6 left-6 text-white z-10">
-                                            <span className="uppercase text-xs tracking-widest font-semibold mb-2 block">Featured</span>
-                                            <h3 className="font-display text-2xl">{item.title}</h3>
+                                            <span className="uppercase text-[9px] tracking-[0.3em] font-bold mb-3 block text-white/80">Featured</span>
+                                            <h3 className="font-sans text-2xl tracking-tight leading-none uppercase font-bold">{item.title}</h3>
                                         </div>
                                     </div>
                                 )}
@@ -60,24 +60,6 @@ export function HeaderMenuMega() {
                     </div>
                 </div>
             ))}
-            <NavLink
-                to="/pages/about"
-                className={({ isActive }) =>
-                    `font-sans text-sm tracking-widest uppercase hover:text-primary transition-colors border-b-2 py-1 ${isActive ? 'border-primary' : 'border-transparent'
-                    }`
-                }
-            >
-                About
-            </NavLink>
-            <NavLink
-                to="/policies/shipping-policy"
-                className={({ isActive }) =>
-                    `font-sans text-sm tracking-widest uppercase hover:text-primary transition-colors border-b-2 py-1 ${isActive ? 'border-primary' : 'border-transparent'
-                    }`
-                }
-            >
-                Shipping
-            </NavLink>
         </nav>
     );
 }

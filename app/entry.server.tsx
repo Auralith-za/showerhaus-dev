@@ -23,6 +23,8 @@ export default async function handleRequest(
       "'self'",
       'https://cdn.shopify.com',
       'https://showerhaus.co.za', // Allow ShowerHaus images
+      'https://images.unsplash.com', // Allow Unsplash images
+      'https://cloudsplash.co.za', // Allow CloudSplash images
       'data:',
     ],
     fontSrc: [

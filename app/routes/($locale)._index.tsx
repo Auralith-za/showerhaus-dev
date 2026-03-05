@@ -7,6 +7,14 @@ import { Hero } from '~/components/Hero';
 import { TrustBar } from '~/components/TrustBar';
 import { HomeCategories } from '~/components/HomeCategories';
 
+import { getMockRecommendedProducts } from '~/lib/mockData';
+import { InstallationSection } from '~/components/InstallationSection';
+import { QuotingSection } from '~/components/QuotingSection';
+
+import { InspirationSection } from '~/components/InspirationSection';
+import { ProjectsSection } from '~/components/ProjectsSection';
+import { ServicesSection } from '~/components/ServicesSection';
+
 export const meta: Route.MetaFunction = () => {
   return [{ title: 'ShowerHaus | Premium Bathroom & Kitchen' }];
 };
@@ -17,12 +25,7 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 function loadDeferredData({ context }: Route.LoaderArgs) {
-  const recommendedProducts = context.storefront
-    .query(RECOMMENDED_PRODUCTS_QUERY)
-    .catch((error: Error) => {
-      console.error(error);
-      return null;
-    });
+  const recommendedProducts = Promise.resolve(getMockRecommendedProducts() as any);
 
   return {
     recommendedProducts,
@@ -32,13 +35,29 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home">
+    <div className="home bg-[#FAF9F7]">
       <Hero />
       <TrustBar />
       <HomeCategories />
-      <div className="container mx-auto px-6 py-16">
-        <RecommendedProducts products={data.recommendedProducts} />
+      <InstallationSection />
+
+      {/* New Architectural Sections */}
+      <div className="bg-white">
+        <InspirationSection />
       </div>
+      <div className="bg-[#FAF9F7]">
+        <ProjectsSection />
+      </div>
+      <div className="bg-white">
+        <ServicesSection />
+      </div>
+
+      <div className="bg-white py-24 border-t border-gray-100">
+        <div className="container mx-auto px-6">
+          <RecommendedProducts products={data.recommendedProducts} />
+        </div>
+      </div>
+      <QuotingSection />
     </div>
   );
 }
@@ -50,7 +69,7 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2 className="font-display text-3xl mb-8 text-center text-primary">Discover Our Favorites</h2>
+      <h2 className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-12 text-center">Discover Our Favorites</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (

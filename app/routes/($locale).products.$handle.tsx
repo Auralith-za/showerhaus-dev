@@ -14,12 +14,14 @@ import { ProductForm } from '~/components/ProductForm';
 import { ProductTabs } from '~/components/ProductTabs';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 
-export const meta: Route.MetaFunction = ({ data }) => {
+import { MOCK_PRODUCTS } from '~/lib/mockData';
+
+export const meta: Route.MetaFunction = ({ data }: any) => {
   return [
-    { title: `Hydrogen | ${data?.product.title ?? ''}` },
+    { title: `ShowerHaus | ${data?.product?.title ?? 'Product'}` },
     {
       rel: 'canonical',
-      href: `/products/${data?.product.handle}`,
+      href: `/products/${data?.product?.handle}`,
     },
   ];
 };
@@ -40,22 +42,64 @@ export async function loader(args: Route.LoaderArgs) {
  */
 async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
   const { handle } = params;
-  const { storefront } = context;
 
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const [{ product }] = await Promise.all([
-    storefront.query(PRODUCT_QUERY, {
-      variables: { handle, selectedOptions: getSelectedProductOptions(request) },
-    }),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
+  const mockProduct = MOCK_PRODUCTS.find((p) => p.handle === handle);
 
-  if (!product?.id) {
+  if (!mockProduct) {
     throw new Response(null, { status: 404 });
   }
+
+  const product = {
+    id: mockProduct.id,
+    title: mockProduct.title,
+    vendor: 'ShowerHaus',
+    handle: mockProduct.handle,
+    descriptionHtml: `<p>${mockProduct.description}</p>`,
+    description: mockProduct.description,
+    encodedVariantExistence: 'dummy',
+    encodedVariantAvailability: 'dummy',
+    options: [],
+    selectedOrFirstAvailableVariant: {
+      id: `${mockProduct.id}-variant`,
+      availableForSale: true,
+      image: {
+        __typename: 'Image',
+        id: `${mockProduct.id}-image`,
+        url: mockProduct.image,
+        altText: mockProduct.title,
+        width: 1000,
+        height: 1000,
+      },
+      price: { amount: mockProduct.price, currencyCode: mockProduct.currency },
+      compareAtPrice: null,
+      product: { title: mockProduct.title, handle: mockProduct.handle },
+      selectedOptions: [],
+      sku: mockProduct.id,
+      title: 'Default Title',
+      unitPrice: null,
+    },
+    adjacentVariants: [],
+    seo: { title: mockProduct.title, description: mockProduct.description },
+    media: {
+      nodes: [
+        {
+          __typename: 'MediaImage',
+          id: `${mockProduct.id}-media`,
+          image: {
+            id: `${mockProduct.id}-image`,
+            url: mockProduct.image,
+            altText: mockProduct.title,
+            width: 1000,
+            height: 1000,
+          },
+        },
+      ],
+    },
+  } as any;
 
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, { handle, data: product });

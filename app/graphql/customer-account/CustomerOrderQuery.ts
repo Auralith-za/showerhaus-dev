@@ -63,10 +63,16 @@ export const CUSTOMER_ORDER_QUERY = `#graphql
     subtotal {
       ...OrderMoney
     }
+    financialStatus
     shippingAddress {
       name
       formatted(withName: true)
       formattedArea
+      address1
+      address2
+      city
+      zip
+      territoryCode
     }
     discountApplications(first: 100) {
       nodes {

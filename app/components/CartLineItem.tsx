@@ -52,14 +52,14 @@ export function CartLineItem({
                 close();
               }
             }}
-            className="group"
+            className="group block mb-1"
           >
-            <h4 className="font-display text-base text-primary group-hover:text-secondary transition-colors line-clamp-2">
+            <h4 className="font-sans text-[11px] tracking-[0.15em] uppercase font-semibold text-primary group-hover:text-secondary transition-colors line-clamp-2 leading-tight">
               {product.title}
             </h4>
           </Link>
 
-          <div className="mt-1 font-sans text-xs text-gray-500 font-light space-y-1">
+          <div className="font-sans text-[10px] tracking-wider text-gray-400 font-light uppercase space-y-0.5">
             {selectedOptions.map((option) => (
               <div key={option.name}>
                 {option.name}: {option.value}
@@ -68,9 +68,9 @@ export function CartLineItem({
           </div>
         </div>
 
-        <div className="flex items-end justify-between mt-2">
+        <div className="flex items-center justify-between mt-auto pt-4">
           <CartLineQuantity line={line} />
-          <div className="font-sans text-sm font-medium text-primary">
+          <div className="font-sans text-sm font-semibold text-primary tracking-tight">
             <ProductPrice price={line?.cost?.totalAmount} />
           </div>
         </div>
@@ -86,21 +86,21 @@ function CartLineQuantity({ line }: { line: CartLine }) {
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="flex items-center border border-gray-200 rounded-sm">
+    <div className="flex items-center gap-6">
+      <div className="flex items-center border border-gray-100 bg-gray-50/50">
         <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button
             aria-label="Decrease quantity"
             disabled={quantity <= 1 || !!isOptimistic}
             name="decrease-quantity"
             value={prevQuantity}
-            className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors disabled:opacity-30"
           >
-            <span>&#8722;</span>
+            <span className="text-lg font-light">&#8722;</span>
           </button>
         </CartLineUpdateButton>
 
-        <span className="font-sans text-xs w-8 text-center text-gray-700">{quantity}</span>
+        <span className="font-sans text-[10px] font-bold w-6 text-center text-primary">{quantity}</span>
 
         <CartLineUpdateButton lines={[{ id: lineId, quantity: nextQuantity }]}>
           <button
@@ -108,9 +108,9 @@ function CartLineQuantity({ line }: { line: CartLine }) {
             name="increase-quantity"
             value={nextQuantity}
             disabled={!!isOptimistic}
-            className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors disabled:opacity-30"
           >
-            <span>&#43;</span>
+            <span className="text-lg font-light">&#43;</span>
           </button>
         </CartLineUpdateButton>
       </div>
@@ -139,7 +139,11 @@ function CartLineRemoveButton({
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{ lineIds }}
     >
-      <button disabled={disabled} type="submit">
+      <button
+        disabled={disabled}
+        type="submit"
+        className="font-sans text-[9px] tracking-[0.2em] uppercase font-bold text-gray-400 hover:text-red-800 transition-colors border-b border-transparent hover:border-red-800 pb-0.5"
+      >
         Remove
       </button>
     </CartForm>

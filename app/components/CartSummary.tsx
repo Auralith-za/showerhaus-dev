@@ -13,9 +13,9 @@ type CartSummaryProps = {
 export function CartSummary({ cart, layout }: CartSummaryProps) {
   return (
     <div aria-labelledby="cart-summary" className="space-y-4">
-      <div className="flex items-center justify-between font-sans text-sm font-medium text-gray-900">
-        <span>Subtotal</span>
-        <span>
+      <div className="flex items-center justify-between">
+        <span className="font-sans text-[10px] tracking-[0.2em] uppercase font-semibold text-gray-400">Subtotal</span>
+        <span className="font-sans text-sm font-bold text-primary tracking-tight">
           {cart?.cost?.subtotalAmount?.amount ? (
             <Money data={cart?.cost?.subtotalAmount} />
           ) : (
@@ -25,13 +25,13 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
       </div>
 
       {/* Collapsed Discount/Gift Card Sections for Visual Simplicity */}
-      <div className="border-t border-gray-100 pt-4">
+      <div className="border-t border-gray-100 pt-6">
         <CartDiscounts discountCodes={cart?.discountCodes} />
         <CartGiftCard giftCardCodes={cart?.appliedGiftCards} />
       </div>
 
-      <div className="pt-2">
-        <p className="font-sans text-xs text-center text-gray-500 font-light mb-4">
+      <div className="pt-4">
+        <p className="font-sans text-[10px] text-center text-gray-400 font-light mb-6 uppercase tracking-wider">
           Shipping and taxes calculated at checkout
         </p>
         <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
@@ -47,9 +47,9 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
     <a
       href={checkoutUrl}
       target="_self"
-      className="block w-full bg-primary text-white font-display uppercase tracking-widest text-sm py-4 text-center hover:bg-secondary transition-colors"
+      className="block w-full bg-primary text-white font-sans text-xs tracking-[0.3em] uppercase font-semibold py-5 text-center hover:bg-black transition-all duration-500 shadow-xl shadow-primary/10"
     >
-      Checkout
+      Complete Order
     </a>
   );
 }

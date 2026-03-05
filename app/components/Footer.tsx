@@ -5,20 +5,20 @@ export function Footer() {
     <footer className="w-full bg-white pt-0">
       {/* Newsletter Section */}
       <div className="bg-primary text-white py-12">
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="font-display text-2xl mb-2">Join Our Mailing List</h3>
-          <p className="font-sans text-sm text-gray-300 mb-6 max-w-lg mx-auto font-light">
+        <div className="container mx-auto px-6 flex flex-col items-center">
+          <h3 className="font-sans text-sm tracking-[0.4em] uppercase font-bold mb-4 text-center !text-white">Join Our Mailing List</h3>
+          <p className="font-sans text-sm text-gray-300 mb-16 max-w-lg mx-auto text-center font-light">
             Sign up to receive the latest news, new collections and exclusive offers from ShowerHaus.
           </p>
-          <form className="max-w-md mx-auto flex gap-4">
+          <form className="max-w-md w-full flex gap-4 mt-4">
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 bg-transparent border-b border-white py-2 px-0 text-white placeholder-gray-400 focus:outline-none focus:border-gray-200 transition-colors font-sans"
+              className="flex-1 bg-transparent border border-white py-4 px-6 text-white placeholder-gray-400 focus:outline-none focus:bg-white/5 transition-all font-sans"
             />
             <button
               type="submit"
-              className="font-sans text-sm font-bold tracking-widest uppercase text-white hover:text-secondary transition-colors"
+              className="font-sans text-[10px] font-bold tracking-[0.3em] uppercase !text-white hover:text-secondary transition-colors border-b border-white pb-1"
             >
               Sign Up
             </button>
@@ -32,7 +32,7 @@ export function Footer() {
 
           {/* Column 1: Brand & Contact */}
           <div>
-            <h4 className="font-display text-lg text-primary mb-6">ShowerHaus</h4>
+            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-8 px-0 border-b border-gray-100 pb-2">ShowerHaus</h4>
             <div className="font-sans text-gray-500 space-y-2 font-light">
               <p>123 Luxury Avenue</p>
               <p>Cape Town, 8001</p>
@@ -52,7 +52,7 @@ export function Footer() {
 
           {/* Column 2: Categories */}
           <div>
-            <h4 className="font-display text-lg text-primary mb-6">Collections</h4>
+            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-6">Collections</h4>
             <div className="flex flex-col gap-3 font-sans text-gray-500 font-light">
               <Link to="/collections/baths" className="hover:text-primary transition-colors">Baths</Link>
               <Link to="/collections/showers" className="hover:text-primary transition-colors">Showers</Link>
@@ -65,7 +65,7 @@ export function Footer() {
 
           {/* Column 3: Customer Care */}
           <div>
-            <h4 className="font-display text-lg text-primary mb-6">Customer Care</h4>
+            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-6">Customer Care</h4>
             <div className="flex flex-col gap-3 font-sans text-gray-500 font-light">
               <Link to="/pages/contact" className="hover:text-primary transition-colors">Contact Us</Link>
               <Link to="/pages/delivery" className="hover:text-primary transition-colors">Delivery Information</Link>
@@ -77,7 +77,7 @@ export function Footer() {
 
           {/* Column 4: About */}
           <div>
-            <h4 className="font-display text-lg text-primary mb-6">About Us</h4>
+            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-6">About Us</h4>
             <div className="flex flex-col gap-3 font-sans text-gray-500 font-light">
               <Link to="/pages/about" className="hover:text-primary transition-colors">Our Story</Link>
               <Link to="/pages/showrooms" className="hover:text-primary transition-colors">Showrooms</Link>

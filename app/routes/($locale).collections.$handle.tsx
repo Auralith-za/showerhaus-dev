@@ -6,8 +6,8 @@ import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { ProductItem } from '~/components/ProductItem';
 import type { ProductItemFragment } from 'storefrontapi.generated';
 
-export const meta: Route.MetaFunction = ({ data }) => {
-  return [{ title: `Hydrogen | ${data?.collection.title ?? ''} Collection` }];
+export const meta: Route.MetaFunction = ({ data }: any) => {
+  return [{ title: `ShowerHaus | ${data?.collection?.title ?? 'Collection'}` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -20,33 +20,59 @@ export async function loader(args: Route.LoaderArgs) {
   return { ...deferredData, ...criticalData };
 }
 
+import { MOCK_PRODUCTS } from '~/lib/mockData';
+
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
   const { handle } = params;
-  const { storefront } = context;
-  const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
-  });
 
   if (!handle) {
     throw redirect('/collections');
   }
 
-  const [{ collection }] = await Promise.all([
-    storefront.query(COLLECTION_QUERY, {
-      variables: { handle, ...paginationVariables },
-      // Add other queries here, so that they are loaded in parallel
-    }),
-  ]);
+  // Filter mock products by collection handle
+  const collectionProducts = MOCK_PRODUCTS.filter((p) => p.collection === handle);
+  const title = handle.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-  if (!collection) {
-    throw new Response(`Collection ${handle} not found`, {
-      status: 404,
-    });
-  }
+  const collection = {
+    id: `mock-collection-${handle}`,
+    handle,
+    title,
+    description: `Discover our premium range of ${title.toLowerCase()}, curated for modern architectural spaces.`,
+    products: {
+      nodes: collectionProducts.map((p) => ({
+        id: p.id,
+        handle: p.handle,
+        title: p.title,
+        featuredImage: {
+          id: `${p.id}-image`,
+          url: p.image,
+          altText: p.title,
+          width: 1000,
+          height: 1000,
+        },
+        priceRange: {
+          minVariantPrice: {
+            amount: p.price,
+            currencyCode: p.currency,
+          },
+          maxVariantPrice: {
+            amount: p.price,
+            currencyCode: p.currency,
+          },
+        },
+      })) as any,
+      pageInfo: {
+        hasPreviousPage: false,
+        hasNextPage: false,
+        endCursor: null,
+        startCursor: null,
+      },
+    },
+  };
 
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, { handle, data: collection });

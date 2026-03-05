@@ -31,12 +31,12 @@ export function Header({
       <div className="bg-primary text-white text-xs py-2 px-8 flex justify-between items-center font-sans tracking-widest uppercase">
         <div className="hidden md:block">Welcome to ShowerHaus</div>
         <div className="flex gap-6 ml-auto">
-          <a href="#" className="hover:text-secondary transition-colors">Professionals</a>
-          <a href="#" className="hover:text-secondary transition-colors">Contact Us</a>
+          <a href="#" className="!text-white hover:text-secondary transition-colors">Professionals</a>
+          <NavLink to="/contact" className="!text-white hover:text-secondary transition-colors">Contact Us</NavLink>
         </div>
       </div>
 
-      <header className="header bg-white sticky top-0 z-50 border-b border-gray-100 py-4 px-6 md:px-12 flex items-center justify-between">
+      <header className="header bg-white sticky top-0 z-50 border-b border-gray-100 py-6 px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <NavLink prefetch="intent" to="/" end className="flex-shrink-0">
           <img
@@ -83,7 +83,7 @@ export function HeaderMenu({
           onClick={close}
           prefetch="intent"
           to="/"
-          className="text-2xl font-display text-primary"
+          className="text-xs font-sans tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4"
         >
           Home
         </NavLink>
@@ -115,21 +115,6 @@ export function HeaderMenu({
           </div>
         ))}
 
-        {/* Hardcoded Links */}
-        <NavLink
-          to="/pages/about"
-          className="text-lg font-sans font-light text-gray-800 hover:text-primary transition-colors border-b border-gray-50 pb-2"
-          onClick={close}
-        >
-          About
-        </NavLink>
-        <NavLink
-          to="/policies/shipping-policy"
-          className="text-lg font-sans font-light text-gray-800 hover:text-primary transition-colors border-b border-gray-50 pb-2"
-          onClick={close}
-        >
-          Shipping
-        </NavLink>
       </nav>
     );
   }
