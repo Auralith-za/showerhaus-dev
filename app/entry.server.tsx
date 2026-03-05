@@ -1,71 +1,47 @@
 import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
-import ReactDOMServer from 'react-dom/server';
-const { renderToReadableStream } = ReactDOMServer;
-import {
-  createContentSecurityPolicy,
-  type HydrogenRouterContextProvider,
-} from '@shopify/hydrogen';
 import type { EntryContext } from 'react-router';
+
+// Use a safe default import to handle CJS/ESM interop in Node.js (Netlify)
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { renderToReadableStream } =
+  (await import('react-dom/server').catch(() => null)) ??
+  // @ts-expect-error fallback for CJS environments
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require('react-dom/server');
 
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
-  context: HydrogenRouterContextProvider,
 ) {
-  const { nonce, header, NonceProvider } = createContentSecurityPolicy({
-    shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
-      storeDomain: context.env.PUBLIC_STORE_DOMAIN,
-    },
-    imgSrc: [
-      "'self'",
-      'https://cdn.shopify.com',
-      'https://showerhaus.co.za', // Allow ShowerHaus images
-      'https://images.unsplash.com', // Allow Unsplash images
-      'https://cloudsplash.co.za', // Allow CloudSplash images
-      'data:',
-    ],
-    fontSrc: [
-      "'self'",
-      'https://fonts.gstatic.com',
-    ],
-    styleSrc: [
-      "'self'",
-      "'unsafe-inline'",
-      'https://fonts.googleapis.com',
-    ],
-  });
+  let statusCode = responseStatusCode;
 
-  const body = await renderToReadableStream(
-    <NonceProvider>
-      <ServerRouter
-        context={reactRouterContext}
-        url={request.url}
-        nonce={nonce}
-      />
-    </NonceProvider>,
-    {
-      nonce,
-      signal: request.signal,
-      onError(error) {
-        console.error(error);
-        responseStatusCode = 500;
+  try {
+    const body = await renderToReadableStream(
+      <ServerRouter context={reactRouterContext} url={request.url} />,
+      {
+        signal: request.signal,
+        onError(error: unknown) {
+          console.error('[SSR Error]', error);
+          statusCode = 500;
+        },
       },
-    },
-  );
+    );
 
-  if (isbot(request.headers.get('user-agent'))) {
-    await body.allReady;
+    if (isbot(request.headers.get('user-agent'))) {
+      await body.allReady;
+    }
+
+    responseHeaders.set('Content-Type', 'text/html');
+
+    return new Response(body, {
+      headers: responseHeaders,
+      status: statusCode,
+    });
+  } catch (error) {
+    console.error('[handleRequest Error]', error);
+    return new Response('Server Error', { status: 500 });
   }
-
-  responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
-
-  return new Response(body, {
-    headers: responseHeaders,
-    status: responseStatusCode,
-  });
 }
