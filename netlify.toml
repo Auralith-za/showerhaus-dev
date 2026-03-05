@@ -1,9 +1,3 @@
 [build]
   command = "npm run build:netlify"
   publish = "dist/client"
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/react-router-server"
-  status = 200
-  force = true
