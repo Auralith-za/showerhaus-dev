@@ -40,6 +40,7 @@ export default defineConfig({
   },
   ssr: {
     target: 'node',
+    noExternal: [],
     optimizeDeps: {
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },

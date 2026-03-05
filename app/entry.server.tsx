@@ -1,7 +1,9 @@
 import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 import type { EntryContext } from 'react-router';
-import { renderToReadableStream } from 'react-dom/server';
+// Use require() to bypass ESM named-export issue with react-dom/server CJS module on Netlify
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+const { renderToReadableStream } = require('react-dom/server') as typeof import('react-dom/server');
 
 export default async function handleRequest(
   request: Request,
