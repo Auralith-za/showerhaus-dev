@@ -29,12 +29,33 @@ export default defineConfig({
     process.env.NODE_ENV === 'development' ? oxygen() : null,
     tsconfigPaths(),
   ],
+  resolve: {
+    alias: {
+      // Ensure we use the browser/worker version of react-dom/server
+      'react-dom/server': 'react-dom/server.browser',
+    },
+  },
   build: {
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
+    rollupOptions: {
+      // Explicitly mark node built-ins as external but ensure they don't crash the worker
+      // if some dependency (not our code) tries to import them.
+      external: [/^node:/, 'stream', 'util', 'url', 'path', 'fs', 'crypto'],
+    },
   },
   ssr: {
+    noExternal: [
+      'react',
+      'react-dom',
+      'react-router',
+      'react-router-dom',
+      'isbot',
+      '@shopify/hydrogen',
+      'cookie',
+      'set-cookie-parser',
+    ],
     optimizeDeps: {
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },
