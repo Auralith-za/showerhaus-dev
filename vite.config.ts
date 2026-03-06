@@ -47,12 +47,9 @@ export default defineConfig({
   },
   ssr: {
     noExternal: [
-      'react',
-      'react-dom',
-      'react-router',
-      'react-router-dom',
+      /^(react|react-dom|react-router|react-router-dom|@shopify\/hydrogen)/,
       'isbot',
-      '@shopify/hydrogen',
+      'scheduler',
       'cookie',
       'set-cookie-parser',
     ],
