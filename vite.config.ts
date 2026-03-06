@@ -23,6 +23,12 @@ export default defineConfig({
   },
   build: {
     assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        format: 'es',
+        entryFileNames: '[name].js',
+      },
+    },
   },
   ssr: {
     noExternal: true, // Bundle all dependencies for Oxygen
