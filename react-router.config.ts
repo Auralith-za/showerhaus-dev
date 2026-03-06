@@ -9,5 +9,6 @@ import { hydrogenPreset } from '@shopify/hydrogen/react-router-preset';
  * validated performance optimizations while ensuring compatibility.
  */
 export default {
+  buildDirectory: 'dist',
   presets: [hydrogenPreset()],
 } satisfies Config;

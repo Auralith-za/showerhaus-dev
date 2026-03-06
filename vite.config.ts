@@ -10,24 +10,9 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify('production'),
   },
   plugins: [
-    // Fix for Vite URL-encoding paths when project dir contains spaces
-    {
-      name: 'decode-uri-paths',
-      enforce: 'pre',
-      resolveId(id) {
-        if (id.includes('%20')) {
-          return { id: decodeURIComponent(id), moduleSideEffects: null };
-        }
-      },
-      load(id) {
-        if (id.includes('%20')) {
-          return null;
-        }
-      },
-    },
     tailwindcss(),
     hydrogen(),
-    oxygen(), // Add oxygen() for all environments to ensure consistency
+    oxygen(),
     reactRouter(),
     tsconfigPaths(),
   ],
