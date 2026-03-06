@@ -32,24 +32,27 @@ export default defineConfig({
     process.env.NODE_ENV === 'development' ? oxygen() : null,
     tsconfigPaths(),
   ],
-  resolve: {
-    alias: {
-      // Ensure we use the browser/worker version of react-dom/server
-      'react-dom/server': 'react-dom/server.browser',
-    },
-  },
   build: {
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
     rollupOptions: {
-      // Mark node built-ins as external for the build
+      // Mark node built-ins as external but ensure they don't crash the worker
+      // if some dependency (not our code) tries to import them.
       external: [/^node:/, 'stream', 'util', 'url', 'path', 'fs', 'crypto'],
     },
   },
   ssr: {
-    // Bundle everything for Oxygen to resolve runtime module issues
-    noExternal: true,
+    // Bundle core dependencies but avoid "Nuclear Option" (noExternal: true)
+    // which seemed to break the Workers runtime startup.
+    noExternal: [
+      /^(react|react-dom|react-router|react-router-dom|@shopify\/hydrogen)/,
+      'isbot',
+      'scheduler',
+      'cookie',
+      'set-cookie-parser',
+      'worktop',
+    ],
     optimizeDeps: {
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },
