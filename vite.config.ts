@@ -40,19 +40,13 @@ export default defineConfig({
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
     rollupOptions: {
-      // Explicitly mark node built-ins as external but ensure they don't crash the worker
-      // if some dependency (not our code) tries to import them.
+      // Mark node built-ins as external for the build
       external: [/^node:/, 'stream', 'util', 'url', 'path', 'fs', 'crypto'],
     },
   },
   ssr: {
-    noExternal: [
-      /^(react|react-dom|react-router|react-router-dom|@shopify\/hydrogen)/,
-      'isbot',
-      'scheduler',
-      'cookie',
-      'set-cookie-parser',
-    ],
+    // Bundle everything for Oxygen to resolve runtime module issues
+    noExternal: true,
     optimizeDeps: {
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },
