@@ -70,7 +70,7 @@ export function Hero() {
                     <span className="uppercase tracking-[0.3em] mb-6 block text-xs font-semibold text-white/90 text-center">
                         {SLIDES[currentSlide].label}
                     </span>
-                    <h1 className="font-sans text-5xl md:text-[12rem] lg:text-[15rem] mb-12 leading-[0.8] font-bold text-white text-shadow-2xl transition-all duration-700 text-center tracking-tighter">
+                    <h1 className="font-sans text-4xl md:text-6xl lg:text-7xl xl:text-8xl mb-12 leading-[1.2] font-bold text-white text-shadow-2xl transition-all duration-700 text-center tracking-tighter max-w-4xl">
                         {SLIDES[currentSlide].title}
                     </h1>
                     <p className="font-sans text-lg md:text-xl text-white/90 mb-16 max-w-2xl mx-auto font-light leading-relaxed transition-all duration-700 text-center translate-y-[-1rem]">

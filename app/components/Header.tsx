@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Await, NavLink, useAsyncValue } from 'react-router';
+import { Await, Link, NavLink, useAsyncValue } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -8,7 +8,7 @@ import {
 import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
 import { HeaderMenuMega } from './HeaderMenuMega';
-import { MEGA_MENU_ITEMS } from '~/lib/navigation';
+import { MEGA_MENU_ITEMS, PRIMARY_MENU_ITEMS } from '~/lib/navigation';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -25,41 +25,156 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const { shop, menu } = header;
+  const { shop } = header;
   return (
     <>
-      <div className="bg-primary text-white text-xs py-2 px-8 flex justify-between items-center font-sans tracking-widest uppercase">
-        <div className="hidden md:block">Welcome to ShowerHaus</div>
-        <div className="flex gap-6 ml-auto">
-          <a href="#" className="!text-white hover:text-secondary transition-colors">Professionals</a>
-          <NavLink to="/contact" className="!text-white hover:text-secondary transition-colors">Contact Us</NavLink>
+      {/* Announcement bar */}
+      <div style={{ background: 'var(--color-primary, #003E7E)', color: '#fff', fontSize: '11px', padding: '8px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif' }}>
+        <span>Welcome to ShowerHaus</span>
+        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Professionals</a>
+      </div>
+
+      {/* TOP NAV ROW: Logo + Primary Items + Utilities */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          padding: '16px 48px',
+          boxSizing: 'border-box',
+          background: '#fff',
+          borderBottom: '1px solid #f3f4f6',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+        }}
+      >
+        {/* Logo */}
+        <NavLink prefetch="intent" to="/" end style={{ flexShrink: 0, marginRight: '48px' }}>
+          <img src="/logo.png" alt={shop.name} style={{ height: '90px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+        </NavLink>
+
+        {/* Primary Nav — ONLY: Bespoke Showers, Our Work, About Us, Contact */}
+        <nav style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', gap: '40px' }}>
+          {PRIMARY_MENU_ITEMS.map((item) => (
+            <div key={item.handle} style={{ position: 'relative' }} className="group">
+              <NavLink
+                to={
+                  item.handle === 'about' ? '/pages/about' :
+                  item.handle === 'contact' ? '/pages/contact' :
+                  item.items ? '#' :
+                  `/pages/${item.handle}`
+                }
+                style={{ fontFamily: 'Century Gothic, AppleGothic, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px', color: '#111', textDecoration: 'none', padding: '16px 0', whiteSpace: 'nowrap' }}
+              >
+                {item.title}
+                {item.items && (
+                  <svg style={{ width: '10px', height: '10px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </NavLink>
+              {item.items && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style={{ zIndex: 100 }}>
+                  <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '220px', padding: '24px 0' }}>
+                    {item.items.map((sub) => (
+                      <Link
+                        key={sub.handle}
+                        to={sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`}
+                        style={{ display: 'block', padding: '12px 32px', fontFamily: 'Montserrat, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#555', textDecoration: 'none' }}
+                      >
+                        {sub.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+
+        {/* Utilities: Search, Account, Cart */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'flex-end', minWidth: '120px' }}>
+          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
         </div>
       </div>
 
-      <header className="header bg-white sticky top-0 z-50 border-b border-gray-100 py-6 px-6 md:px-12 flex items-center justify-between">
-        {/* Logo */}
-        <NavLink prefetch="intent" to="/" end className="flex-shrink-0">
-          <img
-            src="https://showerhaus.co.za/wp-content/uploads/2019/07/showerhaus-logo.jpg"
-            alt={shop.name}
-            className="h-12 w-auto object-contain"
-          />
-        </NavLink>
-
-        {/* Desktop Menu */}
-        <HeaderMenu
-          menu={menu}
-          viewport="desktop"
-          primaryDomainUrl={header.shop.primaryDomain.url}
-          publicStoreDomain={publicStoreDomain}
-        />
-
-        {/* Utilities */}
-        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-      </header>
+      {/* CATEGORY ROW: Showers | Shower Spares | Consumables | Shower Care | Decorative */}
+      <div
+        style={{ display: 'flex', width: '100%', borderBottom: '1px solid #f3f4f6', alignItems: 'center', justifyContent: 'center', gap: '40px', height: '48px', background: '#fff', position: 'sticky', top: '80px', zIndex: 49, boxSizing: 'border-box' }}
+      >
+        {MEGA_MENU_ITEMS.map((item) => (
+          <div key={item.handle} style={{ position: 'relative', height: '48px', display: 'flex', alignItems: 'center' }} className="group">
+            <NavLink
+              to={`/collections/${item.handle}`}
+              style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#666', textDecoration: 'none', whiteSpace: 'nowrap' }}
+            >
+              {item.title}
+            </NavLink>
+            {item.categories && item.categories.length > 0 && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300" style={{ zIndex: 100 }}>
+                <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px' }}>
+                  <div style={{ flex: 1 }}>
+                    {item.categories.map((cat) => (
+                      <div key={cat.handle} style={{ marginBottom: '24px' }}>
+                        <Link
+                          to={`/collections/${cat.handle}`}
+                          style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-primary, #004082)', borderBottom: '1px solid #f3f4f6', paddingBottom: '12px', marginBottom: '12px', textDecoration: 'none' }}
+                        >
+                          {cat.title}
+                        </Link>
+                        {cat.items && (
+                          <div style={{ 
+                            display: cat.items.length > 5 ? 'grid' : 'flex', 
+                            gridTemplateColumns: cat.items.length > 5 ? 'repeat(2, 1fr)' : 'none',
+                            flexDirection: 'column', 
+                            gap: '8px',
+                            columnGap: '32px' 
+                          }}>
+                            {cat.items.map((sub) => (
+                              <Link
+                                key={sub.handle}
+                                to={`/collections/${sub.handle}`}
+                                style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '11px', color: '#888', textDecoration: 'none', whiteSpace: 'nowrap' }}
+                              >
+                                {sub.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {item.featuredImage && (
+                    <div className="w-[300px] flex-shrink-0">
+                      <Link to={`/collections/${item.handle}`} className="block no-underline">
+                        <div className="relative overflow-hidden aspect-[4/5] group/image">
+                          <img 
+                            src={item.featuredImage} 
+                            alt={item.featuredTitle} 
+                            className="w-full h-full object-cover block transition-transform duration-700 group-hover/image:scale-110" 
+                          />
+                          <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-8">
+                            <span className="text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase mb-2 opacity-80">Featured</span>
+                            <h3 className="text-white font-sans text-2xl font-black uppercase tracking-tight leading-tight m-0">{item.featuredTitle}</h3>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </>
   );
 }
+
+
 
 export function HeaderMenu({
   menu,
@@ -87,23 +202,22 @@ export function HeaderMenu({
         >
           Home
         </NavLink>
-        {/* Mega Menu Items for Mobile */}
-        {MEGA_MENU_ITEMS.map((item) => (
-          <div key={item.handle} className="flex flex-col space-y-2">
+        {/* Mobile Primary Links */}
+        {PRIMARY_MENU_ITEMS.map((item) => (
+          <div key={item.handle} className="flex flex-col">
             <NavLink
-              to={`/collections/${item.handle}`}
-              className="text-lg font-sans font-light text-gray-800 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
-              onClick={close}
+              to={item.handle === 'all' ? '/collections/all' : item.handle === 'about' ? '/pages/about' : item.items ? '#' : `/pages/${item.handle}`}
+              className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
+              onClick={item.items ? undefined : close}
             >
               {item.title}
             </NavLink>
-            {/* Mobile Submenu (Simplified) */}
             {item.items && (
-              <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
-                {item.items.map(sub => (
+              <div className="pl-4 mt-2 flex flex-col space-y-3">
+                {item.items.map((sub) => (
                   <NavLink
                     key={sub.handle}
-                    to={`/collections/${sub.handle}`}
+                    to={sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`}
                     className="text-sm font-sans text-gray-500 hover:text-primary"
                     onClick={close}
                   >
@@ -115,9 +229,42 @@ export function HeaderMenu({
           </div>
         ))}
 
+        {/* Mega Menu Categories for Mobile */}
+        <div className="pt-4">
+          <p className="text-[10px] font-sans tracking-[0.2em] uppercase text-gray-400 mb-6">Collections</p>
+          <div className="flex flex-col space-y-6">
+            {MEGA_MENU_ITEMS.map((item) => (
+              <div key={item.handle} className="flex flex-col space-y-2">
+                <NavLink
+                  to={`/collections/${item.handle}`}
+                  className="text-md font-sans font-light text-gray-800 hover:text-primary transition-colors flex justify-between items-center"
+                  onClick={close}
+                >
+                  {item.title}
+                </NavLink>
+                {/* Mobile Submenu (Simplified) */}
+                {item.categories && (
+                  <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
+                    {item.categories.map(cat => (
+                      <NavLink
+                        key={cat.handle}
+                        to={`/collections/${cat.handle}`}
+                        className="text-sm font-sans text-gray-500 hover:text-primary"
+                        onClick={close}
+                      >
+                        {cat.title}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </nav>
     );
   }
+
 
   // Desktop
   if (viewport === 'desktop') {

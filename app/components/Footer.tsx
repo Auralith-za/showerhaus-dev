@@ -1,88 +1,114 @@
 import { Link } from 'react-router';
+import { FOOTER_MENU } from '~/lib/navigation';
 
 export function Footer() {
   return (
-    <footer className="w-full bg-white pt-0">
+    <footer className="w-full bg-white border-t border-gray-50">
       {/* Newsletter Section */}
-      <div className="bg-primary text-white py-12">
-        <div className="container mx-auto px-6 flex flex-col items-center">
-          <h3 className="font-sans text-sm tracking-[0.4em] uppercase font-bold mb-4 text-center !text-white">Join Our Mailing List</h3>
-          <p className="font-sans text-sm text-gray-300 mb-16 max-w-lg mx-auto text-center font-light">
-            Sign up to receive the latest news, new collections and exclusive offers from ShowerHaus.
+      <div className="bg-primary text-white py-16">
+        <div className="container mx-auto px-6 flex flex-col items-center text-center">
+          <h3 className="font-display text-lg md:text-xl tracking-[0.3em] uppercase mb-4 !text-white font-light">Join Our Mailing List</h3>
+          <p className="font-sans text-sm text-gray-300 mb-12 max-w-xl mx-auto font-light leading-relaxed" style={{ marginBottom: '48px' }}>
+            Stay inspired with the latest news, collection launches and exclusive architectural insights from ShowerHaus.
           </p>
-          <form className="max-w-md w-full flex gap-4 mt-4">
+          <form className="max-w-md w-full flex flex-col sm:flex-row gap-0 group border border-white/20 focus-within:border-white transition-colors mt-12">
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 bg-transparent border border-white py-4 px-6 text-white placeholder-gray-400 focus:outline-none focus:bg-white/5 transition-all font-sans"
+              className="flex-1 bg-transparent py-4 px-6 text-white placeholder-gray-400 focus:outline-none transition-all font-sans text-sm"
+              style={{ border: 'none', borderRadius: 0, margin: 0 }}
+              required
             />
             <button
               type="submit"
-              className="font-sans text-[10px] font-bold tracking-[0.3em] uppercase !text-white hover:text-secondary transition-colors border-b border-white pb-1"
+              className="font-sans text-[10px] font-bold tracking-[0.3em] uppercase bg-white text-primary px-8 py-4 sm:py-0 hover:bg-secondary hover:text-white transition-all duration-300"
             >
-              Sign Up
+              Subscribe
             </button>
           </form>
         </div>
       </div>
 
       {/* Main Footer Links */}
-      <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-sm">
-
-          {/* Column 1: Brand & Contact */}
-          <div>
-            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-8 px-0 border-b border-gray-100 pb-2">ShowerHaus</h4>
-            <div className="font-sans text-gray-500 space-y-2 font-light">
-              <p>123 Luxury Avenue</p>
-              <p>Cape Town, 8001</p>
-              <p>South Africa</p>
-              <br />
-              <p className="font-medium text-primary">021 123 4567</p>
-              <p className="font-medium text-primary">info@showerhaus.co.za</p>
-            </div>
-            {/* Social Icons Placeholder */}
-            <div className="flex gap-4 mt-6 text-primary">
-              {/* Icons would go here */}
-              <span>IG</span>
-              <span>FB</span>
-              <span>PT</span>
-            </div>
-          </div>
-
-          {/* Column 2: Categories */}
-          <div>
-            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-6">Collections</h4>
-            <div className="flex flex-col gap-3 font-sans text-gray-500 font-light">
-              <Link to="/collections/baths" className="hover:text-primary transition-colors">Baths</Link>
-              <Link to="/collections/showers" className="hover:text-primary transition-colors">Showers</Link>
-              <Link to="/collections/basins" className="hover:text-primary transition-colors">Basins</Link>
-              <Link to="/collections/toilets" className="hover:text-primary transition-colors">Toilets</Link>
-              <Link to="/collections/taps" className="hover:text-primary transition-colors">Taps & Mixers</Link>
-              <Link to="/collections/accessories" className="hover:text-primary transition-colors">Accessories</Link>
+      <div className="container mx-auto px-6 py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 lg:gap-12">
+          
+          {/* Brand Info */}
+          <div className="lg:col-span-1 space-y-8">
+            <Link to="/" className="block">
+              <img src="/logo.png" alt="ShowerHaus" className="h-28 w-auto object-contain" />
+            </Link>
+            <div className="font-sans text-gray-500 text-sm space-y-6 font-light leading-relaxed">
+              <div className="flex items-start gap-4">
+                <svg className="w-5 h-5 text-primary mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div>
+                  <p>KwaZulu-Natal,</p>
+                  <p>South Africa</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <p className="font-medium text-gray-500">+27 (0) 31 123 4567</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <p className="font-medium text-gray-500 hover:text-primary transition-colors underline decoration-primary/20 underline-offset-4 cursor-pointer">info@showerhaus.co.za</p>
+              </div>
             </div>
           </div>
 
-          {/* Column 3: Customer Care */}
-          <div>
-            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-6">Customer Care</h4>
-            <div className="flex flex-col gap-3 font-sans text-gray-500 font-light">
-              <Link to="/pages/contact" className="hover:text-primary transition-colors">Contact Us</Link>
-              <Link to="/pages/delivery" className="hover:text-primary transition-colors">Delivery Information</Link>
-              <Link to="/pages/returns" className="hover:text-primary transition-colors">Returns & Refunds</Link>
-              <Link to="/pages/guarantee" className="hover:text-primary transition-colors">Our Guarantee</Link>
-              <Link to="/pages/faq" className="hover:text-primary transition-colors">FAQs</Link>
+          {/* About Us */}
+          <div className="space-y-8">
+            <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Our Company</h4>
+            <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
+              {FOOTER_MENU.about.map((item) => (
+                <Link key={item.handle} to={item.handle === 'about' ? '/pages/about' : `/pages/${item.handle}`} className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200">
+                  {item.title}
+                </Link>
+              ))}
             </div>
           </div>
 
-          {/* Column 4: About */}
-          <div>
-            <h4 className="font-sans text-sm tracking-[0.3em] uppercase font-bold text-primary mb-6">About Us</h4>
-            <div className="flex flex-col gap-3 font-sans text-gray-500 font-light">
-              <Link to="/pages/about" className="hover:text-primary transition-colors">Our Story</Link>
-              <Link to="/pages/showrooms" className="hover:text-primary transition-colors">Showrooms</Link>
-              <Link to="/blogs/journal" className="hover:text-primary transition-colors">Journal</Link>
-              <Link to="/pages/professionals" className="hover:text-primary transition-colors">Trade Professionals</Link>
+          {/* Customer Service */}
+          <div className="space-y-8">
+            <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Customer Care</h4>
+            <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
+              {FOOTER_MENU.customerService.map((item) => (
+                <Link key={item.handle} to={`/pages/${item.handle}`} className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200">
+                  {item.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Discover More */}
+          <div className="space-y-8">
+            <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Explore</h4>
+            <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
+              {FOOTER_MENU.discoverMore.map((item) => (
+                <Link key={item.handle} to={item.handle === 'journal' ? '/blogs/journal' : `/pages/${item.handle}`} className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200">
+                  {item.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div className="space-y-8">
+            <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Collections</h4>
+            <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
+              {FOOTER_MENU.categories.map((item) => (
+                <Link key={item.handle} to={`/collections/${item.handle}`} className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200">
+                  {item.title}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -90,15 +116,21 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-100 py-8">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 font-light">
-          <p>&copy; {new Date().getFullYear()} ShowerHaus. All rights reserved.</p>
-          <div className="flex gap-4 mt-4 md:mt-0">
-            <Link to="/policies/privacy-policy" className="hover:text-primary">Privacy Policy</Link>
-            <Link to="/policies/terms-of-service" className="hover:text-primary">Terms & Conditions</Link>
+      <div className="bg-gray-50 border-t border-gray-100 py-12">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs tracking-[0.2em] text-gray-400 font-light uppercase">
+          <p className="order-2 md:order-1 text-center md:text-left mt-8 md:mt-0 font-sans text-[7px] tracking-[0.2em] font-light italic capitalize opacity-40">
+            &copy; {new Date().getFullYear()} SHOWERHAUS. TECHNICAL EXCELLENCE IN EVERY DETAIL.
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 order-1 md:order-2">
+            {FOOTER_MENU.bottom.map((item) => (
+              <Link key={item.handle} to={`/policies/${item.handle}`} className="hover:text-primary transition-colors">
+                {item.title}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
     </footer>
   );
 }
+

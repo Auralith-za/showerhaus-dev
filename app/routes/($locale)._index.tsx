@@ -35,28 +35,42 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home bg-[#FAF9F7]">
+    <div className="home bg-white">
+      {/* Section 1: Hero / Banner Carousel */}
       <Hero />
+
+      {/* Section 2: Frameless Shower Experts – statement text */}
       <TrustBar />
-      <HomeCategories />
-      <InstallationSection />
 
-      {/* New Architectural Sections */}
-      <div className="bg-white">
-        <InspirationSection />
-      </div>
-      <div className="bg-[#FAF9F7]">
-        <ProjectsSection />
-      </div>
-      <div className="bg-white">
-        <ServicesSection />
-      </div>
-
-      <div className="bg-white py-24 border-t border-gray-100">
+      {/* Section 3: Most Popular Products slider */}
+      <div className="bg-white py-24 border-b border-gray-100">
         <div className="container mx-auto px-6">
           <RecommendedProducts products={data.recommendedProducts} />
         </div>
       </div>
+
+      {/* Section 4: Engage With Us — Channels */}
+      <div className="bg-[#c9c9c9]">
+        <ServicesSection />
+      </div>
+
+      {/* Section 5: Ranges / HomeCategories */}
+      <HomeCategories />
+
+      {/* Section 6: Projects */}
+      <div className="bg-[#c9c9c9]">
+        <ProjectsSection />
+      </div>
+
+      {/* Section 7: Installation & Consultation Form */}
+      <InstallationSection />
+
+      {/* Section 8: Inspiration (Let Us Inspire You) */}
+      <div className="bg-white">
+        <InspirationSection />
+      </div>
+
+      {/* Section 9: Quoting / CTA */}
       <QuotingSection />
     </div>
   );
@@ -69,8 +83,9 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2 className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-12 text-center">Discover Our Favorites</h2>
-      <Suspense fallback={<div>Loading...</div>}>
+      <h2 className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-4 text-center">Our Most Popular Products</h2>
+      <p className="font-sans text-sm text-gray-400 font-light text-center mb-32 pb-5">A curated selection of our best-selling shower enclosures and accessories.</p>
+      <Suspense fallback={<div className="text-center text-gray-400 py-12">Loading products...</div>}>
         <Await resolve={products}>
           {(response) => (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -83,6 +98,16 @@ function RecommendedProducts({
           )}
         </Await>
       </Suspense>
+      <div className="text-center mt-12">
+        <a
+          href="/collections/all"
+          className="inline-flex items-center gap-3 font-sans text-[10px] font-bold tracking-[0.3em] uppercase text-primary hover:text-secondary transition-colors"
+        >
+          <span className="w-8 h-[1px] bg-primary"></span>
+          View Full Catalogue
+          <span className="w-8 h-[1px] bg-primary"></span>
+        </a>
+      </div>
     </div>
   );
 }

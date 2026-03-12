@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 
 export function InstallationSection() {
     return (
-        <section className="py-24 bg-[#F8F7F4] overflow-hidden">
+        <section className="py-24 bg-[#f3f4f6] overflow-hidden">
             <div className="container mx-auto px-6 lg:px-12 max-w-7xl animate-fade-in-up">
                 <div className="flex flex-col lg:flex-row shadow-2xl overflow-hidden bg-black">
                     {/* Image & Copy Column */}

@@ -35,7 +35,7 @@ export function HomeCategories() {
                         </span>
                         <h2 className="font-sans text-3xl md:text-4xl font-bold text-primary tracking-tight leading-tight">
                             Elevate your space with <br />
-                            <span className="font-light italic text-secondary">signature design.</span>
+                            <span className="font-light text-secondary">signature design.</span>
                         </h2>
                     </div>
                     <p className="font-sans text-gray-500 font-light max-w-sm mb-2">

@@ -73,9 +73,9 @@ export function links() {
     },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap',
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap',
     },
-    { rel: 'icon', type: 'image/svg+xml', href: favicon },
+    { rel: 'icon', type: 'image/png', href: '/favicon.png' },
   ];
 }
 
@@ -154,6 +154,14 @@ async function loadCriticalData({ context }: Route.LoaderArgs) {
 function loadDeferredData({ context }: Route.LoaderArgs) {
   const { storefront, customerAccount, cart } = context;
 
+  if (!storefront) {
+    return {
+      cart: cart.get(),
+      isLoggedIn: customerAccount.isLoggedIn(),
+      footer: Promise.resolve(null),
+    };
+  }
+
   // defer the footer query (below the fold)
   const footer = storefront
     .query(FOOTER_QUERY, {
@@ -167,6 +175,7 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
       console.error(error);
       return null;
     });
+
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
@@ -208,7 +217,7 @@ export default function App() {
     <Analytics.Provider
       cart={data.cart}
       shop={data.shop}
-      consent={data.consent}
+      consent={data.consent || { checkoutDomain: '', storefrontAccessToken: '', withPrivacyBanner: false, country: 'US', language: 'EN' }}
     >
       <PageLayout {...data}>
         <Outlet />

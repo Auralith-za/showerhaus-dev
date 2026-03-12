@@ -18,7 +18,7 @@ import { SearchResultsPredictive } from '~/components/SearchResultsPredictive';
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
   footer: Promise<FooterQuery | null>;
-  header: HeaderQuery;
+  header: HeaderQuery | null;
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
   children?: React.ReactNode;
@@ -159,8 +159,8 @@ function MobileMenuAside({
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
 }) {
   return (
-    header.menu &&
-    header.shop.primaryDomain?.url && (
+    header?.menu &&
+    header?.shop?.primaryDomain?.url && (
       <Aside type="mobile" heading="MENU">
         <HeaderMenu
           menu={header.menu}

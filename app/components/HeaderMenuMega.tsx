@@ -3,13 +3,14 @@ import { MEGA_MENU_ITEMS } from '~/lib/navigation';
 
 export function HeaderMenuMega() {
     return (
-        <nav className="hidden md:flex gap-8 items-center h-full" role="navigation">
+        <nav className="hidden lg:flex gap-12 items-center h-full" role="navigation">
             {MEGA_MENU_ITEMS.map((item) => (
                 <div key={item.handle} className="group h-full flex items-center">
                     <NavLink
                         to={`/collections/${item.handle}`}
                         className={({ isActive }) =>
-                            `font-sans text-sm tracking-widest uppercase hover:text-primary transition-colors border-b-2 py-1 ${isActive ? 'border-primary' : 'border-transparent'
+                            `font-sans text-[10px] font-bold tracking-[0.2em] uppercase transition-colors hover:text-primary py-2 ${
+                                isActive ? 'text-primary' : 'text-gray-500'
                             }`
                         }
                     >
@@ -17,49 +18,41 @@ export function HeaderMenuMega() {
                     </NavLink>
 
                     {/* Mega Menu Dropdown */}
-                    <div className="absolute left-0 top-full w-full bg-white border-t border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out z-50">
-                        <div className="container mx-auto px-12 py-12">
-                            <div className="grid grid-cols-12 gap-8">
-                                {/* Links Column */}
-                                <div className="col-span-8 grid grid-cols-2 gap-8">
-                                    <div>
-                                        <h4 className="font-sans text-[10px] tracking-[0.3em] uppercase font-bold text-primary mb-8 underline underline-offset-8 decoration-primary/10">{item.title}</h4>
-                                        <ul className="space-y-4">
-                                            {item.items?.map((subItem) => (
-                                                <li key={subItem.handle}>
-                                                    <Link
-                                                        to={`/collections/${subItem.handle}`}
-                                                        className="font-sans font-light text-gray-600 hover:text-primary transition-colors block"
-                                                    >
-                                                        {subItem.title}
-                                                    </Link>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    {/* Suggestion or specialized promo could go here if data existed */}
-                                </div>
-
-                                {/* Promotional Image Column */}
-                                {item.image && (
-                                    <div className="col-span-4 bg-gray-50 aspect-[4/3] overflow-hidden relative group/image">
-                                        <img
-                                            src={item.image}
-                                            alt={item.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/image:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-black/10"></div>
-                                        <div className="absolute bottom-6 left-6 text-white z-10">
-                                            <span className="uppercase text-[9px] tracking-[0.3em] font-bold mb-3 block text-white/80">Featured</span>
-                                            <h3 className="font-sans text-2xl tracking-tight leading-none uppercase font-bold">{item.title}</h3>
+                    {item.categories && item.categories.length > 0 && (
+                        <div className="absolute left-0 top-full w-full bg-white border-t border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out z-50 p-12 translate-y-2 group-hover:translate-y-0">
+                            <div className="container mx-auto max-w-7xl">
+                                <div className="grid grid-cols-4 gap-12">
+                                    {item.categories.map((cat) => (
+                                        <div key={cat.handle} className="flex flex-col gap-6">
+                                            <Link
+                                                to={`/collections/${cat.handle}`}
+                                                className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 hover:text-secondary transition-colors"
+                                            >
+                                                {cat.title}
+                                            </Link>
+                                            {cat.items && (
+                                                <ul className={`flex flex-col gap-2 ${cat.items.length > 5 ? 'grid grid-cols-2 gap-x-8 gap-y-2' : ''}`}>
+                                                    {cat.items.map((sub) => (
+                                                        <li key={sub.handle}>
+                                                            <Link
+                                                                to={`/collections/${sub.handle}`}
+                                                                className="font-sans text-[11px] text-gray-500 hover:text-primary transition-colors font-light whitespace-nowrap"
+                                                            >
+                                                                {sub.title}
+                                                            </Link>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
                                         </div>
-                                    </div>
-                                )}
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             ))}
         </nav>
     );
 }
+

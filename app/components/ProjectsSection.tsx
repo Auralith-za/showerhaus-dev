@@ -2,9 +2,9 @@ import { Link } from 'react-router';
 
 export function ProjectsSection() {
     return (
-        <section className="w-full bg-[#F3F2EE] py-24 border-b border-gray-100">
+        <section className="w-full bg-[#c9c9c9] py-24 border-b border-gray-100">
             <div className="container mx-auto px-6 max-w-7xl">
-                <h2 className="font-sans text-xs tracking-[0.4em] uppercase font-bold text-gray-400 mb-16">Projects We're Proud Of</h2>
+                <h2 className="font-sans text-xs tracking-[0.4em] uppercase font-bold text-white mb-16">Projects We're Proud Of</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 

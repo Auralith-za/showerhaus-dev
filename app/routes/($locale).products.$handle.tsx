@@ -1,4 +1,4 @@
-import { redirect, useLoaderData } from 'react-router';
+import { Link, redirect, useLoaderData } from 'react-router';
 import type { Route } from './+types/products.$handle';
 import {
   getSelectedProductOptions,
@@ -175,6 +175,21 @@ export default function Product() {
             </div>
 
             <ProductTabs description={descriptionHtml} />
+
+            {/* Custom Shower Banner */}
+            {(product.collection === 'showers' || product.handle.includes('shower')) && (
+                <Link 
+                    to="/pages/bespoke-showers"
+                    className="mt-8 bg-sky-blue/10 border border-sky-blue/20 p-6 flex items-center justify-between group hover:bg-sky-blue/20 transition-all rounded-sm"
+                >
+                    <span className="font-sans text-[11px] font-bold tracking-[0.2em] uppercase text-primary">
+                        Looking for a custom shower? <span className="text-secondary ml-2 group-hover:underline">Click here.</span>
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-sky-blue">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                    </svg>
+                </Link>
+            )}
 
             {/* Trust/Delivery Badges (Static for now) */}
             <div className="grid grid-cols-2 gap-4 mt-12 pt-8 border-t border-gray-100">

@@ -6,16 +6,34 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-showerhaus-blue: #001664;
-  --color-showerhaus-light: #21759b;
-  --color-architectural-gray: #4a4a4a;
+  --color-royal-blue: #004082;
+  --color-navy-blue: #001C3D;
+  --color-light-grey: #CACACA;
+  --color-sky-blue: #4A89C8;
+  --color-rich-black: #000000;
+  
+  --font-primary: "Century Gothic", AppleGothic, "Lucida Sans", sans-serif;
+  --font-tertiary: "Montserrat", sans-serif;
+  
+  --font-display: var(--font-primary);
+  --font-body: var(--font-tertiary);
+  --font-sans: var(--font-tertiary);
+
+  /* Update primary/secondary mappings */
+  --color-primary: var(--color-royal-blue);
+  --color-secondary: var(--color-sky-blue);
+  --color-accent: var(--color-navy-blue);
+  
+  /* Legacy/Support */
+  --color-showerhaus-blue: var(--color-royal-blue);
+  --color-showerhaus-light: var(--color-sky-blue);
+  --color-architectural-gray: var(--color-light-grey);
   --color-warm-white: #fafafa;
-  
-  --font-display: "Playfair Display", serif;
-  --font-body: "Inter", sans-serif;
-  
-  /* Extend generic colors if needed */
-  --color-primary: var(--color-showerhaus-blue);
-  --color-secondary: var(--color-showerhaus-light);
-  --color-accent: var(--color-architectural-gray);
+}
+
+/* Apply brand heading font globally */
+@layer base {
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: var(--font-display);
+  }
 }

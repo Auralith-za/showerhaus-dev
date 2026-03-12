@@ -44,7 +44,7 @@ export default function Contact() {
                             <div className="space-y-2">
                                 <h3 className="font-sans text-[9px] tracking-[0.3em] uppercase font-bold text-primary">Location</h3>
                                 <p className="font-sans text-lg text-gray-600 leading-relaxed tracking-tight">
-                                    90A Intersite Avenue, Umgeni Business Park,<br />Springfield, Durban
+                                    0A Intersite Avenue, Umgeni Business Park,<br />Springfield 4091, South Africa
                                 </p>
                             </div>
                         </div>

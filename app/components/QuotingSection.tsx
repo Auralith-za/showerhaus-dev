@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 
 export function QuotingSection() {
     return (
-        <section className="py-24 bg-architectural-gray/10 relative overflow-hidden">
+        <section className="py-24 bg-architectural-gray/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-1/3 h-full bg-white/50 -skew-x-12 translate-x-1/2"></div>
 
             <div className="container mx-auto px-6 relative z-10">
@@ -13,7 +13,7 @@ export function QuotingSection() {
                     <h2 className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-8 underline underline-offset-8 decoration-primary/20 w-fit mx-auto">
                         Your Vision, Our Precision
                     </h2>
-                    <p className="font-sans text-gray-600 text-lg mb-12 leading-relaxed max-w-2xl mx-auto text-center">
+                    <p className="font-sans text-gray-600 text-lg mb-12 leading-relaxed max-w-2xl mx-auto text-center font-light">
                         Whether you are an architect, developer, or homeowner, our team provides expert quotes for projects of any scale.
                     </p>
 
