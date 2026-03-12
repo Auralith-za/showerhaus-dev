@@ -57,9 +57,21 @@ export function Header({
         </NavLink>
 
         {/* Primary Nav — ONLY: Bespoke Showers, Our Work, About Us, Contact */}
-        <nav style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', gap: '40px' }}>
+        <nav style={{ 
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '40px',
+          whiteSpace: 'nowrap',
+          height: '100%',
+          padding: 0,
+          margin: 0
+        }}>
           {PRIMARY_MENU_ITEMS.map((item) => (
-            <div key={item.handle} style={{ position: 'relative' }} className="group">
+            <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
               <NavLink
                 to={
                   item.handle === 'about' ? '/pages/about' :
@@ -67,11 +79,11 @@ export function Header({
                   item.items ? '#' :
                   `/pages/${item.handle}`
                 }
-                style={{ fontFamily: 'Century Gothic, AppleGothic, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px', color: '#111', textDecoration: 'none', padding: '16px 0', whiteSpace: 'nowrap' }}
+                style={{ fontFamily: 'var(--font-primary)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px', color: '#111', textDecoration: 'none', whiteSpace: 'nowrap' }}
               >
                 {item.title}
                 {item.items && (
-                  <svg style={{ width: '10px', height: '10px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg style={{ width: '10px', height: '10px', opacity: 0.5 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 )}
@@ -83,7 +95,7 @@ export function Header({
                       <Link
                         key={sub.handle}
                         to={sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`}
-                        style={{ display: 'block', padding: '12px 32px', fontFamily: 'Montserrat, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#555', textDecoration: 'none' }}
+                        style={{ display: 'block', padding: '12px 32px', fontFamily: 'var(--font-primary)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#555', textDecoration: 'none' }}
                       >
                         {sub.title}
                       </Link>
@@ -103,16 +115,17 @@ export function Header({
 
       {/* CATEGORY ROW: Showers | Shower Spares | Consumables | Shower Care | Decorative */}
       <div
-        style={{ display: 'flex', width: '100%', borderBottom: '1px solid #f3f4f6', alignItems: 'center', justifyContent: 'center', gap: '40px', height: '48px', background: '#fff', position: 'sticky', top: '80px', zIndex: 49, boxSizing: 'border-box' }}
+        style={{ display: 'flex', width: '100%', borderBottom: '1px solid #f3f4f6', alignItems: 'center', justifyContent: 'center', height: '48px', background: '#fff', position: 'sticky', top: '122px', zIndex: 49, boxSizing: 'border-box' }}
       >
-        {MEGA_MENU_ITEMS.map((item) => (
-          <div key={item.handle} style={{ position: 'relative', height: '48px', display: 'flex', alignItems: 'center' }} className="group">
-            <NavLink
-              to={`/collections/${item.handle}`}
-              style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#666', textDecoration: 'none', whiteSpace: 'nowrap' }}
-            >
-              {item.title}
-            </NavLink>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '40px', height: '100%' }}>
+          {MEGA_MENU_ITEMS.map((item) => (
+            <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
+              <NavLink
+                to={`/collections/${item.handle}`}
+                style={{ fontFamily: 'var(--font-primary)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#666', textDecoration: 'none', whiteSpace: 'nowrap' }}
+              >
+                {item.title}
+              </NavLink>
             {item.categories && item.categories.length > 0 && (
               <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300" style={{ zIndex: 100 }}>
                 <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px' }}>

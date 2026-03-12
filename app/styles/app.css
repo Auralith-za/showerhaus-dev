@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Inter:wght@300;400;700&display=swap');
+
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
@@ -8,7 +10,7 @@
   --color-section-break: #fafafa;
   --color-dark: #000;
   --color-light: #fff;
-  --font-primary: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+  --font-primary: 'Century Gothic', CenturyGothic, 'Montserrat', AppleGothic, sans-serif;
 }
 
 body, h1, h2, h3, h4, h5, h6, button, input, select, textarea, .font-sans, .font-display {
