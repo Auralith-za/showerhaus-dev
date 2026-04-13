@@ -4,6 +4,7 @@ import type { CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
 import { CartLineItem } from '~/components/CartLineItem';
 import { CartSummary } from './CartSummary';
+import { CartUpsell } from '~/components/CartUpsell';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -31,16 +32,25 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
   return (
     <div className={className}>
       <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="flex-1 flex flex-col">
-        <div aria-labelledby="cart-lines" className="flex-1 overflow-y-auto -mx-6 px-6">
-          <ul className="space-y-6">
+      <div className={`flex-1 ${layout === 'page' ? 'lg:grid lg:grid-cols-[1fr_420px] lg:gap-16' : 'flex flex-col'}`}>
+        
+        <div aria-labelledby="cart-lines" className={`flex-1 overflow-y-auto ${layout === 'page' ? '' : '-mx-6 px-6'}`}>
+          {layout === 'page' && cartHasItems && (
+              <div className="hidden lg:grid grid-cols-[100px_1fr_120px] gap-8 pb-4 border-b border-[#eee] mb-0 text-[10px] tracking-widest text-[#333] font-medium leading-none">
+                  <span>Item</span>
+                  <span>Product Details</span>
+                  <span className="text-right">Price</span>
+              </div>
+          )}
+          <ul className="divide-y divide-[#eee]">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}
           </ul>
         </div>
+        
         {cartHasItems && (
-          <div className="pt-6 border-t border-gray-100 mt-auto">
+          <div className={`${layout === 'page' ? 'lg:pl-0 pt-0' : 'pt-6 border-t border-[#eee] mt-auto'}`}>
             <CartSummary cart={cart} layout={layout} />
           </div>
         )}

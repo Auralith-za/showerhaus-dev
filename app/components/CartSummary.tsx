@@ -11,45 +11,94 @@ type CartSummaryProps = {
 };
 
 export function CartSummary({ cart, layout }: CartSummaryProps) {
+  const subtotal = cart?.cost?.subtotalAmount;
+  
+  if (layout === 'page') {
+      return (
+          <div className="bg-white p-8 lg:p-10 sticky top-24 w-full h-fit">
+              <h2 className="text-xs uppercase tracking-wider text-primary font-bold mb-6">Order Summary</h2>
+              <hr className="border-gray-200 mb-6" />
+              
+              <div className="space-y-4 text-xs tracking-wider uppercase text-primary mb-6">
+                 <div className="flex justify-between items-center">
+                     <span>Subtotal</span>
+                     <span className="text-primary font-bold">{subtotal ? <Money data={subtotal} /> : 'R 0.00'}</span>
+                 </div>
+                 <div className="flex justify-between items-center">
+                     <span>Estimated Tax</span>
+                     <span className="text-primary font-bold">Calculated at checkout</span>
+                 </div>
+                 <div className="flex justify-between items-center">
+                     <span>Delivery/Collection Fee</span>
+                     <span className="text-primary font-bold">TBC</span>
+                 </div>
+
+              </div>
+
+              <hr className="border-gray-200 mb-6" />
+
+              <div className="mb-6">
+                  <span className="block text-xs uppercase tracking-wider text-primary mb-3">Discount Code</span>
+                  <div className="flex w-full h-[46px] border border-gray-200 focus-within:border-primary items-stretch bg-white">
+                      <input type="text" placeholder="Enter Discount Code" className="w-full flex-1 bg-transparent !border-transparent !border-none px-4 text-xs !outline-none focus:!outline-none focus:!border-transparent focus:!ring-0 !rounded-none appearance-none m-0 !shadow-none" />
+                      <button className="bg-primary hover:bg-secondary border-none !text-white px-6 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors whitespace-nowrap flex items-center justify-center !rounded-none appearance-none m-0 h-full">Apply Code</button>
+                  </div>
+              </div>
+
+              <hr className="border-gray-200 mb-6" />
+
+              <div className="flex justify-between items-center mb-10 text-xs uppercase tracking-wider text-primary font-bold">
+                  <span>Total</span>
+                  <span>{subtotal ? <Money data={subtotal} /> : 'TBC'}</span>
+              </div>
+
+              <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} layout={layout} />
+          </div>
+      );
+  }
+
+  // Aside Layout
   return (
-    <div aria-labelledby="cart-summary" className="space-y-4">
-      <div className="flex items-center justify-between">
-        <span className="font-sans text-[10px] tracking-[0.2em] uppercase font-semibold text-gray-400">Subtotal</span>
-        <span className="font-sans text-sm font-bold text-primary tracking-tight">
-          {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
-          ) : (
-            '-'
-          )}
+    <div aria-labelledby="cart-summary" className="space-y-6 bg-white px-2">
+      <div className="flex items-center justify-between py-6">
+        <span className="font-sans text-sm text-primary font-medium">Subtotal:</span>
+        <span className="font-sans text-sm text-primary font-bold tracking-wide">
+          {subtotal?.amount ? <Money data={subtotal} /> : '-'}
         </span>
       </div>
 
-      {/* Collapsed Discount/Gift Card Sections for Visual Simplicity */}
-      <div className="border-t border-gray-100 pt-6">
-        <CartDiscounts discountCodes={cart?.discountCodes} />
-        <CartGiftCard giftCardCodes={cart?.appliedGiftCards} />
-      </div>
-
-      <div className="pt-4">
-        <p className="font-sans text-[10px] text-center text-gray-400 font-light mb-6 uppercase tracking-wider">
-          Shipping and taxes calculated at checkout
-        </p>
-        <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
+      <div className="flex gap-4">
+          <a href="/cart" className="flex-1 border border-primary text-primary text-[10px] tracking-[0.2em] font-bold uppercase py-4 flex items-center justify-center hover:bg-gray-50 transition-colors">
+              View Cart
+          </a>
+          <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} layout={layout} />
       </div>
     </div>
   );
 }
 
-function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
+function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; layout?: CartLayout }) {
   if (!checkoutUrl) return null;
+
+  if (layout === 'page') {
+      return (
+          <a
+            href="/checkout"
+            target="_self"
+            className="block w-full bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase text-center py-5 hover:bg-secondary transition-colors"
+          >
+            Secure Checkout
+          </a>
+      );
+  }
 
   return (
     <a
-      href={checkoutUrl}
+      href="/checkout"
       target="_self"
-      className="block w-full bg-primary text-white font-sans text-xs tracking-[0.3em] uppercase font-semibold py-5 text-center hover:bg-black transition-all duration-500 shadow-xl shadow-primary/10"
+      className="flex-1 bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase py-5 flex items-center justify-center hover:bg-secondary transition-colors"
     >
-      Complete Order
+      Checkout
     </a>
   );
 }

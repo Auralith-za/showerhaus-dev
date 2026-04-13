@@ -79,6 +79,12 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   const cartId = result?.cart?.id;
   const headers = cartId ? cart.setCartId(result.cart.id) : new Headers();
+  
+  // Force commit the session so our mockCart persists!
+  if (context.session?.isPending) {
+    headers.append('Set-Cookie', await context.session.commit());
+  }
+
   const { cart: cartResult, errors, warnings } = result;
 
   const redirectTo = formData.get('redirectTo') ?? null;
@@ -109,9 +115,30 @@ export default function Cart() {
   const cart = useLoaderData<typeof loader>();
 
   return (
-    <div className="cart-page bg-white min-h-[60vh] py-16 md:py-24">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <h1 className="font-display text-4xl md:text-5xl text-primary mb-12 text-center">Your Bag</h1>
+    <div className="cart-page bg-[#f7f7f7] min-h-screen pb-20 font-sans">
+      {/* Top Navigation Bar / Breadcrumbs */}
+      <div className="border-b border-gray-200 bg-[#f7f7f7] py-6">
+          <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
+              <div className="hidden"></div>
+              
+              <div className="hidden md:flex items-center gap-4 text-[10px] tracking-[0.1em] text-gray-400 uppercase">
+                  <span className="text-primary font-semibold cursor-pointer">Cart</span>
+                  <span>›</span>
+                  <span>Address Details</span>
+                  <span>›</span>
+                  <span>Delivery & Collection</span>
+                  <span>›</span>
+                  <span>Payment</span>
+              </div>
+
+              <div className="text-[10px] text-primary tracking-wider hidden lg:block">
+                  Need Help? <a href="/contact" className="underline hover:text-primary transition-colors">Contact Us</a>
+              </div>
+          </div>
+      </div>
+
+      <div className="container mx-auto px-6 max-w-7xl pt-16">
+        <h1 className="font-display text-4xl lg:text-[40px] tracking-widest text-primary mb-12 uppercase font-light">My Cart</h1>
         <CartMain layout="page" cart={cart || null} />
       </div>
     </div>

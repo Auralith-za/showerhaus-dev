@@ -83,12 +83,13 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2 className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-4 text-center">Our Most Popular Products</h2>
-      <p className="font-sans text-sm text-gray-400 font-light text-center mb-32 pb-5">A curated selection of our best-selling shower enclosures and accessories.</p>
+      <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary leading-tight mb-6 tracking-tighter text-left">Our Most Popular Products</h2>
+      
+      <div style={{ height: '60px' }} className="w-full"></div>
       <Suspense fallback={<div className="text-center text-gray-400 py-12">Loading products...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
               {response
                 ? response.products.nodes.map((product) => (
                   <ProductItem key={product.id} product={product} />
@@ -133,7 +134,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 10, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }

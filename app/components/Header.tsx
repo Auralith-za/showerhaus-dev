@@ -28,19 +28,38 @@ export function Header({
   const { shop } = header;
   return (
     <>
-      {/* Announcement bar */}
-      <div style={{ background: 'var(--color-primary, #003E7E)', color: '#fff', fontSize: '11px', padding: '8px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif' }}>
-        <span>Welcome to ShowerHaus</span>
-        <a href="#" style={{ color: '#fff', textDecoration: 'none' }}>Professionals</a>
+      {/* Top Banner (White) */}
+      <div style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
+        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+          <Link to="/pages/bespoke-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Bespoke Showers</Link>
+          
+          <div className="relative group flex items-center h-[30px] cursor-pointer">
+            <Link to="/pages/about" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
+            <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[150]">
+              <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[220px]">
+                <Link to="/pages/about" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Our Story</Link>
+                <Link to="/pages/projects" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Projects</Link>
+                <Link to="/pages/customer-stories" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Customer Stories</Link>
+                <Link to="/pages/accreditations" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Accreditations</Link>
+                <Link to="/blogs/journal" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Blog</Link>
+              </div>
+            </div>
+          </div>
+
+          <Link to="/pages/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact</Link>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', minWidth: '120px', justifyContent: 'flex-end' }}>
+          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+        </div>
       </div>
 
-      {/* TOP NAV ROW: Logo + Primary Items + Utilities */}
+      {/* TOP NAV ROW: Logo + Main Categories */}
       <div
         style={{
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           width: '100%',
           padding: '16px 48px',
           boxSizing: 'border-box',
@@ -52,89 +71,40 @@ export function Header({
         }}
       >
         {/* Logo */}
-        <NavLink prefetch="intent" to="/" end style={{ flexShrink: 0, marginRight: '48px' }}>
-          <img src="/logo.png" alt={shop.name} style={{ height: '90px', width: 'auto', objectFit: 'contain', display: 'block' }} />
-        </NavLink>
+        <div style={{ width: '220px', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          <NavLink prefetch="intent" to="/" end style={{ display: 'block' }}>
+            <img src="/logo.png" alt={shop.name} style={{ height: '45px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+          </NavLink>
+        </div>
 
-        {/* Primary Nav — ONLY: Bespoke Showers, Our Work, About Us, Contact */}
+        {/* Primary Nav (Categories) */}
         <nav style={{ 
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
           display: 'flex', 
           alignItems: 'center', 
           gap: '40px',
           whiteSpace: 'nowrap',
           height: '100%',
           padding: 0,
-          margin: 0
+          margin: 0,
+          marginLeft: 'auto'
         }}>
-          {PRIMARY_MENU_ITEMS.map((item) => (
-            <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
-              <NavLink
-                to={
-                  item.handle === 'about' ? '/pages/about' :
-                  item.handle === 'contact' ? '/pages/contact' :
-                  item.items ? '#' :
-                  `/pages/${item.handle}`
-                }
-                style={{ fontFamily: 'var(--font-primary)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px', color: '#111', textDecoration: 'none', whiteSpace: 'nowrap' }}
-              >
-                {item.title}
-                {item.items && (
-                  <svg style={{ width: '10px', height: '10px', opacity: 0.5 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                )}
-              </NavLink>
-              {item.items && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" style={{ zIndex: 100 }}>
-                  <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '220px', padding: '24px 0' }}>
-                    {item.items.map((sub) => (
-                      <Link
-                        key={sub.handle}
-                        to={sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`}
-                        style={{ display: 'block', padding: '12px 32px', fontFamily: 'var(--font-primary)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#555', textDecoration: 'none' }}
-                      >
-                        {sub.title}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </nav>
-
-        {/* Utilities: Search, Account, Cart */}
-        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'flex-end', minWidth: '120px' }}>
-          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-        </div>
-      </div>
-
-      {/* CATEGORY ROW: Showers | Shower Spares | Consumables | Shower Care | Decorative */}
-      <div
-        style={{ display: 'flex', width: '100%', borderBottom: '1px solid #f3f4f6', alignItems: 'center', justifyContent: 'center', height: '48px', background: '#fff', position: 'sticky', top: '122px', zIndex: 49, boxSizing: 'border-box' }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '40px', height: '100%' }}>
-          {MEGA_MENU_ITEMS.map((item) => (
+          {MEGA_MENU_ITEMS.map((item, index, array) => (
             <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
               <NavLink
                 to={`/collections/${item.handle}`}
-                style={{ fontFamily: 'var(--font-primary)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#666', textDecoration: 'none', whiteSpace: 'nowrap' }}
+                className="font-display text-[12px] font-normal tracking-[0.3em] uppercase text-[#111] no-underline whitespace-nowrap hover:text-gray-500 hover:underline hover:underline-offset-8 transition-all duration-300"
               >
                 {item.title}
               </NavLink>
             {item.categories && item.categories.length > 0 && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300" style={{ zIndex: 100 }}>
-                <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px' }}>
-                  <div style={{ flex: 1 }}>
+              <div className={`absolute top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
+                <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'left' }}>
                     {item.categories.map((cat) => (
                       <div key={cat.handle} style={{ marginBottom: '24px' }}>
                         <Link
                           to={`/collections/${cat.handle}`}
-                          style={{ display: 'block', fontFamily: 'Montserrat, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-primary, #004082)', borderBottom: '1px solid #f3f4f6', paddingBottom: '12px', marginBottom: '12px', textDecoration: 'none' }}
+                          className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 mb-3 hover:text-secondary transition-colors block no-underline"
                         >
                           {cat.title}
                         </Link>
@@ -144,13 +114,15 @@ export function Header({
                             gridTemplateColumns: cat.items.length > 5 ? 'repeat(2, 1fr)' : 'none',
                             flexDirection: 'column', 
                             gap: '8px',
-                            columnGap: '32px' 
+                            columnGap: '32px',
+                            justifyItems: 'start',
+                            alignItems: 'flex-start'
                           }}>
                             {cat.items.map((sub) => (
                               <Link
                                 key={sub.handle}
                                 to={`/collections/${sub.handle}`}
-                                style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '11px', color: '#888', textDecoration: 'none', whiteSpace: 'nowrap' }}
+                                className="font-sans text-[11px] text-gray-500 hover:text-primary transition-colors font-light whitespace-nowrap no-underline"
                               >
                                 {sub.title}
                               </Link>
@@ -171,7 +143,7 @@ export function Header({
                           />
                           <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-8">
                             <span className="text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase mb-2 opacity-80">Featured</span>
-                            <h3 className="text-white font-sans text-2xl font-black uppercase tracking-tight leading-tight m-0">{item.featuredTitle}</h3>
+                            <h3 className="text-white font-sans text-xl font-bold uppercase tracking-tight leading-tight m-0 break-words">{item.featuredTitle}</h3>
                           </div>
                         </div>
                       </Link>
@@ -182,7 +154,7 @@ export function Header({
             )}
             </div>
           ))}
-        </div>
+        </nav>
       </div>
     </>
   );
@@ -341,7 +313,7 @@ function CartBadge({ count }: { count: number | null }) {
   return (
     <a
       href="/cart"
-      className="relative hover:text-primary transition-colors"
+      className="relative hover:text-primary transition-colors h-full flex items-center px-4 -mr-4 z-50 py-2"
       onClick={(e) => {
         e.preventDefault();
         open('cart');
@@ -354,11 +326,9 @@ function CartBadge({ count }: { count: number | null }) {
       }}
     >
       <IconBag />
-      {count !== null && count > 0 && (
-        <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-          {count}
-        </span>
-      )}
+      <span className="absolute top-0 right-1 bg-[#a39081] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full mt-1.5 opacity-90">
+        {count || 0}
+      </span>
     </a>
   );
 }
@@ -382,7 +352,7 @@ function CartBanner() {
 // Icons
 function IconSearch() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
       <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
     </svg>
   );
@@ -390,7 +360,7 @@ function IconSearch() {
 
 function IconUser({ loggedIn = false }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill={loggedIn ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+    <svg xmlns="http://www.w3.org/2000/svg" fill={loggedIn ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
     </svg>
   );
@@ -398,7 +368,7 @@ function IconUser({ loggedIn = false }) {
 
 function IconBag() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
     </svg>
   );

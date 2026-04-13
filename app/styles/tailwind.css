@@ -6,13 +6,13 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-royal-blue: #004082;
+  --color-royal-blue: #14294f;
   --color-navy-blue: #001C3D;
   --color-light-grey: #CACACA;
   --color-sky-blue: #4A89C8;
   --color-rich-black: #000000;
   
-  --font-primary: "Century Gothic", AppleGothic, "Lucida Sans", sans-serif;
+  --font-primary: "Century Gothic", "CenturyGothic", "Montserrat", "Questrial", sans-serif;
   --font-tertiary: "Montserrat", sans-serif;
   
   --font-display: var(--font-primary);

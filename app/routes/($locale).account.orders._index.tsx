@@ -119,7 +119,7 @@ function EmptyOrders({ hasFilters = false }: { hasFilters?: boolean }) {
           <p className="font-sans text-xs tracking-widest uppercase text-gray-400 mb-8 font-semibold">You haven&apos;t placed any orders yet.</p>
           <Link
             to="/collections"
-            className="inline-block bg-primary text-white px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-black transition-all duration-300"
+            className="inline-block bg-primary text-white px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-primary/90 transition-all duration-300"
           >
             Start Shopping
           </Link>

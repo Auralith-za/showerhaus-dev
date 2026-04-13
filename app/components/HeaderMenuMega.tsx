@@ -9,8 +9,8 @@ export function HeaderMenuMega() {
                     <NavLink
                         to={`/collections/${item.handle}`}
                         className={({ isActive }) =>
-                            `font-sans text-[10px] font-bold tracking-[0.2em] uppercase transition-colors hover:text-primary py-2 ${
-                                isActive ? 'text-primary' : 'text-gray-500'
+                            `font-sans text-[10px] font-bold tracking-[0.2em] uppercase transition-all py-2 hover:text-gray-500 hover:underline hover:underline-offset-8 ${
+                                isActive ? 'text-primary' : 'text-[#111]'
                             }`
                         }
                     >

@@ -41,7 +41,7 @@ export function ProductItem({
         <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500" />
       </div>
 
-      <div className="text-center px-2">
+      <div className="text-left px-2">
         <h4 className="font-sans text-xs tracking-[0.2em] uppercase font-bold text-primary mb-2 group-hover:text-secondary transition-colors line-clamp-2">
           {product.title}
         </h4>

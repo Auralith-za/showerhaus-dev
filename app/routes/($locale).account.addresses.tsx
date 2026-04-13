@@ -319,7 +319,7 @@ function NewAddressForm() {
             disabled={stateForMethod('POST') !== 'idle'}
             formMethod="POST"
             type="submit"
-            className="bg-primary text-white px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-black transition-all duration-300 min-w-[180px]"
+            className="bg-primary text-white px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-primary/90 transition-all duration-300 min-w-[180px]"
           >
             {stateForMethod('POST') !== 'idle' ? 'Creating...' : 'Create Location'}
           </button>

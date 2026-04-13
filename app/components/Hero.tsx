@@ -67,19 +67,19 @@ export function Hero() {
             {/* Content Container */}
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 animate-fade-in-up">
                 <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
-                    <span className="uppercase tracking-[0.3em] mb-6 block text-xs font-semibold text-white/90 text-center">
+                    <span className="uppercase tracking-[0.3em] mb-4 block text-xs font-semibold text-white/90 text-center">
                         {SLIDES[currentSlide].label}
                     </span>
-                    <h1 className="font-sans text-4xl md:text-6xl lg:text-7xl xl:text-8xl mb-12 leading-[1.2] font-bold text-white text-shadow-2xl transition-all duration-700 text-center tracking-tighter max-w-4xl">
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl xl:text-[7rem] font-bold text-white mb-6 tracking-tight leading-none drop-shadow-md">
                         {SLIDES[currentSlide].title}
                     </h1>
-                    <p className="font-sans text-lg md:text-xl text-white/90 mb-16 max-w-2xl mx-auto font-light leading-relaxed transition-all duration-700 text-center translate-y-[-1rem]">
+                    <p className="font-sans text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto font-light leading-relaxed transition-all duration-700 text-center translate-y-[-1rem]">
                         {SLIDES[currentSlide].subtitle}
                     </p>
                     <div className="flex justify-center w-full mt-10">
                         <Link
                             to={SLIDES[currentSlide].url}
-                            className="inline-block bg-white text-primary px-12 py-5 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-black hover:!text-white hover:no-underline transition-all duration-500 shadow-2xl border border-transparent hover:border-white/20"
+                            className="inline-block bg-white text-primary px-12 py-5 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-primary/90 hover:!text-white hover:no-underline transition-all duration-500 shadow-2xl border border-transparent hover:border-white/20"
                         >
                             {SLIDES[currentSlide].buttonText}
                         </Link>
@@ -93,7 +93,7 @@ export function Hero() {
                     <button
                         key={index}
                         onClick={() => setCurrentSlide(index)}
-                        className={`h-1 transition-all duration-500 rounded-full ${index === currentSlide ? 'w-12 bg-white' : 'w-6 bg-white/40 hover:bg-white/60'
+                        className={`h-1 cursor-pointer transition-all duration-500 rounded-full ${index === currentSlide ? 'w-12 bg-white' : 'w-6 bg-white/40 hover:bg-white/60'
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />

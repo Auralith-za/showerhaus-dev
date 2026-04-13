@@ -1,5 +1,6 @@
 import { Link, redirect, useLoaderData } from 'react-router';
 import type { Route } from './+types/products.$handle';
+import { useState } from 'react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -12,6 +13,8 @@ import { ProductPrice } from '~/components/ProductPrice';
 import { ProductImage } from '~/components/ProductImage';
 import { ProductForm } from '~/components/ProductForm';
 import { ProductTabs } from '~/components/ProductTabs';
+import { AddToCartButton } from '~/components/AddToCartButton';
+import { useAside } from '~/components/Aside';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 
 import { MOCK_PRODUCTS } from '~/lib/mockData';
@@ -123,6 +126,7 @@ function loadDeferredData({ context, params }: Route.LoaderArgs) {
 
 export default function Product() {
   const { product } = useLoaderData<typeof loader>();
+  const { open } = useAside();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -141,6 +145,19 @@ export default function Product() {
   });
 
   const { title, descriptionHtml } = product;
+  const [selectedFinish, setFinish] = useState('Chrome');
+  const [selectedSize, setSize] = useState('Standard (800x600)');
+  const [quantity, setQuantity] = useState(1);
+
+  // Hardcoded mock options for demonstrating the feature
+  const finishes = [
+      { name: 'Chrome', color: '#e5e7eb' }, 
+      { name: 'Brushed Nickel', color: '#b0b0b0' }, 
+      { name: 'Soft Bronze', color: '#cd7f32' }, 
+      { name: 'Polished Brass', color: '#d4af37' }, 
+      { name: 'Matte Black', color: '#2d2d2d' }
+  ];
+  const sizes = ['Standard (800x600)', 'Large (1200x600)', 'Extra Large (1500x600)'];
 
   return (
     <div className="product-page bg-white">
@@ -167,11 +184,85 @@ export default function Product() {
               />
             </div>
 
-            <div className="border-t border-b border-gray-100 py-8 mb-8">
-              <ProductForm
-                productOptions={productOptions}
-                selectedVariant={selectedVariant}
-              />
+            <div className="border-t border-b border-gray-100 py-6 mb-8 mt-2 space-y-6">
+              
+              {/* Finish Selector */}
+              <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-8">
+                      <span className="text-sm text-gray-700 w-24">Finish:</span>
+                      <span className="text-sm font-semibold text-gray-900">{selectedFinish}</span>
+                  </div>
+                  <div className="flex gap-2 ml-32">
+                      {finishes.map((f) => (
+                          <button
+                              key={f.name}
+                              onClick={() => setFinish(f.name)}
+                              title={f.name}
+                              className={`w-8 h-8 rounded-full border-2 focus:outline-none transition-all ${selectedFinish === f.name ? 'border-gray-900' : 'border-transparent hover:border-gray-300'}`}
+                              style={{ padding: '2px' }}
+                          >
+                              <div className="w-full h-full rounded-full border border-black/10 shadow-sm" style={{ backgroundColor: f.color }} />
+                          </button>
+                      ))}
+                  </div>
+              </div>
+
+              {/* Size Selector */}
+              <div className="flex items-center gap-8 border-t border-gray-50 pt-6">
+                  <span className="text-sm text-gray-700 w-24">Size:</span>
+                  <select 
+                      value={selectedSize}
+                      onChange={(e) => setSize(e.target.value)}
+                      className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
+                  >
+                      {sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+              </div>
+
+              {/* Add to Cart Line */}
+              <div className="flex items-center gap-8 mt-6 pt-6 border-t border-gray-50">
+                  <span className="text-sm text-gray-700 w-24">Qty:</span>
+                  <select 
+                      value={quantity}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
+                      className="w-20 p-2.5 text-sm border border-gray-200 focus:border-gray-900 focus:ring-0 outline-none bg-white"
+                  >
+                      {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}</option>)}
+                  </select>
+
+                  <div className="flex-1 max-w-[240px]">
+                      <AddToCartButton
+                          disabled={!selectedVariant || !selectedVariant.availableForSale}
+                          onClick={() => {
+                              try {
+                                  open('cart'); // Use Aside context to open cart drawer
+                              } catch(e) {}
+                              window.location.hash = 'cart-added'; 
+                          }}
+                          lines={
+                              selectedVariant
+                              ? [
+                                  {
+                                      merchandiseId: selectedVariant.id,
+                                      quantity: quantity,
+                                      selectedVariant: {
+                                          ...selectedVariant,
+                                          title: `${selectedFinish} / ${selectedSize}`,
+                                          selectedOptions: [
+                                              { name: 'Finish', value: selectedFinish },
+                                              { name: 'Size', value: selectedSize }
+                                          ]
+                                      },
+                                  },
+                              ]
+                              : []
+                          }
+                          className="w-full bg-primary text-white py-3.5 text-xs tracking-widest uppercase hover:bg-secondary transition-colors font-bold shadow-sm"
+                      >
+                          {selectedVariant?.availableForSale ? 'ADD TO BASKET' : 'SOLD OUT'}
+                      </AddToCartButton>
+                  </div>
+              </div>
             </div>
 
             <ProductTabs description={descriptionHtml} />

@@ -37,7 +37,7 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
         ],
     },
     {
-        title: 'Shower Spares',
+        title: 'Spares',
         handle: 'shower-spares',
         featuredImage: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
         featuredTitle: 'SPARES & ACCESSORIES',
@@ -112,16 +112,19 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
 ];
 
 export const PRIMARY_MENU_ITEMS = [
+    { title: 'Shop', handle: 'all' },
     { title: 'Bespoke Showers', handle: 'bespoke-showers' },
     { 
-        title: 'Our Story', 
+        title: 'About Us', 
         handle: 'about',
         items: [
+            { title: 'Our Story', handle: 'about' },
             { title: 'Projects', handle: 'projects' },
             { title: 'Customer Stories', handle: 'customer-stories' },
+            { title: 'Accreditations', handle: 'accreditations' },
+            { title: 'Blog', handle: 'journal' },
         ]
     },
-    { title: 'About Us', handle: 'about' },
     { title: 'Contact', handle: 'contact' },
 ];
 
@@ -141,14 +144,15 @@ export const FOOTER_MENU = {
         { title: 'Newsletter', handle: 'newsletter' },
     ],
     discoverMore: [
-        { title: 'Our Newsletter', handle: 'newsletter' },
-        { title: 'Blog', handle: 'journal' },
+        { title: 'Mailing List', handle: 'newsletter' },
+        { title: 'Guides', handle: 'journal' },
     ],
     categories: [
         { title: 'Showers', handle: 'showers' },
-        { title: 'Shower Spares', handle: 'shower-spares' },
+        { title: 'Spares', handle: 'shower-spares' },
         { title: 'Consumables', handle: 'consumables' },
         { title: 'Shower Care', handle: 'shower-care' },
+        { title: 'Decorative', handle: 'decorative' },
     ],
     bottom: [
         { title: 'Terms & Conditions', handle: 'terms-of-service' },

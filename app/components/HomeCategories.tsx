@@ -3,25 +3,25 @@ import { Link } from 'react-router';
 export function HomeCategories() {
     const categories = [
         {
-            id: 'showers',
-            title: 'Showers',
+            id: 'framed-showers',
+            title: 'Framed Showers',
             image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
             url: '/collections/showers',
-            description: 'Frameless glass enclosures and bespoke wet room screens.'
+            description: 'Traditional metal-framed doors and panels'
         },
         {
-            id: 'bath-enclosures',
-            title: 'Bath Enclosures',
+            id: 'semi-frameless-showers',
+            title: 'Semi-frameless Showers',
             image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
             url: '/collections/bath-enclosures',
-            description: 'Elegant partitioning for integrated bathing and showering.'
+            description: 'Minimalist modern alternative for an elegant finish'
         },
         {
-            id: 'mirrors',
-            title: 'Mirrors',
+            id: 'frameless-showers',
+            title: 'Frameless Showers',
             image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/hidraulico-decor-2-2.jpg',
             url: '/collections/mirrors',
-            description: 'Architectural mirrors with signature LED lighting and frames.'
+            description: 'Glass-to-tile design for a barely-visible timeless look'
         }
     ];
 
@@ -30,16 +30,14 @@ export function HomeCategories() {
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <div className="max-w-xl">
-                        <span className="uppercase tracking-[0.2em] text-xs font-semibold text-secondary mb-4 block">
-                            Curated Collections
-                        </span>
-                        <h2 className="font-sans text-3xl md:text-4xl font-bold text-primary tracking-tight leading-tight">
-                            Elevate your space with <br />
-                            <span className="font-light text-secondary">signature design.</span>
+                        
+                        <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary tracking-tighter leading-tight mt-6">
+                            Complete your bathroom with <br />
+                            <span className="font-light text-secondary">the right enclosure.</span>
                         </h2>
                     </div>
                     <p className="font-sans text-gray-500 font-light max-w-sm mb-2">
-                        Discover our most popular architectural solutions, meticulously designed to complement modern South African interiors.
+                        Browse our shower enclosures, based on type, from traditional framed showers through to modern semi-framed and completely frameless showers.
                     </p>
                 </div>
 

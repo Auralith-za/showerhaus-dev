@@ -2,6 +2,7 @@ import { createHydrogenContext } from '@shopify/hydrogen';
 import { AppSession } from '~/lib/session';
 import { CART_QUERY_FRAGMENT } from '~/lib/fragments';
 import { getLocaleFromRequest } from '~/lib/i18n';
+import { createMockCart } from '~/lib/mockCart';
 
 // Define the additional context object
 const additionalContext = {
@@ -45,6 +46,10 @@ export async function createHydrogenRouterContext(
     },
     additionalContext,
   );
+
+  // Override the methods on the existing Cart object so we don't break RouterContextProvider
+  const mockCart = createMockCart(session) as any;
+  Object.assign(hydrogenContext.cart, mockCart);
 
   return hydrogenContext;
 }

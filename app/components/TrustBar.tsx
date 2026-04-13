@@ -5,11 +5,11 @@ export function TrustBar() {
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
             
             <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-                <span className="font-sans text-[10px] tracking-[0.4em] uppercase font-bold text-primary/40 mb-10 block">
+                <span className="font-sans text-[10px] tracking-[0.4em] uppercase font-bold text-primary/40 mb-4 block">
                     Technical Excellence
                 </span>
                 
-                <h2 className="font-sans text-3xl md:text-5xl font-bold text-primary leading-tight mb-8 tracking-tighter">
+                <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary leading-tight mb-6 tracking-tighter">
                     The Frameless Shower Experts
                 </h2>
                 

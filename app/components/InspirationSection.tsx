@@ -2,22 +2,21 @@ import { Link } from 'react-router';
 
 export function InspirationSection() {
     return (
-        <section className="w-full bg-white py-24 border-b border-gray-100">
+        <section className="w-full bg-white py-32 border-b border-gray-100">
             <div className="container mx-auto px-6 max-w-7xl">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
 
                     {/* Left Copy Container */}
                     <div className="lg:col-span-3 lg:col-start-1 pt-4 lg:sticky lg:top-32">
-                        <span className="font-sans text-xs tracking-[0.3em] uppercase font-bold text-gray-400 mb-6 block">Inspiration</span>
-                        <h2 className="font-sans text-4xl tracking-tight text-primary mb-6">Let Us Inspire You</h2>
-                        <p className="font-sans text-gray-500 font-light leading-relaxed mb-8 max-w-sm">
-                            Explore the world of premium bathrooms with our dedicated Inspiration area.
+                        <h2 className="font-sans text-4xl md:text-6xl tracking-tighter font-bold text-primary mb-6">Get In The Know</h2>
+                        <p className="font-sans text-gray-500 font-light leading-relaxed mb-6 max-w-sm">
+                            Read our short guides on the most important considerations to take into account when buying a new shower.
                         </p>
                         <Link
                             to="/collections/showers"
-                            className="inline-block bg-primary text-white mt-10 px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-black hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 rounded-none hover:no-underline !text-white"
+                            className="inline-block bg-primary text-white mt-10 px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-primary/90 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 rounded-none hover:no-underline !text-white"
                         >
-                            Get Inspired
+                            Explore All Guides
                         </Link>
                     </div>
 

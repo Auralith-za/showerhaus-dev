@@ -55,7 +55,7 @@ export function Aside({
   return (
     <div
       aria-modal
-      className={`fixed inset-0 z-50 transition-opacity duration-300 ${expanded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      className={`fixed inset-0 z-[200] transition-opacity duration-300 ${expanded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       role="dialog"
     >
@@ -67,8 +67,7 @@ export function Aside({
 
       {/* Drawer */}
       <aside
-        className={`absolute top-0 right-0 h-full w-full md:w-[450px] bg-white shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${expanded ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className={`fixed top-0 bottom-0 h-full w-full md:w-[450px] bg-white shadow-2xl transition-all duration-300 ease-out flex flex-col z-[100] ${expanded ? 'right-0' : '-right-full'}`}
       >
         <header className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
           <h3 className="font-display text-xl text-primary">{heading}</h3>

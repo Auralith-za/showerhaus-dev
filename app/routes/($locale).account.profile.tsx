@@ -135,7 +135,7 @@ export default function AccountProfile() {
         <button
           type="submit"
           disabled={state !== 'idle'}
-          className="bg-primary text-white px-12 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-black transition-all duration-300 w-full md:w-auto"
+          className="bg-primary text-white px-12 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-primary/90 transition-all duration-300 w-full md:w-auto"
         >
           {state !== 'idle' ? 'Updating...' : 'Save Changes'}
         </button>

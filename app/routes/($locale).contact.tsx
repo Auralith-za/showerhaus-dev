@@ -38,13 +38,13 @@ export default function Contact() {
 
                             <div className="space-y-2">
                                 <h3 className="font-sans text-[9px] tracking-[0.3em] uppercase font-bold text-primary">Email</h3>
-                                <a href="mailto:jackie@showerhaus.co.za" className="font-sans text-xl text-gray-600 hover:text-primary transition-colors tracking-tight">jackie@showerhaus.co.za</a>
+                                <a href="mailto:hello@showerhaus.co.za" className="font-sans text-xl text-gray-600 hover:text-primary transition-colors tracking-tight">hello@showerhaus.co.za</a>
                             </div>
 
                             <div className="space-y-2">
                                 <h3 className="font-sans text-[9px] tracking-[0.3em] uppercase font-bold text-primary">Location</h3>
                                 <p className="font-sans text-lg text-gray-600 leading-relaxed tracking-tight">
-                                    0A Intersite Avenue, Umgeni Business Park,<br />Springfield 4091, South Africa
+                                    90A Intersite Avenue, Umgeni Business Park,<br />Springfield 4091, South Africa
                                 </p>
                             </div>
                         </div>
@@ -105,7 +105,7 @@ export default function Contact() {
                             Whether you are an architect, developer, or homeowner, our team provides expert quotes for projects of any scale. Explore our collections in person and find the perfect fit for your architectural vision.
                         </p>
                         <div className="inline-flex">
-                            <a href="https://maps.google.com" target="_blank" rel="noreferrer" className="bg-primary text-white px-10 py-4 text-[10px] tracking-[0.4em] uppercase font-bold hover:bg-black transition-all duration-500">
+                            <a href="https://maps.google.com" target="_blank" rel="noreferrer" className="bg-primary text-white px-10 py-4 text-[10px] tracking-[0.4em] uppercase font-bold hover:bg-primary/90 transition-all duration-500">
                                 Get Directions
                             </a>
                         </div>

@@ -57,16 +57,17 @@ export const MOCK_PRODUCTS: MockProduct[] = [
         description: 'Elegant semi-frameless bath screen with a pivot door and chrome profile.',
         price: '315.00',
         currency: 'ZAR',
-        image: 'https://images.unsplash.com/photo-1553136591-143bc373180c?q=80&w=1000&auto=format&fit=crop',
+        image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/fjKXavfZcnZSsxLzuWvKQ8.jpg',
         collection: 'bath-enclosures',
     },
 ];
 
 export function getMockRecommendedProducts() {
+    const items = [...MOCK_PRODUCTS, ...MOCK_PRODUCTS]; // Repeat to easily get 10 items
     return {
         products: {
-            nodes: MOCK_PRODUCTS.slice(0, 4).map(p => ({
-                id: p.id,
+            nodes: items.slice(0, 10).map((p, index) => ({
+                id: p.id + '-' + index,
                 title: p.title,
                 handle: p.handle,
                 priceRange: {
@@ -76,7 +77,7 @@ export function getMockRecommendedProducts() {
                     },
                 },
                 featuredImage: {
-                    id: p.id + '-img',
+                    id: p.id + '-img-' + index,
                     url: p.image,
                     altText: p.title,
                     width: 1000,

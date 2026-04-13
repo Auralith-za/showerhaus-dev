@@ -2,9 +2,11 @@ import { Link } from 'react-router';
 
 export function ProjectsSection() {
     return (
-        <section className="w-full bg-[#c9c9c9] py-24 border-b border-gray-100">
+        <section className="w-full bg-[#c9c9c9] border-b border-gray-100" style={{ paddingTop: '48px', paddingBottom: '48px' }}>
             <div className="container mx-auto px-6 max-w-7xl">
-                <h2 className="font-sans text-xs tracking-[0.4em] uppercase font-bold text-white mb-16">Projects We're Proud Of</h2>
+                <h2 className="font-sans text-xs tracking-[0.4em] uppercase font-bold text-primary text-center" style={{ marginBottom: '48px' }}>
+                    Projects We're Proud Of
+                </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
@@ -19,8 +21,8 @@ export function ProjectsSection() {
 
                         <div className="absolute bottom-8 left-8 right-8 text-white z-10 flex flex-col items-start gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                             <div>
-                                <span className="uppercase text-xs tracking-[0.3em] font-bold mb-3 block text-white/70">Residential Project</span>
-                                <h3 className="font-sans text-3xl tracking-tight uppercase font-bold">Garden Court</h3>
+                                <span className="uppercase text-xs tracking-[0.2em] font-bold mb-2 block text-white/70">Residential Project</span>
+                                <h3 className="font-sans text-4xl tracking-tight uppercase font-bold">Garden Court</h3>
                             </div>
                             <Link
                                 to="/collections/showers"
