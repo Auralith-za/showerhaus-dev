@@ -7,7 +7,7 @@ const SLIDES = [
         title: 'The Art of the Bathroom.',
         subtitle: 'Bespoke frameless showers designed with precision and crafted for the most discerning architectural interiors.',
         label: 'Architectural Excellence',
-        image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/TahunaTerrace-MasterBathroom3-bde23112c62e4595a651d9733a93dfbe-77dee1e3a73648b597f8555771375d87.jpg',
+        image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1800&q=80',
         url: '/collections/showers',
         buttonText: 'Explore Showers'
     },
@@ -16,7 +16,7 @@ const SLIDES = [
         title: 'Seamless Wet Rooms.',
         subtitle: 'Minimalist walk-in solutions that transform your daily ritual into a spa-like experience within your home.',
         label: 'Modern Minimalism',
-        image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/DSC_3898-1.jpg',
+        image: 'https://images.unsplash.com/photo-1600566752229-250ed79470f8?w=1800&q=80',
         url: '/collections/showers',
         buttonText: 'View Wet Rooms'
     },
@@ -25,7 +25,7 @@ const SLIDES = [
         title: 'Precision Glass Craft.',
         subtitle: 'Tailored glass enclosures that define space with clarity and sophisticated architectural engineering.',
         label: 'Signature Engineering',
-        image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/fjKXavfZcnZSsxLzuWvKQ8.jpg',
+        image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1800&q=80',
         url: '/collections/showers',
         buttonText: 'Discover Bespoke'
     }
@@ -79,7 +79,10 @@ export function Hero() {
                     <div className="flex justify-center w-full mt-10">
                         <Link
                             to={SLIDES[currentSlide].url}
-                            className="inline-block bg-white text-primary px-12 py-5 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-primary/90 hover:!text-white hover:no-underline transition-all duration-500 shadow-2xl border border-transparent hover:border-white/20"
+                            style={{ color: '#14294f' }}
+                            className="inline-block bg-white px-12 py-5 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-primary hover:no-underline transition-all duration-500 shadow-2xl"
+                            onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
+                            onMouseLeave={e => (e.currentTarget.style.color = '#14294f')}
                         >
                             {SLIDES[currentSlide].buttonText}
                         </Link>
