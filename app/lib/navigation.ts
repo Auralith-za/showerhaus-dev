@@ -25,13 +25,14 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
         featuredTitle: 'BATH ENCLOSURES',
         categories: [
             {
-                title: 'Enclosures & Screens',
+                title: 'Shower Enclosures',
                 handle: 'showers',
                 items: [
                     { title: 'Frameless Shower Enclosures', handle: 'frameless-shower-enclosures' },
-                    { title: 'Frameless Shower Screens', handle: 'frameless-shower-screens' },
+                    { title: 'Semi-Frameless Showers', handle: 'semi-frameless-showers' },
                     { title: 'Framed Shower Enclosures', handle: 'framed-shower-enclosures' },
-                    { title: 'Framed Shower Screens', handle: 'framed-shower-screens' },
+                    { title: 'Walk In Shower Screens', handle: 'walk-in-shower-screens' },
+                    { title: 'Bath Enclosures', handle: 'bath-enclosures' },
                 ],
             },
         ],
@@ -46,17 +47,12 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
                 title: 'All Spares',
                 handle: 'shower-spares',
                 items: [
-                    { title: 'Accessories & Other', handle: 'accessories-other' },
-                    { title: 'Bath Screens', handle: 'bath-screens' },
-                    { title: 'Brackets & Wheels', handle: 'brackets-wheels' },
-                    { title: 'Clamps', handle: 'clamps' },
-                    { title: 'Consumables', handle: 'consumables' },
                     { title: 'Handles & Towel Rails', handle: 'handles-towel-rails' },
-                    { title: 'Hinges', handle: 'hinges' },
-                    { title: 'Knobs', handle: 'knobs' },
-                    { title: 'Pivot Systems', handle: 'pivot-systems' },
+                    { title: 'Hinges and Clamps', handle: 'hinges-and-clamps' },
+                    { title: 'Shower Seals and Cill Plate', handle: 'shower-seals-and-cill-plate' },
+                    { title: 'Shower Wheels & Brackets', handle: 'brackets-wheels' },
                     { title: 'Profiles & Channels', handle: 'profiles-channels' },
-                    { title: 'Stabiliser Systems', handle: 'stabiliser-systems' },
+                    { title: 'Accessories & Other', handle: 'accessories-other' },
                 ],
             },
         ],
@@ -116,12 +112,12 @@ export const PRIMARY_MENU_ITEMS = [
     { title: 'Bespoke Showers', handle: 'bespoke-showers' },
     { 
         title: 'About Us', 
-        handle: 'about',
+        handle: 'about-us',
         items: [
-            { title: 'Our Story', handle: 'about' },
+            { title: 'Our Story', handle: 'our-story' },
             { title: 'Projects', handle: 'projects' },
             { title: 'Customer Stories', handle: 'customer-stories' },
-            { title: 'Accreditations', handle: 'accreditations' },
+            { title: 'Accreditation', handle: 'accreditation' },
             { title: 'Blog', handle: 'journal' },
         ]
     },
@@ -131,10 +127,10 @@ export const PRIMARY_MENU_ITEMS = [
 
 export const FOOTER_MENU = {
     about: [
-        { title: 'Our Story', handle: 'about' },
+        { title: 'Our Story', handle: 'our-story' },
         { title: 'Projects', handle: 'projects' },
         { title: 'Customer Stories', handle: 'customer-stories' },
-        { title: 'Accreditations', handle: 'accreditations' },
+        { title: 'Accreditation', handle: 'accreditation' },
     ],
     customerService: [
         { title: 'Contact Us', handle: 'contact' },
@@ -145,7 +141,7 @@ export const FOOTER_MENU = {
     ],
     discoverMore: [
         { title: 'Mailing List', handle: 'newsletter' },
-        { title: 'Guides', handle: 'journal' },
+        { title: 'Journal', handle: 'blogs' },
     ],
     categories: [
         { title: 'Showers', handle: 'showers' },

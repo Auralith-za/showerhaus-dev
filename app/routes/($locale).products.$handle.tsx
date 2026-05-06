@@ -124,21 +124,18 @@ function loadDeferredData({ context, params }: Route.LoaderArgs) {
   return {};
 }
 
+import { ProductCarouselTabs } from '~/components/ProductCarouselTabs';
+
 export default function Product() {
   const { product } = useLoaderData<typeof loader>();
   const { open } = useAside();
 
-  // Optimistically selects a variant with given available variant information
+  // ... (existing state and logic)
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     getAdjacentAndFirstAvailableVariants(product),
   );
-
-  // Sets the search param to the selected variant without navigation
-  // only when no search params are set in the url
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
-
-  // Get the product options array
   const productOptions = getProductOptions({
     ...product,
     selectedOrFirstAvailableVariant: selectedVariant,
@@ -149,7 +146,6 @@ export default function Product() {
   const [selectedSize, setSize] = useState('Standard (800x600)');
   const [quantity, setQuantity] = useState(1);
 
-  // Hardcoded mock options for demonstrating the feature
   const finishes = [
       { name: 'Chrome', color: '#e5e7eb' }, 
       { name: 'Brushed Nickel', color: '#b0b0b0' }, 
@@ -158,6 +154,9 @@ export default function Product() {
       { name: 'Matte Black', color: '#2d2d2d' }
   ];
   const sizes = ['Standard (800x600)', 'Large (1200x600)', 'Extra Large (1500x600)'];
+
+  // Find the mock product to get the collection handle for related items
+  const mockProduct = MOCK_PRODUCTS.find(p => p.id === product.id);
 
   return (
     <div className="product-page bg-white">
@@ -268,7 +267,7 @@ export default function Product() {
             <ProductTabs description={descriptionHtml} />
 
             {/* Custom Shower Banner */}
-            {(product.collection === 'showers' || product.handle.includes('shower')) && (
+            {(mockProduct?.collection === 'showers' || product.handle.includes('shower')) && (
                 <Link 
                     to="/pages/bespoke-showers"
                     className="mt-8 bg-sky-blue/10 border border-sky-blue/20 p-6 flex items-center justify-between group hover:bg-sky-blue/20 transition-all rounded-sm"
@@ -302,6 +301,9 @@ export default function Product() {
         </div>
       </div>
 
+      {/* Modern Tabbed Carousel Section */}
+      <ProductCarouselTabs currentProduct={mockProduct} />
+
       <Analytics.ProductView
         data={{
           products: [
@@ -320,6 +322,7 @@ export default function Product() {
     </div>
   );
 }
+
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {

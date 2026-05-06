@@ -17,25 +17,39 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const env = context.env as any;
   const merchantId = env.PAYFAST_MERCHANT_ID || '10000100'; // Payfast Sandbox ID
   const merchantKey = env.PAYFAST_MERCHANT_KEY || '46f0cd694581a'; // Payfast Sandbox Key
-  const isSandbox = !env.PAYFAST_MERCHANT_ID; // True if no real ID is provided
+  const isSandbox = !env.PAYFAST_MERCHANT_ID;
   const payfastUrl = isSandbox ? 'https://sandbox.payfast.co.za/eng/process' : 'https://www.payfast.co.za/eng/process';
-  const appUrl = env.PUBLIC_STORE_DOMAIN || 'http://localhost:3000';
+  
+  // Use public domain if available, otherwise fallback to request origin
+  const origin = new URL(request.url).origin;
+  const appUrl = env.PUBLIC_STORE_DOMAIN || origin;
 
   // 3. Construct parameters
-  // PayFast requires specific parameters in order.
   const params: Record<string, string> = {
     merchant_id: merchantId,
     merchant_key: merchantKey,
     return_url: `${appUrl}/checkout/success`,
     cancel_url: `${appUrl}/checkout/cancel`,
-    notify_url: `${appUrl}/api/payfast-itn`, // Webhook
+    notify_url: `${appUrl}/api/payfast-itn`,
     name_first: firstName || 'Customer',
     name_last: lastName || '',
     email_address: email,
-    m_payment_id: cartId, // Unique ID for our reference
+    m_payment_id: cartId,
     amount: amount,
     item_name: 'ShowerHaus Order',
   };
+
+  // FOR LOCAL TESTING: If on localhost, PayFast will reject the return_url.
+  // We'll provide a way to bypass this for the developer.
+  if (origin.includes('localhost')) {
+      console.warn('PayFast does not support localhost URLs. Redirecting to success page for demo purposes.');
+      return new Response(null, {
+          status: 302,
+          headers: {
+              Location: '/checkout/success',
+          },
+      });
+  }
 
   // Note: PayFast signature generation would go here using MD5 (or SHA256)
   // Example: 

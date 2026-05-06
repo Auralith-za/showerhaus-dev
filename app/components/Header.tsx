@@ -34,19 +34,19 @@ export function Header({
           <Link to="/pages/bespoke-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Bespoke Showers</Link>
           
           <div className="relative group flex items-center h-[30px] cursor-pointer">
-            <Link to="/pages/about" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
+            <Link to="/pages/about-us" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
             <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[150]">
               <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[220px]">
-                <Link to="/pages/about" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Our Story</Link>
+                <Link to="/pages/our-story" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Our Story</Link>
                 <Link to="/pages/projects" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Projects</Link>
                 <Link to="/pages/customer-stories" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Customer Stories</Link>
-                <Link to="/pages/accreditations" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Accreditations</Link>
-                <Link to="/blogs/journal" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Blog</Link>
+                <Link to="/pages/accreditation" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Accreditation</Link>
+                <Link to="/blogs" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Blog</Link>
               </div>
             </div>
           </div>
 
-          <Link to="/pages/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact</Link>
+          <Link to="/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact</Link>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', minWidth: '120px', justifyContent: 'flex-end' }}>
           <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />

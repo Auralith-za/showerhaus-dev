@@ -34,6 +34,11 @@ img {
   cursor: pointer;
 }
 
+/* Allow Tailwind text-* utilities to control anchor color */
+a[class*="text-white"] {
+  color: #ffffff !important;
+}
+
 /* Legacy Aside CSS removed to allow Tailwind control */
 
 button.reset {

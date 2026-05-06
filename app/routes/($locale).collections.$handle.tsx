@@ -1,10 +1,12 @@
-import { redirect, useLoaderData } from 'react-router';
+import { redirect, useLoaderData, Link } from 'react-router';
 import type { Route } from './+types/collections.$handle';
 import { getPaginationVariables, Analytics } from '@shopify/hydrogen';
 import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { ProductItem } from '~/components/ProductItem';
 import type { ProductItemFragment } from 'storefrontapi.generated';
+import { MEGA_MENU_ITEMS } from '~/lib/navigation';
+import { useState } from 'react';
 
 export const meta: Route.MetaFunction = ({ data }: any) => {
   return [{ title: `ShowerHaus | ${data?.collection?.title ?? 'Collection'}` }];
@@ -22,10 +24,6 @@ export async function loader(args: Route.LoaderArgs) {
 
 import { MOCK_PRODUCTS } from '~/lib/mockData';
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
 async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
   const { handle } = params;
 
@@ -82,22 +80,47 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
 function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
 export default function Collection() {
   const { collection } = useLoaderData<typeof loader>();
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState('Featured');
+
+  const categories = MEGA_MENU_ITEMS;
 
   return (
-    <div className="collection-page py-12 bg-white">
-      <div className="container mx-auto px-6">
+    <div className="collection-page bg-white min-h-screen">
+      {/* Category Tiles */}
+      <section className="py-12 bg-gray-50 border-b border-gray-100">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+            {categories.map((cat) => (
+              <Link
+                key={cat.handle}
+                to={`/collections/${cat.handle}`}
+                className={`group flex flex-col items-center gap-4 text-center max-w-[120px] ${collection.handle === cat.handle ? 'scale-105' : ''}`}
+              >
+                <div className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden shadow-sm group-hover:shadow-lg transition-all duration-500 group-hover:scale-110 border-2 ${collection.handle === cat.handle ? 'border-primary' : 'border-transparent group-hover:border-primary/20'}`}>
+                  <img
+                    src={cat.featuredImage}
+                    alt={cat.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className={`absolute inset-0 transition-colors ${collection.handle === cat.handle ? 'bg-transparent' : 'bg-black/5 group-hover:bg-transparent'}`} />
+                </div>
+                <span className={`font-sans text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase transition-colors ${collection.handle === cat.handle ? 'text-secondary' : 'text-primary group-hover:text-secondary'}`}>
+                  {cat.title}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
+      <div className="container mx-auto px-6 py-12">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl text-primary mb-4">{collection.title}</h1>
@@ -108,54 +131,92 @@ export default function Collection() {
           )}
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12">
+        {/* Modern Filter Bar */}
+        <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-8">
+            <button
+              onClick={() => setActiveFilter(activeFilter === 'filter' ? null : 'filter')}
+              className="flex items-center gap-2 font-sans text-[10px] font-bold tracking-widest uppercase text-primary hover:text-gray-500 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 4h18M6 12h12m-9 8h6" />
+              </svg>
+              Filters
+            </button>
+          </div>
 
-          {/* Sidebar */}
-          <aside className="w-full lg:w-64 flex-shrink-0">
-            <div className="sticky top-32">
-              <h3 className="font-display text-lg text-primary border-b border-gray-200 pb-2 mb-6">Categories</h3>
-              <ul className="space-y-3 font-sans text-sm text-gray-600 font-light">
-                {/* Mock Categories matching Header */}
-                <li><a href="/collections/baths" className="hover:text-primary transition-colors">Baths</a></li>
-                <li><a href="/collections/showers" className="hover:text-primary transition-colors">Showers</a></li>
-                <li><a href="/collections/basins" className="hover:text-primary transition-colors">Basins</a></li>
-                <li><a href="/collections/toilets" className="hover:text-primary transition-colors">Toilets</a></li>
-                <li><a href="/collections/taps" className="hover:text-primary transition-colors">Taps & Mixers</a></li>
-                <li><a href="/collections/accessories" className="hover:text-primary transition-colors">Accessories</a></li>
-              </ul>
+          <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+            <span className="font-sans text-[10px] text-gray-400 uppercase tracking-widest">
+              {collection.products.nodes.length} Products
+            </span>
+            <div className="relative group">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="appearance-none bg-transparent font-sans text-[10px] font-bold tracking-widest uppercase text-primary pr-8 focus:outline-none cursor-pointer"
+              >
+                <option>Featured</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest</option>
+              </select>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              <h3 className="font-display text-lg text-primary border-b border-gray-200 pb-2 mb-6 mt-10">Filter By</h3>
-              {/* Mock Filters */}
-              <div className="space-y-4 font-sans text-sm text-gray-600 font-light">
-                <label className="flex items-center gap-2">
+        {/* Filter Panel */}
+        {activeFilter === 'filter' && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 p-8 bg-gray-50 rounded-xl animate-in fade-in slide-in-from-top-4 duration-300">
+            <div>
+              <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">Price Range</h4>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 font-sans text-xs text-gray-600 cursor-pointer hover:text-primary transition-colors">
                   <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" />
-                  In Stock
+                  R0 - R1,000
                 </label>
-                <label className="flex items-center gap-2">
+                <label className="flex items-center gap-2 font-sans text-xs text-gray-600 cursor-pointer hover:text-primary transition-colors">
                   <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" />
-                  On Sale
+                  R1,000 - R5,000
                 </label>
               </div>
             </div>
-          </aside>
-
-          {/* Product Grid */}
-          <div className="flex-1">
-            <PaginatedResourceSection<ProductItemFragment>
-              connection={collection.products}
-              resourcesClassName="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
-            >
-              {({ node: product, index }) => (
-                <ProductItem
-                  key={product.id}
-                  product={product}
-                  loading={index < 8 ? 'eager' : undefined}
-                />
-              )}
-            </PaginatedResourceSection>
+            <div>
+              <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">Finish</h4>
+              <div className="flex flex-wrap gap-2">
+                <button className="w-6 h-6 rounded-full bg-gray-200 border border-gray-300" title="Chrome"></button>
+                <button className="w-6 h-6 rounded-full bg-black border border-gray-800" title="Matte Black"></button>
+                <button className="w-6 h-6 rounded-full bg-[#D4AF37] border border-yellow-700" title="Brushed Gold"></button>
+              </div>
+            </div>
+            <div className="flex items-end md:col-start-4">
+              <button
+                onClick={() => setActiveFilter(null)}
+                className="w-full py-3 bg-primary text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-all rounded"
+              >
+                Apply Filters
+              </button>
+            </div>
           </div>
+        )}
 
-        </div>
+        {/* Product Grid */}
+        <PaginatedResourceSection<ProductItemFragment>
+          connection={collection.products}
+          resourcesClassName="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
+        >
+          {({ node: product, index }) => (
+            <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          )}
+        </PaginatedResourceSection>
 
         <Analytics.CollectionView
           data={{
@@ -197,7 +258,6 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
   }
 ` as const;
 
-// NOTE: https://shopify.dev/docs/api/storefront/2022-04/objects/collection
 const COLLECTION_QUERY = `#graphql
   ${PRODUCT_ITEM_FRAGMENT}
   query Collection(
@@ -233,3 +293,4 @@ const COLLECTION_QUERY = `#graphql
     }
   }
 ` as const;
+
