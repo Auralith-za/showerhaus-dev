@@ -122,9 +122,11 @@ export default function BespokeShowers() {
                 <div className="container mx-auto px-6 text-center">
                     <span className="block font-sans text-[11px] font-bold tracking-[0.4em] uppercase text-[#4A89C8] mb-4">CUSTOM CONFIGURATOR</span>
                     <h1 className="font-display text-5xl md:text-6xl text-primary tracking-tight mb-4">Bespoke Showers</h1>
-                    <p className="max-w-xl mx-auto font-sans text-gray-500 leading-relaxed text-center" style={{ textAlign: 'center' }}>
-                        Design your perfect sanctuary. Follow the steps and our team will provide a tailored quote.
-                    </p>
+                    <div className="flex justify-center w-full">
+                        <p className="max-w-xl font-sans text-gray-500 leading-relaxed text-center">
+                            Design your perfect sanctuary. Follow the steps and our team will provide a tailored quote.
+                        </p>
+                    </div>
                 </div>
             </section>
 
