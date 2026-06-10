@@ -114,10 +114,10 @@ export const PRIMARY_MENU_ITEMS = [
         title: 'About Us', 
         handle: 'about-us',
         items: [
-            { title: 'Our Story', handle: 'our-story' },
-            { title: 'Projects', handle: 'projects' },
+            // { title: 'Our Story', handle: 'our-story' },
+            // { title: 'Projects', handle: 'projects' },
             { title: 'Customer Stories', handle: 'customer-stories' },
-            { title: 'Accreditation', handle: 'accreditation' },
+            // { title: 'Accreditation', handle: 'accreditation' },
             { title: 'Blog', handle: 'journal' },
         ]
     },
@@ -127,10 +127,10 @@ export const PRIMARY_MENU_ITEMS = [
 
 export const FOOTER_MENU = {
     about: [
-        { title: 'Our Story', handle: 'our-story' },
-        { title: 'Projects', handle: 'projects' },
+        // { title: 'Our Story', handle: 'our-story' },
+        // { title: 'Projects', handle: 'projects' },
         { title: 'Customer Stories', handle: 'customer-stories' },
-        { title: 'Accreditation', handle: 'accreditation' },
+        // { title: 'Accreditation', handle: 'accreditation' },
     ],
     customerService: [
         { title: 'Contact Us', handle: 'contact' },

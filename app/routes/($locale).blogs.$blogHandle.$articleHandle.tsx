@@ -2,6 +2,7 @@ import {useLoaderData} from 'react-router';
 import type {Route} from './+types/blogs.$blogHandle.$articleHandle';
 import {Image} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import { DRAFT_ARTICLES } from '~/lib/draftArticles';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [{title: `Hydrogen | ${data?.article.title ?? ''} article`}];
@@ -32,26 +33,31 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
     context.storefront.query(ARTICLE_QUERY, {
       variables: {blogHandle, articleHandle},
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
-  if (!blog?.articleByHandle) {
-    throw new Response(null, {status: 404});
+  let article = blog?.articleByHandle;
+
+  if (!article) {
+    const draft = DRAFT_ARTICLES.find(
+      (a) => a.handle === articleHandle && a.blog.handle === blogHandle
+    );
+    if (!draft) {
+      throw new Response(null, {status: 404});
+    }
+    article = draft as any;
+  } else {
+    redirectIfHandleIsLocalized(
+      request,
+      {
+        handle: articleHandle,
+        data: blog.articleByHandle,
+      },
+      {
+        handle: blogHandle,
+        data: blog,
+      },
+    );
   }
-
-  redirectIfHandleIsLocalized(
-    request,
-    {
-      handle: articleHandle,
-      data: blog.articleByHandle,
-    },
-    {
-      handle: blogHandle,
-      data: blog,
-    },
-  );
-
-  const article = blog.articleByHandle;
 
   return {article};
 }

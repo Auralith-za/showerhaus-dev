@@ -12,14 +12,15 @@ export function ProductCarouselTabs({ currentProduct }: ProductCarouselTabsProps
   const [activeTab, setActiveTab] = useState('collection');
 
   // Filter products based on current product's collection
-  const collectionHandle = currentProduct.collection || 'showers';
+  const collectionHandle = currentProduct?.collection || 'showers';
+  const currentProductId = currentProduct?.id || '';
   
   const collectionProducts = MOCK_PRODUCTS.filter(
-    (p) => p.collection === collectionHandle && p.id !== currentProduct.id
+    (p) => p.collection === collectionHandle && p.id !== currentProductId
   ).slice(0, 10);
 
   const categoryProducts = MOCK_PRODUCTS.filter(
-    (p) => p.collection === collectionHandle && p.id !== currentProduct.id
+    (p) => p.collection === collectionHandle && p.id !== currentProductId
   ).reverse().slice(0, 10);
 
   const recentlyViewed = MOCK_PRODUCTS.slice(20, 30);

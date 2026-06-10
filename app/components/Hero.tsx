@@ -8,8 +8,8 @@ const SLIDES = [
         subtitle: 'Bespoke frameless showers designed with precision and crafted for the most discerning architectural interiors.',
         label: 'Architectural Excellence',
         image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1800&q=80',
-        url: '/collections/showers',
-        buttonText: 'Explore Showers'
+        url: '/contact',
+        buttonText: 'Coming Soon'
     },
     {
         id: 'bespoke-shower-design',
@@ -17,8 +17,8 @@ const SLIDES = [
         subtitle: 'Minimalist walk-in solutions that transform your daily ritual into a spa-like experience within your home.',
         label: 'Modern Minimalism',
         image: 'https://images.unsplash.com/photo-1600566752229-250ed79470f8?w=1800&q=80',
-        url: '/collections/showers',
-        buttonText: 'View Wet Rooms'
+        url: '/contact',
+        buttonText: 'Coming Soon'
     },
     {
         id: 'architectural-glass',
@@ -26,7 +26,7 @@ const SLIDES = [
         subtitle: 'Tailored glass enclosures that define space with clarity and sophisticated architectural engineering.',
         label: 'Signature Engineering',
         image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1800&q=80',
-        url: '/collections/showers',
+        url: '/pages/bespoke-showers',
         buttonText: 'Discover Bespoke'
     }
 ];
@@ -51,12 +51,18 @@ export function Hero() {
                     key={slide.id}
                     className={`absolute inset-0 z-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
                         }`}
+                    style={{ willChange: 'opacity' }}
                 >
                     <img
                         src={slide.image}
                         alt={slide.title}
                         className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-105' : 'scale-100'
                             }`}
+                        style={{
+                            willChange: 'transform',
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                        }}
                     />
                     {/* Modern subtle overlay */}
                     <div className="absolute inset-0 bg-black/40 mix-blend-multiply"></div>

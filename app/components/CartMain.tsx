@@ -68,23 +68,38 @@ function CartEmpty({
   const { close } = useAside();
   return (
     <div hidden={hidden} className="flex flex-col items-center justify-center h-full text-center p-6">
-      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-6">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-8 h-8">
+      <div className="bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-6" style={{ width: '64px', height: '64px', margin: '0 auto 24px' }}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" style={{ width: '32px', height: '32px' }}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
         </svg>
       </div>
-      <p className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-4">Your Bag is Empty</p>
-      <p className="font-sans text-xs text-gray-400 font-light mb-12 max-w-xs leading-relaxed">
-        Discover our latest architectural collections and bespoke shower solutions.
+      <p className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-6">Your Cart is Empty</p>
+      <p className="font-sans text-xs text-gray-400 font-light mb-8 max-w-xs leading-relaxed">
+        Discover our latest collections and bespoke shower solutions.
       </p>
-      <Link
-        to="/collections"
-        onClick={close}
-        prefetch="viewport"
-        className="inline-block border border-primary text-primary px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-primary hover:!text-white transition-all duration-300 min-w-[200px]"
-      >
-        Continue Shopping
-      </Link>
+      <div style={{ paddingTop: '24px' }}>
+        <Link
+          to="/collections/all"
+          onClick={close}
+          prefetch="viewport"
+          className="inline-block border px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase transition-all duration-300 min-w-[200px]"
+          style={{
+            color: '#14294f',
+            borderColor: '#14294f',
+            backgroundColor: 'transparent',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#14294f';
+            e.currentTarget.style.color = '#ffffff';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = '#14294f';
+          }}
+        >
+          Continue Shopping
+        </Link>
+      </div>
     </div>
   );
 }

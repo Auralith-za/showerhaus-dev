@@ -512,3 +512,66 @@ button.reset:hover:not(:has(> *)) {
 .animate-fade-in-right {
   animation: fade-in-right 1s ease-out forwards;
 }
+
+/*
+* --------------------------------------------------
+* Product Rich Text (Prose) Formatting overrides
+* --------------------------------------------------
+*/
+.prose {
+  max-width: none;
+  color: #4b5563; /* text-gray-600 */
+}
+.prose p {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+.prose ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
+}
+.prose ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
+}
+.prose li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+.prose strong, .prose b {
+  font-weight: 700;
+  color: #111827; /* text-gray-900 */
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+.prose h1 { font-size: 1.5rem; }
+.prose h2 { font-size: 1.25rem; }
+.prose h3 { font-size: 1.125rem; }
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+.prose th, .prose td {
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem;
+  text-align: left;
+}
+.prose th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #111827;
+}

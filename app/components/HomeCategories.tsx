@@ -6,21 +6,21 @@ export function HomeCategories() {
             id: 'framed-showers',
             title: 'Framed Showers',
             image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
-            url: '/collections/showers',
+            url: '/contact',
             description: 'Traditional metal-framed doors and panels'
         },
         {
             id: 'semi-frameless-showers',
             title: 'Semi-frameless Showers',
             image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
-            url: '/collections/bath-enclosures',
+            url: '/contact',
             description: 'Minimalist modern alternative for an elegant finish'
         },
         {
             id: 'frameless-showers',
             title: 'Frameless Showers',
             image: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/hidraulico-decor-2-2.jpg',
-            url: '/collections/mirrors',
+            url: '/contact',
             description: 'Glass-to-tile design for a barely-visible timeless look'
         }
     ];
@@ -61,7 +61,7 @@ export function HomeCategories() {
                                 </p>
                                 <div className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase text-primary group-hover:text-secondary transition-all">
                                     <span className="w-8 h-[1px] bg-primary group-hover:bg-secondary transition-colors"></span>
-                                    Explore Series
+                                    Coming Soon
                                 </div>
                             </div>
                         </Link>

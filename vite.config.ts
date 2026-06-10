@@ -5,10 +5,10 @@ import { reactRouter } from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig({
-  define: {
+export default defineConfig(({ mode }) => ({
+  define: mode === 'production' ? {
     'process.env.NODE_ENV': JSON.stringify('production'),
-  },
+  } : {},
   plugins: [
     tailwindcss(),
     hydrogen(),
@@ -39,4 +39,4 @@ export default defineConfig({
   server: {
     allowedHosts: ['.tryhydrogen.dev'],
   },
-});
+}));

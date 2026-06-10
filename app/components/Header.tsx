@@ -26,6 +26,21 @@ export function Header({
   publicStoreDomain,
 }: HeaderProps) {
   const { shop } = header;
+  const shopifyCollections = header.collections?.nodes || [];
+  const products = header.products?.nodes || [];
+
+  // Group products by category.name or productType
+  const sparesByType = products.reduce<Record<string, typeof products>>((acc, product) => {
+    const type = product.category?.name || product.productType || 'Shower Seals';
+    if (!acc[type]) {
+      acc[type] = [];
+    }
+    acc[type].push(product);
+    return acc;
+  }, {});
+
+  const sparesTypes = Object.keys(sparesByType);
+  
   return (
     <>
       {/* Top Banner (White) */}
@@ -35,12 +50,12 @@ export function Header({
           
           <div className="relative group flex items-center h-[30px] cursor-pointer">
             <Link to="/pages/about-us" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
-            <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[150]">
+            <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
               <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[220px]">
-                <Link to="/pages/our-story" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Our Story</Link>
-                <Link to="/pages/projects" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Projects</Link>
+                {/* <Link to="/pages/our-story" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Our Story</Link> */}
+                {/* <Link to="/pages/projects" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Projects</Link> */}
                 <Link to="/pages/customer-stories" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Customer Stories</Link>
-                <Link to="/pages/accreditation" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Accreditation</Link>
+                {/* <Link to="/pages/accreditation" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Accreditation</Link> */}
                 <Link to="/blogs" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Blog</Link>
               </div>
             </div>
@@ -88,72 +103,132 @@ export function Header({
           margin: 0,
           marginLeft: 'auto'
         }}>
-          {MEGA_MENU_ITEMS.map((item, index, array) => (
-            <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
-              <NavLink
-                to={`/collections/${item.handle}`}
-                className="font-display text-[12px] font-normal tracking-[0.3em] uppercase text-[#111] no-underline whitespace-nowrap hover:text-gray-500 hover:underline hover:underline-offset-8 transition-all duration-300"
-              >
-                {item.title}
-              </NavLink>
-            {item.categories && item.categories.length > 0 && (
-              <div className={`absolute top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
-                <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px', flexDirection: 'row' }}>
-                  <div style={{ flex: 1, textAlign: 'left' }}>
-                    {item.categories.map((cat) => (
-                      <div key={cat.handle} style={{ marginBottom: '24px' }}>
-                        <Link
-                          to={`/collections/${cat.handle}`}
-                          className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 mb-3 hover:text-secondary transition-colors block no-underline"
-                        >
-                          {cat.title}
-                        </Link>
-                        {cat.items && (
-                          <div style={{ 
-                            display: cat.items.length > 5 ? 'grid' : 'flex', 
-                            gridTemplateColumns: cat.items.length > 5 ? 'repeat(2, 1fr)' : 'none',
-                            flexDirection: 'column', 
-                            gap: '8px',
-                            columnGap: '32px',
-                            justifyItems: 'start',
-                            alignItems: 'flex-start'
-                          }}>
-                            {cat.items.map((sub) => (
+          {MEGA_MENU_ITEMS.map((item, index, array) => {
+            const isSpares = item.handle === 'shower-spares';
+            const shopifyCol = shopifyCollections.find(col => 
+              col.handle === item.handle || 
+              (item.handle === 'shower-spares' && (col.handle === 'spares' || col.handle === 'shower-spares'))
+            );
+            const isCollectionActive = isSpares ? (products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
+            const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
+            
+            return (
+              <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
+                <NavLink
+                  to={path}
+                  className="font-display text-[12px] font-normal tracking-[0.3em] uppercase text-[#111] no-underline whitespace-nowrap hover:text-gray-500 hover:underline hover:underline-offset-8 transition-all duration-300"
+                >
+                  {item.title}
+                </NavLink>
+
+                {/* Mega Menu Dropdown */}
+                {isCollectionActive ? (
+                  <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
+                    <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px', flexDirection: 'row' }}>
+                      <div style={{ flex: 1, textAlign: 'left', display: 'flex', flexWrap: 'wrap', gap: '32px' }}>
+                        {(() => {
+                          if (isSpares) {
+                            const sparesProducts = shopifyCol?.products?.nodes || products || [];
+                            const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
+                            const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+
+                            return (
+                              <div style={{ minWidth: '200px', marginBottom: '16px' }}>
+                                <span
+                                  className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 mb-3 block"
+                                >
+                                  Spares
+                                </span>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                  {displayTypes.map((type) => {
+                                    const typeStr = type as string;
+                                    const filterPath = `/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`;
+                                    return (
+                                      <Link
+                                        key={typeStr}
+                                        to={filterPath}
+                                        className="font-sans text-[11px] text-gray-500 hover:text-primary transition-colors font-light whitespace-nowrap no-underline"
+                                      >
+                                        {typeStr}
+                                      </Link>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          const colProducts = shopifyCol?.products?.nodes || [];
+                          const colProductsByType = colProducts.reduce<Record<string, typeof colProducts>>((acc, p) => {
+                            const type = p.category?.name || p.productType || 'Other';
+                            if (!acc[type]) acc[type] = [];
+                            acc[type].push(p);
+                            return acc;
+                          }, {});
+                          const colProductTypes = Object.keys(colProductsByType);
+
+                          return colProductTypes.map((type) => (
+                            <div key={type} style={{ minWidth: '200px', marginBottom: '16px' }}>
                               <Link
-                                key={sub.handle}
-                                to={`/collections/${sub.handle}`}
-                                className="font-sans text-[11px] text-gray-500 hover:text-primary transition-colors font-light whitespace-nowrap no-underline"
+                                to={`/collections/${shopifyCol?.handle}`}
+                                className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 mb-3 hover:text-secondary transition-colors block no-underline"
                               >
-                                {sub.title}
+                                {type}
                               </Link>
-                            ))}
-                          </div>
-                        )}
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                  {colProductsByType[type].map((p) => (
+                                    <Link
+                                      key={p.handle}
+                                      to={`/products/${p.handle}`}
+                                      className="font-sans text-[11px] text-gray-500 hover:text-primary transition-colors font-light whitespace-nowrap no-underline"
+                                    >
+                                      {p.title}
+                                    </Link>
+                                  ))}
+                              </div>
+                            </div>
+                          ));
+                        })()}
                       </div>
-                    ))}
-                  </div>
-                  {item.featuredImage && (
-                    <div className="w-[300px] flex-shrink-0">
-                      <Link to={`/collections/${item.handle}`} className="block no-underline">
+                      <div className="w-[200px] flex-shrink-0">
                         <div className="relative overflow-hidden aspect-[4/5] group/image">
                           <img 
-                            src={item.featuredImage} 
-                            alt={item.featuredTitle} 
+                            src={shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp"} 
+                            alt={shopifyCol?.title || item.title} 
                             className="w-full h-full object-cover block transition-transform duration-700 group-hover/image:scale-110" 
                           />
-                          <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-8">
-                            <span className="text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase mb-2 opacity-80">Featured</span>
-                            <h3 className="text-white font-sans text-xl font-bold uppercase tracking-tight leading-tight m-0 break-words">{item.featuredTitle}</h3>
+                          <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
+                            <span className="text-white font-sans text-[9px] font-bold tracking-[0.2em] uppercase mb-1 opacity-80">
+                              {isSpares ? 'SHOWER' : 'Store'}
+                            </span>
+                            <h3 className="text-white font-sans text-lg font-bold uppercase tracking-tight leading-tight m-0">
+                              {isSpares ? 'SPARES' : (shopifyCol?.title || item.title)}
+                            </h3>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  /* Coming Soon Dropdown for Showers, Consumables, Shower Care, Decorative */
+                  <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
+                    <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '400px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center', textAlign: 'center' }}>
+                      <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Architectural Collections</span>
+                      <h4 className="font-display" style={{ fontSize: '18px', color: '#111', margin: 0 }}>{item.title} Range</h4>
+                      <p style={{ fontSize: '11px', color: '#999', margin: 0, lineHeight: '1.6', fontFamily: 'sans-serif' }}>
+                        Our curated range of {item.title.toLowerCase()} is currently being loaded on Shopify. Check back soon for our latest architectural arrivals.
+                      </p>
+                      <div style={{ paddingTop: '8px' }}>
+                        <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#999', border: '1px solid #e5e7eb', padding: '6px 12px', borderRadius: '2px' }}>
+                          Coming Soon
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            </div>
-          ))}
+            );
+          })}
         </nav>
       </div>
     </>
@@ -167,14 +242,19 @@ export function HeaderMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
+  collections,
+  products,
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
+  collections?: any[];
+  products?: any[];
 }) {
   const { close } = useAside();
   const items = menu ? menu.items : FALLBACK_HEADER_MENU.items;
+  const shopifyCollections = collections || [];
 
   if (viewport === 'mobile') {
     return (
@@ -219,32 +299,86 @@ export function HeaderMenu({
         <div className="pt-4">
           <p className="text-[10px] font-sans tracking-[0.2em] uppercase text-gray-400 mb-6">Collections</p>
           <div className="flex flex-col space-y-6">
-            {MEGA_MENU_ITEMS.map((item) => (
-              <div key={item.handle} className="flex flex-col space-y-2">
-                <NavLink
-                  to={`/collections/${item.handle}`}
-                  className="text-md font-sans font-light text-gray-800 hover:text-primary transition-colors flex justify-between items-center"
-                  onClick={close}
-                >
-                  {item.title}
-                </NavLink>
-                {/* Mobile Submenu (Simplified) */}
-                {item.categories && (
-                  <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
-                    {item.categories.map(cat => (
-                      <NavLink
-                        key={cat.handle}
-                        to={`/collections/${cat.handle}`}
-                        className="text-sm font-sans text-gray-500 hover:text-primary"
-                        onClick={close}
-                      >
-                        {cat.title}
-                      </NavLink>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            {MEGA_MENU_ITEMS.map((item) => {
+              const isSpares = item.handle === 'shower-spares';
+              const shopifyCol = shopifyCollections.find(col => 
+                col.handle === item.handle || 
+                (item.handle === 'shower-spares' && (col.handle === 'spares' || col.handle === 'shower-spares'))
+              );
+              const isCollectionActive = isSpares ? (products && products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
+              const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
+              
+              return (
+                <div key={item.handle} className="flex flex-col space-y-2">
+                  <NavLink
+                    to={path}
+                    className="text-md font-sans font-light text-gray-800 hover:text-primary transition-colors flex justify-between items-center"
+                    onClick={close}
+                  >
+                    {item.title}
+                  </NavLink>
+                  {/* Mobile Submenu */}
+                  {isCollectionActive ? (
+                    <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
+                      {isSpares ? (() => {
+                        const sparesProducts = shopifyCol?.products?.nodes || products || [];
+                        const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
+                        const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                        return (
+                          <div className="flex flex-col space-y-2 mt-2">
+                            <span className="text-xs font-sans tracking-[0.1em] uppercase font-bold text-primary">
+                              Spares
+                            </span>
+                            {displayTypes.map(type => {
+                              const typeStr = type as string;
+                              return (
+                                <NavLink
+                                  key={typeStr}
+                                  to={`/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`}
+                                  className="text-xs font-sans text-gray-500 hover:text-primary pl-2"
+                                  onClick={close}
+                                >
+                                  {typeStr}
+                                </NavLink>
+                              );
+                            })}
+                          </div>
+                        );
+                      })() : (() => {
+                        const colProducts = shopifyCol?.products?.nodes || [];
+                        const colProductsByType = colProducts.reduce<Record<string, typeof colProducts>>((acc, p) => {
+                          const type = p.category?.name || p.productType || 'Other';
+                          if (!acc[type]) acc[type] = [];
+                          acc[type].push(p);
+                          return acc;
+                        }, {});
+                        return Object.keys(colProductsByType).map(type => (
+                          <div key={type} className="flex flex-col space-y-1 mt-2">
+                            <span className="text-xs font-sans tracking-[0.1em] uppercase font-bold text-primary">
+                              {type}
+                            </span>
+                            {colProductsByType[type].map(p => (
+                              <NavLink
+                                key={p.handle}
+                                to={`/products/${p.handle}`}
+                                className="text-xs font-sans text-gray-500 hover:text-primary pl-2"
+                                onClick={close}
+                              >
+                                {p.title}
+                              </NavLink>
+                            ))}
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  ) : (
+                    <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
+                      <span className="text-xs font-sans text-gray-400 italic pl-2">Coming Soon</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </nav>
@@ -264,20 +398,35 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="flex items-center gap-4 text-gray-700" role="navigation">
+    <nav className="flex items-center gap-6 text-gray-700" role="navigation">
       <HeaderMenuMobileToggle />
 
       {/* Search Icon */}
       <SearchToggle />
 
-      {/* Account Icon */}
-      <NavLink prefetch="intent" to="/account" className="hover:text-primary transition-colors">
-        <Suspense fallback={<IconUser />}>
-          <Await resolve={isLoggedIn} errorElement={<IconUser />}>
-            {(isLoggedIn) => <IconUser loggedIn={isLoggedIn} />}
+      {/* Account Links & Icon */}
+      <div className="flex items-center gap-3">
+        <NavLink prefetch="intent" to="/account" className="hover:text-primary transition-colors flex items-center">
+          <Suspense fallback={<IconUser />}>
+            <Await resolve={isLoggedIn} errorElement={<IconUser />}>
+              {(isLoggedIn) => <IconUser loggedIn={isLoggedIn} />}
+            </Await>
+          </Suspense>
+        </NavLink>
+        <Suspense fallback={null}>
+          <Await resolve={isLoggedIn} errorElement={<Link to="/account/login" className="hover:text-primary transition-colors text-[10px] tracking-wider uppercase font-medium">Log In</Link>}>
+            {(loggedIn) => loggedIn ? (
+              <Link to="/account" className="hover:text-primary transition-colors text-[10px] tracking-wider uppercase font-medium">Account</Link>
+            ) : (
+              <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase font-medium">
+                <Link to="/account/login" className="hover:text-primary transition-colors">Log In</Link>
+                <span className="text-gray-300">/</span>
+                <Link to="/account/register" className="hover:text-primary transition-colors">Register</Link>
+              </div>
+            )}
           </Await>
         </Suspense>
-      </NavLink>
+      </div>
 
       {/* Cart Icon */}
       <CartToggle cart={cart} />
@@ -313,7 +462,7 @@ function CartBadge({ count }: { count: number | null }) {
   return (
     <a
       href="/cart"
-      className="relative hover:text-primary transition-colors h-full flex items-center px-4 -mr-4 z-50 py-2"
+      className="flex items-center gap-2 bg-[#14294f] hover:bg-[#1e3b6e] text-white px-4 py-1.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer h-[32px] min-w-[66px] justify-center"
       onClick={(e) => {
         e.preventDefault();
         open('cart');
@@ -325,8 +474,12 @@ function CartBadge({ count }: { count: number | null }) {
         } as CartViewPayload);
       }}
     >
-      <IconBag />
-      <span className="absolute top-0 right-1 bg-[#a39081] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full mt-1.5 opacity-90">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white">
+        <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.5 1.5 0 0 0 3.998 2.25H2.25Z" />
+        <circle cx="9" cy="19.5" r="1.5" />
+        <circle cx="16.5" cy="19.5" r="1.5" />
+      </svg>
+      <span className="font-sans text-[13px] font-bold text-white leading-none">
         {count || 0}
       </span>
     </a>

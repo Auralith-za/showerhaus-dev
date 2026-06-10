@@ -11,7 +11,7 @@ export function ProductTabs({ description }: { description: string }) {
 
     return (
         <div className="mt-12 border-t border-gray-100 pt-8">
-            <div className="flex border-b border-gray-100 mb-8 overflow-x-auto">
+            <div className="flex border-b border-gray-100 mb-8 overflow-hidden">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}

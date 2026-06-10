@@ -48,7 +48,7 @@ export async function createHydrogenRouterContext(
   );
 
   // Override the methods on the existing Cart object so we don't break RouterContextProvider
-  const mockCart = createMockCart(session) as any;
+  const mockCart = createMockCart(session, hydrogenContext.storefront) as any;
   Object.assign(hydrogenContext.cart, mockCart);
 
   return hydrogenContext;

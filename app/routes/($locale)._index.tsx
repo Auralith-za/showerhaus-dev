@@ -25,7 +25,12 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 function loadDeferredData({ context }: Route.LoaderArgs) {
-  const recommendedProducts = Promise.resolve(getMockRecommendedProducts() as any);
+  const recommendedProducts = context.storefront
+    ? context.storefront.query(RECOMMENDED_PRODUCTS_QUERY).catch((err) => {
+        console.error('Failed to fetch recommended products:', err);
+        return getMockRecommendedProducts() as any;
+      })
+    : Promise.resolve(getMockRecommendedProducts() as any);
 
   return {
     recommendedProducts,
@@ -57,10 +62,10 @@ export default function Homepage() {
       {/* Section 5: Ranges / HomeCategories */}
       <HomeCategories />
 
-      {/* Section 6: Projects */}
-      <div className="bg-[#c9c9c9]">
+      {/* Section 6: Projects (Hidden for now) */}
+      {/* <div className="bg-[#c9c9c9]">
         <ProjectsSection />
-      </div>
+      </div> */}
 
       {/* Section 7: Installation & Consultation Form */}
       <InstallationSection />
@@ -134,7 +139,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 10, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 5, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }

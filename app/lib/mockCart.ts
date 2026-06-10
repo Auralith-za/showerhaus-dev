@@ -1,8 +1,8 @@
-import type { CartQueryDataReturn, HydrogenCart } from '@shopify/hydrogen';
+import type { HydrogenCart } from '@shopify/hydrogen';
 import type { CartApiQueryFragment } from 'storefrontapi.generated';
 import { MOCK_PRODUCTS } from '~/lib/mockData';
 
-export function createMockCart(session: any): HydrogenCart {
+export function createMockCart(session: any, storefront?: any): HydrogenCart {
   // We store the cart items in the session.
   // The session structure: { mock_cart_lines: Array<{ merchandiseId: string, quantity: number, id: string }> }
 
@@ -11,8 +11,57 @@ export function createMockCart(session: any): HydrogenCart {
     if (lines.length === 0) return null;
 
     let subtotalAmount = 0;
+
+    // Filter out real Shopify variant IDs to batch-query them
+    const shopifyVariantIds = lines
+      .filter((line: any) => line.merchandiseId && line.merchandiseId.startsWith('gid://shopify/ProductVariant/'))
+      .map((line: any) => line.merchandiseId);
+
+    const shopifyVariants: Record<string, any> = {};
+    if (shopifyVariantIds.length > 0 && storefront) {
+      try {
+        const data = await storefront.query(VARIANTS_QUERY, {
+          variables: { ids: shopifyVariantIds },
+        });
+        (data?.nodes || []).forEach((node: any) => {
+          if (node) {
+            shopifyVariants[node.id] = node;
+          }
+        });
+      } catch (err) {
+        console.error('Failed to fetch shopify variants in mock cart:', err);
+      }
+    }
+
     const cartLinesNodes = lines.map((line: any) => {
-      // Find the mock product. The ID format is usually `mock-X-variant`
+      // If it's a real Shopify variant GID
+      if (line.merchandiseId && line.merchandiseId.startsWith('gid://shopify/ProductVariant/')) {
+        const variant = shopifyVariants[line.merchandiseId];
+        const price = parseFloat(variant?.price?.amount || '0');
+        const totalAmount = price * line.quantity;
+        subtotalAmount += totalAmount;
+
+        return {
+          id: line.id,
+          quantity: line.quantity,
+          cost: {
+            totalAmount: { amount: totalAmount.toString(), currencyCode: variant?.price?.currencyCode || 'ZAR' },
+          },
+          merchandise: {
+            id: line.merchandiseId,
+            title: variant?.title || 'Default Title',
+            selectedOptions: variant?.selectedOptions || [{ name: 'Default', value: 'Default' }],
+            product: {
+              title: variant?.product?.title || 'Unknown Product',
+              handle: variant?.product?.handle || 'unknown',
+            },
+            image: variant?.image ? { url: variant.image.url, altText: variant.image.altText || variant.product?.title } : null,
+            price: { amount: price.toString(), currencyCode: variant?.price?.currencyCode || 'ZAR' },
+          },
+        };
+      }
+
+      // Mock Product Fallback
       const productId = line.merchandiseId.replace('-variant', '');
       const mockProduct = MOCK_PRODUCTS.find(p => p.id === productId);
 
@@ -106,3 +155,38 @@ export function createMockCart(session: any): HydrogenCart {
     query: async () => await getCartFromSession(),
   } as unknown as HydrogenCart;
 }
+
+const VARIANTS_QUERY = `#graphql
+  query GetVariants($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on ProductVariant {
+        id
+        title
+        price {
+          amount
+          currencyCode
+        }
+        compareAtPrice {
+          amount
+          currencyCode
+        }
+        image {
+          id
+          url
+          altText
+          width
+          height
+        }
+        product {
+          id
+          title
+          handle
+        }
+        selectedOptions {
+          name
+          value
+        }
+      }
+    }
+  }
+` as const;

@@ -3,6 +3,7 @@ import type { Route } from './+types/blogs._index';
 import { getPaginationVariables } from '@shopify/hydrogen';
 import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
 import type { BlogsQuery } from 'storefrontapi.generated';
+import { DRAFT_ARTICLES } from '~/lib/draftArticles';
 
 type BlogNode = BlogsQuery['blogs']['nodes'][0];
 
@@ -23,32 +24,27 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
     return { blogs };
 }
 
-const MOCK_ARTICLES = [
-    {
-        title: 'Choosing the Right Frameless Shower',
-        date: 'May 2026',
-        image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80',
-        category: 'Design Tips',
-        excerpt: 'From glass thickness to hardware finishes, discover the key decisions that define the perfect frameless enclosure for your space.'
-    },
-    {
-        title: 'The Rise of Matte Black Finishes',
-        date: 'Apr 2026',
-        image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&q=80',
-        category: 'Trends',
-        excerpt: 'Matte black hardware has become the defining aesthetic of contemporary bathroom design. Here\'s why it works and how to get it right.'
-    },
-    {
-        title: 'Maintaining Your Glass: A Pro Guide',
-        date: 'Mar 2026',
-        image: 'https://images.unsplash.com/photo-1604709177225-055f99402ea3?w=800&q=80',
-        category: 'Maintenance',
-        excerpt: 'Keep your frameless glass looking pristine for years with these professional care tips and product recommendations.'
-    },
-];
-
 export default function Blogs() {
     const { blogs } = useLoaderData<typeof loader>();
+
+    // Extract all articles and sort them by date descending
+    const shopifyArticles = blogs.nodes
+        .flatMap((blog) => blog.articles?.nodes || [])
+        .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+    const hasNoShopifyArticles = shopifyArticles.length === 0;
+    const allArticles = hasNoShopifyArticles ? DRAFT_ARTICLES : shopifyArticles;
+
+    const featuredArticle = allArticles[0];
+    const gridArticles = allArticles.slice(1, 5); // Take next 4 for the grid
+    
+    // Fallback formatting for date
+    const formatDate = (dateStr: string) => {
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',
+        }).format(new Date(dateStr));
+    };
 
     return (
         <div>
@@ -76,56 +72,69 @@ export default function Blogs() {
                 </div>
             </section>
 
-            {/* Featured Articles */}
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
-                    {/* Featured large card */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-16 group cursor-pointer border border-gray-100 hover:shadow-2xl transition-all duration-700">
-                        <div className="relative overflow-hidden" style={{ minHeight: '400px' }}>
-                            <img
-                                src={MOCK_ARTICLES[0].image}
-                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                alt={MOCK_ARTICLES[0].title}
-                            />
-                        </div>
-                        <div className="p-12 md:p-16 flex flex-col justify-center bg-white">
-                            <div className="flex items-center gap-4 mb-6">
-                                <span className="bg-secondary/10 text-secondary text-[9px] font-bold tracking-widest uppercase px-3 py-1">{MOCK_ARTICLES[0].category}</span>
-                                <span className="font-sans text-[10px] text-gray-400 uppercase tracking-widest">{MOCK_ARTICLES[0].date}</span>
-                            </div>
-                            <h2 className="font-display text-3xl md:text-4xl text-primary mb-6 leading-tight">{MOCK_ARTICLES[0].title}</h2>
-                            <p className="font-sans text-gray-500 leading-relaxed mb-8">{MOCK_ARTICLES[0].excerpt}</p>
-                            <span className="inline-flex items-center gap-3 font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary group-hover:text-secondary transition-colors">
-                                Read Article
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Grid of remaining */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        {MOCK_ARTICLES.slice(1).map((article, i) => (
-                            <div key={i} className="group cursor-pointer">
-                                <div className="relative overflow-hidden mb-6 bg-gray-100" style={{ aspectRatio: '16/9' }}>
-                                    <img
-                                        src={article.image}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                        alt={article.title}
-                                    />
-                                    <div className="absolute top-4 left-4 bg-white px-3 py-1 text-[9px] font-bold tracking-widest uppercase text-primary shadow-sm">
-                                        {article.category}
-                                    </div>
-                                </div>
-                                <span className="block font-sans text-[10px] text-gray-400 uppercase tracking-widest mb-2">{article.date}</span>
-                                <h3 className="font-display text-2xl text-primary group-hover:text-secondary transition-colors duration-300 mb-3">{article.title}</h3>
-                                <p className="font-sans text-sm text-gray-500 leading-relaxed">{article.excerpt}</p>
-                            </div>
-                        ))}
-                    </div>
+            {/* Admin Notice */}
+            {hasNoShopifyArticles && (
+                <div className="bg-amber-50 border-y border-amber-100 py-3 px-6 text-center text-amber-800 text-[10px] uppercase tracking-wider font-semibold">
+                    💡 Preview Mode: Displaying draft articles. Publish articles in Shopify Admin &gt; Online Store &gt; Blog Posts to sync live content.
                 </div>
-            </section>
+            )}
+
+            {/* Featured Articles */}
+            {allArticles.length > 0 && (
+                <section className="py-24 bg-white">
+                    <div className="container mx-auto px-6">
+                        {/* Featured large card */}
+                        {featuredArticle && (
+                            <Link to={`/blogs/${featuredArticle.blog.handle}/${featuredArticle.handle}`} className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-16 group cursor-pointer border border-gray-100 hover:shadow-2xl transition-all duration-700">
+                                <div className="relative overflow-hidden" style={{ minHeight: '400px' }}>
+                                    <img
+                                        src={featuredArticle.image?.url || 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80'}
+                                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        alt={featuredArticle.title}
+                                    />
+                                </div>
+                                <div className="p-12 md:p-16 flex flex-col justify-center bg-white">
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <span className="bg-secondary/10 text-secondary text-[9px] font-bold tracking-widest uppercase px-3 py-1">{featuredArticle.blog.title}</span>
+                                        <span className="font-sans text-[10px] text-gray-400 uppercase tracking-widest">{formatDate(featuredArticle.publishedAt)}</span>
+                                    </div>
+                                    <h2 className="font-display text-3xl md:text-4xl text-primary mb-6 leading-tight">{featuredArticle.title}</h2>
+                                    <div className="font-sans text-gray-500 leading-relaxed mb-8 line-clamp-3" dangerouslySetInnerHTML={{ __html: featuredArticle.excerptHtml || '' }} />
+                                    <span className="inline-flex items-center gap-3 font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary group-hover:text-secondary transition-colors">
+                                        Read Article
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </Link>
+                        )}
+
+                        {/* Grid of remaining */}
+                        {gridArticles.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                {gridArticles.map((article) => (
+                                    <Link to={`/blogs/${article.blog.handle}/${article.handle}`} key={article.id} className="group cursor-pointer block">
+                                        <div className="relative overflow-hidden mb-6 bg-gray-100" style={{ aspectRatio: '16/9' }}>
+                                            <img
+                                                src={article.image?.url || 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&q=80'}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                alt={article.title}
+                                            />
+                                            <div className="absolute top-4 left-4 bg-white px-3 py-1 text-[9px] font-bold tracking-widest uppercase text-primary shadow-sm">
+                                                {article.blog.title}
+                                            </div>
+                                        </div>
+                                        <span className="block font-sans text-[10px] text-gray-400 uppercase tracking-widest mb-2">{formatDate(article.publishedAt)}</span>
+                                        <h3 className="font-display text-2xl text-primary group-hover:text-secondary transition-colors duration-300 mb-3">{article.title}</h3>
+                                        <div className="font-sans text-sm text-gray-500 leading-relaxed line-clamp-2" dangerouslySetInnerHTML={{ __html: article.excerptHtml || '' }} />
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </section>
+            )}
 
             {/* Shopify Blogs if present */}
             {blogs.nodes.length > 0 && (
@@ -204,6 +213,25 @@ const BLOGS_QUERY = `#graphql
         seo {
           title
           description
+        }
+        articles(first: 5, sortKey: PUBLISHED_AT, reverse: true) {
+          nodes {
+            id
+            title
+            handle
+            publishedAt
+            excerptHtml
+            image {
+              url
+              altText
+              width
+              height
+            }
+            blog {
+              title
+              handle
+            }
+          }
         }
       }
     }

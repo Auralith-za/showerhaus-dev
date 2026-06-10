@@ -1,4 +1,4 @@
-import { Link, redirect, useLoaderData } from 'react-router';
+import { Link, redirect, useLoaderData, useNavigate } from 'react-router';
 import type { Route } from './+types/products.$handle';
 import { useState } from 'react';
 import {
@@ -45,64 +45,82 @@ export async function loader(args: Route.LoaderArgs) {
  */
 async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
   const { handle } = params;
+  const { storefront } = context;
 
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const mockProduct = MOCK_PRODUCTS.find((p) => p.handle === handle);
+  const selectedOptions = getSelectedProductOptions(request);
 
-  if (!mockProduct) {
-    throw new Response(null, { status: 404 });
+  let product = null;
+  try {
+    const data = await storefront.query(PRODUCT_QUERY, {
+      variables: {
+        handle,
+        selectedOptions,
+      },
+    });
+    product = data?.product;
+  } catch (error) {
+    console.error('Failed to fetch product from Shopify:', error);
   }
 
-  const product = {
-    id: mockProduct.id,
-    title: mockProduct.title,
-    vendor: 'ShowerHaus',
-    handle: mockProduct.handle,
-    descriptionHtml: `<p>${mockProduct.description}</p>`,
-    description: mockProduct.description,
-    encodedVariantExistence: 'dummy',
-    encodedVariantAvailability: 'dummy',
-    options: [],
-    selectedOrFirstAvailableVariant: {
-      id: `${mockProduct.id}-variant`,
-      availableForSale: true,
-      image: {
-        __typename: 'Image',
-        id: `${mockProduct.id}-image`,
-        url: mockProduct.image,
-        altText: mockProduct.title,
-        width: 1000,
-        height: 1000,
-      },
-      price: { amount: mockProduct.price, currencyCode: mockProduct.currency },
-      compareAtPrice: null,
-      product: { title: mockProduct.title, handle: mockProduct.handle },
-      selectedOptions: [],
-      sku: mockProduct.id,
-      title: 'Default Title',
-      unitPrice: null,
-    },
-    adjacentVariants: [],
-    seo: { title: mockProduct.title, description: mockProduct.description },
-    media: {
-      nodes: [
-        {
-          __typename: 'MediaImage',
-          id: `${mockProduct.id}-media`,
-          image: {
-            id: `${mockProduct.id}-image`,
-            url: mockProduct.image,
-            altText: mockProduct.title,
-            width: 1000,
-            height: 1000,
-          },
+  if (!product) {
+    const mockProduct = MOCK_PRODUCTS.find((p) => p.handle === handle);
+
+    if (!mockProduct) {
+      throw new Response(null, { status: 404 });
+    }
+
+    product = {
+      id: mockProduct.id,
+      title: mockProduct.title,
+      vendor: 'ShowerHaus',
+      handle: mockProduct.handle,
+      descriptionHtml: `<p>${mockProduct.description}</p>`,
+      description: mockProduct.description,
+      encodedVariantExistence: 'dummy',
+      encodedVariantAvailability: 'dummy',
+      options: [],
+      selectedOrFirstAvailableVariant: {
+        id: `${mockProduct.id}-variant`,
+        availableForSale: true,
+        image: {
+          __typename: 'Image',
+          id: `${mockProduct.id}-image`,
+          url: mockProduct.image,
+          altText: mockProduct.title,
+          width: 1000,
+          height: 1000,
         },
-      ],
-    },
-  } as any;
+        price: { amount: mockProduct.price, currencyCode: mockProduct.currency },
+        compareAtPrice: null,
+        product: { title: mockProduct.title, handle: mockProduct.handle },
+        selectedOptions: [],
+        sku: mockProduct.id,
+        title: 'Default Title',
+        unitPrice: null,
+      },
+      adjacentVariants: [],
+      seo: { title: mockProduct.title, description: mockProduct.description },
+      media: {
+        nodes: [
+          {
+            __typename: 'MediaImage',
+            id: `${mockProduct.id}-media`,
+            image: {
+              id: `${mockProduct.id}-image`,
+              url: mockProduct.image,
+              altText: mockProduct.title,
+              width: 1000,
+              height: 1000,
+            },
+          },
+        ],
+      },
+    } as any;
+  }
 
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, { handle, data: product });
@@ -129,6 +147,7 @@ import { ProductCarouselTabs } from '~/components/ProductCarouselTabs';
 export default function Product() {
   const { product } = useLoaderData<typeof loader>();
   const { open } = useAside();
+  const navigate = useNavigate();
 
   // ... (existing state and logic)
   const selectedVariant = useOptimisticVariant(
@@ -142,18 +161,7 @@ export default function Product() {
   });
 
   const { title, descriptionHtml } = product;
-  const [selectedFinish, setFinish] = useState('Chrome');
-  const [selectedSize, setSize] = useState('Standard (800x600)');
   const [quantity, setQuantity] = useState(1);
-
-  const finishes = [
-      { name: 'Chrome', color: '#e5e7eb' }, 
-      { name: 'Brushed Nickel', color: '#b0b0b0' }, 
-      { name: 'Soft Bronze', color: '#cd7f32' }, 
-      { name: 'Polished Brass', color: '#d4af37' }, 
-      { name: 'Matte Black', color: '#2d2d2d' }
-  ];
-  const sizes = ['Standard (800x600)', 'Large (1200x600)', 'Extra Large (1500x600)'];
 
   // Find the mock product to get the collection handle for related items
   const mockProduct = MOCK_PRODUCTS.find(p => p.id === product.id);
@@ -185,38 +193,71 @@ export default function Product() {
 
             <div className="border-t border-b border-gray-100 py-6 mb-8 mt-2 space-y-6">
               
-              {/* Finish Selector */}
-              <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-8">
-                      <span className="text-sm text-gray-700 w-24">Finish:</span>
-                      <span className="text-sm font-semibold text-gray-900">{selectedFinish}</span>
-                  </div>
-                  <div className="flex gap-2 ml-32">
-                      {finishes.map((f) => (
-                          <button
-                              key={f.name}
-                              onClick={() => setFinish(f.name)}
-                              title={f.name}
-                              className={`w-8 h-8 rounded-full border-2 focus:outline-none transition-all ${selectedFinish === f.name ? 'border-gray-900' : 'border-transparent hover:border-gray-300'}`}
+              {productOptions
+                .filter((option) => !(option.name === 'Title' && option.optionValues.length === 1 && option.optionValues[0].name === 'Default Title'))
+                .map((option) => {
+                const isColorOrFinish = option.name.toLowerCase() === 'finish' || option.name.toLowerCase() === 'color';
+                
+                return (
+                  <div key={option.name} className="flex flex-col gap-3">
+                    <div className="flex items-center gap-8">
+                      <span className="text-sm text-gray-700 w-24">{option.name}:</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {option.optionValues.find(v => v.selected)?.name || ''}
+                      </span>
+                    </div>
+                    
+                    {isColorOrFinish ? (
+                      <div className="flex gap-2 ml-32">
+                        {option.optionValues.map((val) => {
+                          const colorMap: Record<string, string> = {
+                            'chrome': '#e5e7eb',
+                            'polished stainless steel': '#E5E7EB',
+                            'brushed stainless steel': '#9CA3AF',
+                            'satin gold': '#D4AF37',
+                            'antique brass': '#B5A642',
+                            'black': '#1F2937',
+                          };
+                          const swatchColor = val.swatch?.color || colorMap[val.name.toLowerCase()] || '#cccccc';
+                          
+                          return (
+                            <Link
+                              key={val.name}
+                              to={val.to}
+                              replace
+                              preventScrollReset
+                              title={val.name}
+                              className={`w-8 h-8 rounded-full border-2 focus:outline-none transition-all ${val.selected ? 'border-gray-900 scale-105 shadow-sm' : 'border-transparent hover:border-gray-300'}`}
                               style={{ padding: '2px' }}
-                          >
-                              <div className="w-full h-full rounded-full border border-black/10 shadow-sm" style={{ backgroundColor: f.color }} />
-                          </button>
-                      ))}
+                            >
+                              <div className="w-full h-full rounded-full border border-black/10 shadow-sm" style={{ backgroundColor: swatchColor }} />
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-8 ml-32">
+                        <select 
+                          value={option.optionValues.find(v => v.selected)?.name || ''}
+                          onChange={(e) => {
+                            const selectedVal = option.optionValues.find(v => v.name === e.target.value);
+                            if (selectedVal) {
+                              navigate(selectedVal.to, { replace: true, preventScrollReset: true });
+                            }
+                          }}
+                          className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
+                        >
+                          {option.optionValues.map(val => (
+                            <option key={val.name} value={val.name}>
+                              {val.name} {val.available ? '' : '(Sold Out)'}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
                   </div>
-              </div>
-
-              {/* Size Selector */}
-              <div className="flex items-center gap-8 border-t border-gray-50 pt-6">
-                  <span className="text-sm text-gray-700 w-24">Size:</span>
-                  <select 
-                      value={selectedSize}
-                      onChange={(e) => setSize(e.target.value)}
-                      className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
-                  >
-                      {sizes.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-              </div>
+                );
+              })}
 
               {/* Add to Cart Line */}
               <div className="flex items-center gap-8 mt-6 pt-6 border-t border-gray-50">
@@ -234,7 +275,7 @@ export default function Product() {
                           disabled={!selectedVariant || !selectedVariant.availableForSale}
                           onClick={() => {
                               try {
-                                  open('cart'); // Use Aside context to open cart drawer
+                                  open('cart');
                               } catch(e) {}
                               window.location.hash = 'cart-added'; 
                           }}
@@ -244,14 +285,7 @@ export default function Product() {
                                   {
                                       merchandiseId: selectedVariant.id,
                                       quantity: quantity,
-                                      selectedVariant: {
-                                          ...selectedVariant,
-                                          title: `${selectedFinish} / ${selectedSize}`,
-                                          selectedOptions: [
-                                              { name: 'Finish', value: selectedFinish },
-                                              { name: 'Size', value: selectedSize }
-                                          ]
-                                      },
+                                      selectedVariant: selectedVariant,
                                   },
                               ]
                               : []

@@ -24,51 +24,42 @@ export async function loader(args: Route.LoaderArgs) {
 import { MOCK_PRODUCTS } from '~/lib/mockData';
 
 async function loadCriticalData({ context, request }: Route.LoaderArgs) {
-  // In a real app, we'd use storefront.query. Here we use mock data for better control over the "Modern" feel.
-  const products = {
-    nodes: MOCK_PRODUCTS.map((p) => ({
-      id: p.id,
-      handle: p.handle,
-      title: p.title,
-      featuredImage: {
-        id: `${p.id}-image`,
-        url: p.image,
-        altText: p.title,
-        width: 1000,
-        height: 1000,
-      },
-      priceRange: {
-        minVariantPrice: {
-          amount: p.price,
-          currencyCode: p.currency,
-        },
-        maxVariantPrice: {
-          amount: p.price,
-          currencyCode: p.currency,
-        },
-      },
-    })) as any,
-    pageInfo: {
-      hasPreviousPage: false,
-      hasNextPage: false,
-      endCursor: null,
-      startCursor: null,
-    },
-  };
+  const { storefront } = context;
+  const variables = getPaginationVariables(request, {
+    pageBy: 12,
+  });
 
-  return { products };
+  const data = await storefront.query(CATALOG_QUERY, {
+    variables,
+  });
+
+  return {
+    products: data.products,
+    collections: data.collections?.nodes || [],
+  };
 }
 
 function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
+const placeholderImages: Record<string, string> = {
+  'showers': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
+  'shower-spares': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
+  'spares': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
+  'consumables': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/fjKXavfZcnZSsxLzuWvKQ8.jpg',
+  'shower-care': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
+  'decorative': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/hidraulico-decor-2-2.jpg',
+};
+
 export default function Collection() {
-  const { products } = useLoaderData<typeof loader>();
+  const { products, collections } = useLoaderData<typeof loader>();
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState('Featured');
 
-  const categories = MEGA_MENU_ITEMS;
+  const categories = collections.filter(
+    (cat) => cat.handle !== 'all' && cat.handle !== 'frontpage'
+  );
 
   return (
     <div className="shop-all-page bg-white min-h-screen">
@@ -76,25 +67,28 @@ export default function Collection() {
       <section className="py-12 bg-gray-50 border-b border-gray-100">
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-            {categories.map((cat) => (
-              <Link
-                key={cat.handle}
-                to={`/collections/${cat.handle}`}
-                className="group flex flex-col items-center gap-4 text-center max-w-[120px]"
-              >
-                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden shadow-sm group-hover:shadow-lg transition-all duration-500 group-hover:scale-110 border-2 border-transparent group-hover:border-primary/20">
-                  <img
-                    src={cat.featuredImage}
-                    alt={cat.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
-                </div>
-                <span className="font-sans text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase text-primary transition-colors group-hover:text-secondary">
-                  {cat.title}
-                </span>
-              </Link>
-            ))}
+            {categories.map((cat) => {
+              const imageUrl = cat.image?.url || placeholderImages[cat.handle] || 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp';
+              return (
+                <Link
+                  key={cat.handle}
+                  to={`/collections/${cat.handle}`}
+                  className="group flex flex-col items-center gap-4 text-center max-w-[120px]"
+                >
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden shadow-sm group-hover:shadow-lg transition-all duration-500 group-hover:scale-110 border-2 border-transparent group-hover:border-primary/20">
+                    <img
+                      src={imageUrl}
+                      alt={cat.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
+                  </div>
+                  <span className="font-sans text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase text-primary transition-colors group-hover:text-secondary">
+                    {cat.title}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -246,6 +240,16 @@ const CATALOG_QUERY = `#graphql
     $startCursor: String
     $endCursor: String
   ) @inContext(country: $country, language: $language) {
+    collections(first: 50) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          url
+        }
+      }
+    }
     products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
       nodes {
         ...ProductItem

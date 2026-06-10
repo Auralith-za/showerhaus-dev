@@ -31,7 +31,7 @@ export function Footer() {
 
       {/* Main Footer Links */}
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           
           {/* Brand Info */}
           <div className="lg:col-span-1 space-y-8">
@@ -90,8 +90,8 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Discover More */}
-          <div className="space-y-8">
+          {/* Discover More (Hidden for now) */}
+          {/* <div className="space-y-8">
             <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Discover</h4>
             <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
               {FOOTER_MENU.discoverMore.map((item) => (
@@ -100,7 +100,7 @@ export function Footer() {
                 </Link>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Categories */}
           <div className="space-y-8">

@@ -29,7 +29,7 @@ export function ServicesSection() {
                                     Experience our full range in person. Visit our showroom and speak with a specialist today.
                                 </p>
                                 <Link
-                                    to="/pages/showrooms"
+                                    to="/contact"
                                     className="inline-block border border-white !text-white mt-8 mb-4 px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-white hover:!text-primary transition-all duration-300 w-full rounded-none"
                                 >
                                     Find A Showroom
@@ -57,7 +57,7 @@ export function ServicesSection() {
                                     We come to you. Our specialists can visit your home for a personalised measurement and design consultation.
                                 </p>
                                 <Link
-                                    to="/pages/consultation"
+                                    to="/contact"
                                     className="inline-block border border-white !text-white mt-8 mb-4 px-10 py-4 text-[10px] tracking-[0.2em] font-bold uppercase hover:bg-white hover:!text-primary transition-all duration-300 w-full rounded-none"
                                 >
                                     Book A Visit
@@ -85,7 +85,7 @@ export function ServicesSection() {
                                     Shop our full catalogue online and receive your purchase via courier.
                                 </p>
                                 <Link
-                                    to="/collections/all"
+                                    to="/contact"
                                     className="inline-block border border-white !text-white mt-8 mb-4 px-10 py-4 text-[10px] tracking-[0.2em] font-bold uppercase hover:bg-white hover:!text-primary transition-all duration-300 w-full rounded-none"
                                 >
                                     Shop Now
