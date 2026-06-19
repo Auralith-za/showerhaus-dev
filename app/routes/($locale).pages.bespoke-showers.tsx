@@ -234,7 +234,7 @@ export default function BespokeShowers() {
                                                         className={`block p-4 md:p-8 flex flex-col justify-center items-center text-center border rounded-sm transition-all duration-200 cursor-pointer min-h-[120px] ${
                                                             layout === l ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400'
                                                         }`}>
-                                                        <h3 className="font-display text-lg md:text-xl text-primary leading-tight">{l}</h3>
+                                                        <h3 className="font-display text-base md:text-lg text-primary leading-tight">{l}</h3>
                                                         {layout === l && <div className="mt-2 w-6 h-1 bg-[#4A89C8] mx-auto" />}
                                                     </button>
                                                 ))}

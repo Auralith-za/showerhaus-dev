@@ -13,7 +13,7 @@ export function InspirationSection() {
                             Read our short guides on the most important considerations to take into account when buying a new shower.
                         </p>
                         <Link
-                            to="/blogs/news"
+                            to="/blogs"
                             className="inline-block bg-primary text-white mt-10 px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-primary/90 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 rounded-none hover:no-underline !text-white"
                         >
                             Explore All Guides

@@ -195,10 +195,8 @@ export default function AboutUs() {
                         </Link>
 
                         {/* Visit Showroom */}
-                        <a 
-                            href="https://maps.google.com/?q=Intersite+Avenue+Umgeni+Business+Park+Springfield" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        <Link 
+                            to="/contact" 
                             className="bg-white border border-gray-200/60 p-10 rounded-sm hover:border-[#4A89C8]/50 hover:shadow-lg transition-all duration-300 flex items-start gap-6 group"
                         >
                             <span className="p-3 bg-[#FAF9F6] text-primary rounded-sm group-hover:bg-[#4A89C8]/10 group-hover:text-[#4A89C8] transition-colors">
@@ -210,9 +208,9 @@ export default function AboutUs() {
                             <div className="space-y-2 flex-1">
                                 <h4 className="font-display text-xl text-primary">Visit the Showroom</h4>
                                 <p className="font-sans text-xs text-gray-500 leading-relaxed">See the range in person at our Springfield store.</p>
-                                <span className="inline-block font-sans text-[9px] font-bold tracking-widest uppercase text-[#4A89C8] pt-2">Get Location →</span>
+                                <span className="inline-block font-sans text-[9px] font-bold tracking-widest uppercase text-[#4A89C8] pt-2">Contact Us →</span>
                             </div>
-                        </a>
+                        </Link>
 
                         {/* Call Us */}
                         <a 

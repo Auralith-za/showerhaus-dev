@@ -107,7 +107,7 @@ export function Footer() {
             <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Shop</h4>
             <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
               {FOOTER_MENU.categories.map((item) => (
-                <Link key={item.handle} to={`/collections/${item.handle}`} className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200">
+                <Link key={item.handle} to={item.handle === 'shower-spares' ? '/collections/all' : `/collections/${item.handle}`} className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200">
                   {item.title}
                 </Link>
               ))}

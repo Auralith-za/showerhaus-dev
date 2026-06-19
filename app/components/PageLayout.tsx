@@ -82,7 +82,7 @@ function SearchAside() {
                 ref={inputRef}
                 type="search"
                 list={queriesDatalistId}
-                className="w-full bg-transparent text-lg font-sans font-light text-gray-800 placeholder-gray-400 focus:outline-none"
+                className="w-full bg-transparent text-lg font-sans font-light text-gray-800 placeholder-gray-400 focus:outline-none border-0 ring-0 focus:ring-0"
               />
               <button onClick={goToSearch} className="text-gray-400 hover:text-primary transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
