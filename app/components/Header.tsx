@@ -44,7 +44,7 @@ export function Header({
   return (
     <>
       {/* Top Banner (White) */}
-      <div style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
+      <div className="hidden md:flex" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <Link to="/pages/bespoke-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Bespoke Showers</Link>
           
@@ -69,40 +69,22 @@ export function Header({
       </div>
 
       {/* TOP NAV ROW: Logo + Main Categories */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          width: '100%',
-          padding: '16px 48px',
-          boxSizing: 'border-box',
-          background: '#fff',
-          borderBottom: '1px solid #f3f4f6',
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-        }}
-      >
+      <div className="flex flex-row items-center justify-between md:justify-start w-full px-6 py-4 md:px-12 bg-white border-b border-gray-100 sticky top-0 z-50 gap-4">
+        
+        {/* Mobile Hamburger (Left) */}
+        <div className="flex md:hidden items-center">
+          <HeaderMenuMobileToggle />
+        </div>
+
         {/* Logo */}
-        <div style={{ width: '220px', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          <NavLink prefetch="intent" to="/" end style={{ display: 'block' }}>
-            <img src="/logo.png" alt={shop.name} style={{ height: '45px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+        <div className="flex-shrink-0 flex items-center justify-center md:justify-start flex-1 md:flex-none">
+          <NavLink prefetch="intent" to="/" end className="block">
+            <img src="/logo.png" alt={shop.name} className="h-8 md:h-[45px] w-auto object-contain block mx-auto md:mx-0" />
           </NavLink>
         </div>
 
         {/* Primary Nav (Categories) */}
-        <nav style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '40px',
-          whiteSpace: 'nowrap',
-          height: '100%',
-          padding: 0,
-          margin: 0,
-          marginLeft: 'auto'
-        }}>
+        <nav className="hidden md:flex items-center gap-10 whitespace-nowrap h-full ml-auto">
           {MEGA_MENU_ITEMS.map((item, index, array) => {
             const isSpares = item.handle === 'shower-spares';
             const shopifyCol = shopifyCollections.find(col => 
@@ -233,6 +215,12 @@ export function Header({
             );
           })}
         </nav>
+
+        {/* Mobile Right Icons (Search & Cart only) */}
+        <div className="flex md:hidden items-center gap-4">
+          <SearchToggle />
+          <CartToggle cart={cart} />
+        </div>
       </div>
     </>
   );
@@ -384,6 +372,16 @@ export function HeaderMenu({
             })}
           </div>
         </div>
+
+        {/* Mobile Bottom Links */}
+        <div className="pt-8 mt-4 border-t border-gray-100 flex flex-col gap-4 pb-8">
+          <NavLink to="/account" onClick={close} className="text-xs font-sans tracking-widest uppercase font-bold text-gray-800 hover:text-primary">
+            Account / Login
+          </NavLink>
+          <NavLink to="/contact" onClick={close} className="text-xs font-sans tracking-widest uppercase font-bold text-gray-800 hover:text-primary">
+            Contact
+          </NavLink>
+        </div>
       </nav>
     );
   }
@@ -402,8 +400,6 @@ function HeaderCtas({
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <nav className="flex items-center gap-6 text-gray-700" role="navigation">
-      <HeaderMenuMobileToggle />
-
       {/* Search Icon */}
       <SearchToggle />
 
@@ -441,10 +437,14 @@ function HeaderMenuMobileToggle() {
   const { open } = useAside();
   return (
     <button
-      className="md:hidden p-2 text-2xl"
+      className="md:hidden p-2 -ml-2 text-gray-800"
       onClick={() => open('mobile')}
     >
-      ☰
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </button>
   );
 }
