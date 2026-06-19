@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { Await, Link, NavLink, useAsyncValue } from 'react-router';
 import {
   type CartViewPayload,
@@ -266,16 +266,22 @@ export function HeaderMenu({
           Home
         </NavLink>
         {/* Mobile Primary Links */}
-        {PRIMARY_MENU_ITEMS.map((item) => (
-          <div key={item.handle} className="flex flex-col">
-            <NavLink
-              to={item.handle === 'all' ? '/collections/all' : item.handle === 'about' ? '/pages/about' : item.items ? '#' : `/pages/${item.handle}`}
-              className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
-              onClick={item.items ? undefined : close}
-            >
-              {item.title}
-            </NavLink>
-            {item.items && (
+        {PRIMARY_MENU_ITEMS.map((item) => {
+          if (!item.items) {
+            return (
+              <div key={item.handle} className="flex flex-col">
+                <NavLink
+                  to={item.handle === 'all' ? '/collections/all' : `/pages/${item.handle}`}
+                  className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
+                  onClick={close}
+                >
+                  {item.title}
+                </NavLink>
+              </div>
+            );
+          }
+          return (
+            <MobileAccordionItem key={item.handle} title={item.title}>
               <div className="pl-4 mt-2 flex flex-col space-y-3">
                 {item.items.map((sub) => (
                   <NavLink
@@ -288,9 +294,9 @@ export function HeaderMenu({
                   </NavLink>
                 ))}
               </div>
-            )}
-          </div>
-        ))}
+            </MobileAccordionItem>
+          );
+        })}
 
         {/* Mega Menu Categories for Mobile */}
         <div className="pt-2">
@@ -305,75 +311,71 @@ export function HeaderMenu({
               const isCollectionActive = isSpares ? (products && products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
               const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
               
-              return (
-                <div key={item.handle} className="flex flex-col space-y-2">
-                  <NavLink
-                    to={path}
-                    className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
-                    onClick={close}
-                  >
-                    {item.title}
-                  </NavLink>
-                  {/* Mobile Submenu */}
-                  {isCollectionActive ? (
-                    <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
-                      {isSpares ? (() => {
-                        const sparesProducts = shopifyCol?.products?.nodes || products || [];
-                        const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
-                        const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals'];
-                        return (
-                          <div className="flex flex-col space-y-3 mt-2">
-                            <span className="text-sm font-sans text-gray-400 pl-2">
-                              Spares
-                            </span>
-                            {displayTypes.map(type => {
-                              const typeStr = type as string;
-                              return (
-                                <NavLink
-                                  key={typeStr}
-                                  to={`/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`}
-                                  className="text-base font-sans text-gray-500 hover:text-primary pl-4"
-                                  onClick={close}
-                                >
-                                  {typeStr}
-                                </NavLink>
-                              );
-                            })}
-                          </div>
-                        );
-                      })() : (() => {
-                        const colProducts = shopifyCol?.products?.nodes || [];
-                        const colProductsByType = colProducts.reduce<Record<string, typeof colProducts>>((acc, p) => {
-                          const type = p.category?.name || p.productType || 'Other';
-                          if (!acc[type]) acc[type] = [];
-                          acc[type].push(p);
-                          return acc;
-                        }, {});
-                        return Object.keys(colProductsByType).map(type => (
-                          <div key={type} className="flex flex-col space-y-3 mt-2">
-                            <span className="text-sm font-sans text-gray-400 pl-2">
-                              {type}
-                            </span>
-                            {colProductsByType[type].map(p => (
-                              <NavLink
-                                key={p.handle}
-                                to={`/products/${p.handle}`}
-                                className="text-base font-sans text-gray-500 hover:text-primary pl-4"
-                                onClick={close}
-                              >
-                                {p.title}
-                              </NavLink>
-                            ))}
-                          </div>
-                        ));
-                      })()}
-                    </div>
-                  ) : (
+              if (!isCollectionActive) {
+                return (
+                  <MobileAccordionItem key={item.handle} title={item.title}>
                     <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
                       <span className="text-xs font-sans text-gray-400 italic pl-2">Coming Soon</span>
                     </div>
-                  )}
-                </div>
+                  </MobileAccordionItem>
+                );
+              }
+
+              return (
+                <MobileAccordionItem key={item.handle} title={item.title}>
+                  <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
+                    {isSpares ? (() => {
+                      const sparesProducts = shopifyCol?.products?.nodes || products || [];
+                      const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
+                      const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals'];
+                      return (
+                        <div className="flex flex-col space-y-3 mt-2">
+                          <span className="text-sm font-sans text-gray-400 pl-2">
+                            Spares
+                          </span>
+                          {displayTypes.map(type => {
+                            const typeStr = type as string;
+                            return (
+                              <NavLink
+                                key={typeStr}
+                                to={`/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`}
+                                className="text-base font-sans text-gray-500 hover:text-primary pl-4"
+                                onClick={close}
+                              >
+                                {typeStr}
+                              </NavLink>
+                            );
+                          })}
+                        </div>
+                      );
+                    })() : (() => {
+                      const colProducts = shopifyCol?.products?.nodes || [];
+                      const colProductsByType = colProducts.reduce<Record<string, typeof colProducts>>((acc, p) => {
+                        const type = p.category?.name || p.productType || 'Other';
+                        if (!acc[type]) acc[type] = [];
+                        acc[type].push(p);
+                        return acc;
+                      }, {});
+                      return Object.keys(colProductsByType).map(type => (
+                        <div key={type} className="flex flex-col space-y-3 mt-2">
+                          <span className="text-sm font-sans text-gray-400 pl-2">
+                            {type}
+                          </span>
+                          {colProductsByType[type].map(p => (
+                            <NavLink
+                              key={p.handle}
+                              to={`/products/${p.handle}`}
+                              className="text-base font-sans text-gray-500 hover:text-primary pl-4"
+                              onClick={close}
+                            >
+                              {p.title}
+                            </NavLink>
+                          ))}
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                </MobileAccordionItem>
               );
             })}
           </div>
@@ -398,6 +400,31 @@ export function HeaderMenu({
     return <HeaderMenuMega />;
   }
   return null;
+}
+
+function MobileAccordionItem({ title, children }: { title: string, children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="flex flex-col">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
+      >
+        <span>{title}</span>
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 20 20" 
+          fill="currentColor" 
+          className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+        >
+          <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+        </svg>
+      </button>
+      <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[800px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+        {children}
+      </div>
+    </div>
+  );
 }
 
 function HeaderCtas({
