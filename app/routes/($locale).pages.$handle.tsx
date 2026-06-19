@@ -50,14 +50,21 @@ async function loadCriticalData({ context, request, params }: Route.LoaderArgs) 
         handle: params.handle,
         title: formattedTitle,
         body: `
-          <div class="p-8 bg-gray-50 border border-gray-100 rounded-sm text-center my-8">
-            <h2 class="text-2xl font-display text-primary mb-4">Content Coming Soon</h2>
-            <p class="text-gray-600 mb-6">This is a temporary placeholder page for <strong>${formattedTitle}</strong>.</p>
-            <p class="text-sm text-gray-500">
-              You can replace this content by creating a page with the exact handle <code>${params.handle}</code> in your Shopify Admin -> Online Store -> Pages.
-              <br/><br/>
-              Once you create and publish it in Shopify, this placeholder will automatically be replaced with your actual content!
-            </p>
+          <div class="prose prose-lg mx-auto">
+            <p class="lead text-xl text-gray-500 mb-8">Welcome to our ${formattedTitle} page. This is a beautifully designed placeholder for your actual content. You can seamlessly replace this text by creating a page with handle <code>${params.handle}</code> in your Shopify Admin.</p>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">Our Commitment</h3>
+            <p>At ShowerHaus, we pride ourselves on delivering exceptional quality and service. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">Key Information</h3>
+            <ul class="space-y-4 my-6">
+              <li class="flex items-start"><span class="text-secondary mr-2">✓</span> <span><strong>Reliability:</strong> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</span></li>
+              <li class="flex items-start"><span class="text-secondary mr-2">✓</span> <span><strong>Excellence:</strong> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></li>
+              <li class="flex items-start"><span class="text-secondary mr-2">✓</span> <span><strong>Support:</strong> Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</span></li>
+            </ul>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">Get in Touch</h3>
+            <p>If you have any specific questions regarding our ${formattedTitle.toLowerCase()}, please don't hesitate to <a href="/contact" class="text-secondary underline hover:text-primary">contact our customer care team</a>. We are always here to help you design your perfect bathroom.</p>
           </div>
         `,
         seo: {

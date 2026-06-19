@@ -42,14 +42,25 @@ export async function loader({ params, context }: Route.LoaderArgs) {
         handle: params.handle,
         title: formattedTitle,
         body: `
-          <div class="p-8 bg-gray-50 border border-gray-100 rounded-sm text-center my-8">
-            <h2 class="text-2xl font-display text-primary mb-4">Policy Coming Soon</h2>
-            <p class="text-gray-600 mb-6">This is a temporary placeholder policy for <strong>${formattedTitle}</strong>.</p>
-            <p class="text-sm text-gray-500">
-              You can replace this content by updating your store policies in your Shopify Admin -> Settings -> Policies.
-              <br/><br/>
-              Once you add the policy in Shopify, this placeholder will automatically be replaced with your actual content!
-            </p>
+          <div class="prose prose-lg mx-auto">
+            <p class="lead text-xl text-gray-500 mb-8">This is the official ${formattedTitle} for ShowerHaus. Please read this document carefully before using our services. This placeholder can be replaced in your Shopify Admin Policies settings.</p>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">1. Introduction</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.</p>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">2. User Responsibilities</h3>
+            <p>Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+            <ul class="list-disc pl-6 space-y-2 my-4">
+              <li>Users must provide accurate information when requested.</li>
+              <li>All activities must comply with local and international laws.</li>
+              <li>Accounts are strictly personal and non-transferable.</li>
+            </ul>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">3. Data Protection</h3>
+            <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet.</p>
+            
+            <h3 class="text-2xl font-display text-primary mt-12 mb-4">4. Updates to this Policy</h3>
+            <p>We reserve the right to modify this ${formattedTitle.toLowerCase()} at any time. Changes will be effective immediately upon posting to the website. Please check back regularly for updates.</p>
           </div>
         `,
         url: ''
