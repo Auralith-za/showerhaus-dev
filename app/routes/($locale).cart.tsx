@@ -79,8 +79,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   const cartId = result?.cart?.id;
   const headers = cartId ? cart.setCartId(result.cart.id) : new Headers();
-  
-  // Force commit the session so our mockCart persists!
+
   if (context.session?.isPending) {
     headers.append('Set-Cookie', await context.session.commit());
   }
