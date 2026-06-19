@@ -324,9 +324,7 @@ export function HeaderMenu({
                 <MobileAccordionItem key={item.handle} title={item.title}>
                   <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
                     {isSpares ? (() => {
-                      const sparesProducts = shopifyCol?.products?.nodes || products || [];
-                      const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
-                      const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals'];
+                      const displayTypes = ['Shower Seals'];
                       return (
                         <div className="flex flex-col space-y-3 mt-2">
                           <span className="text-sm font-sans text-gray-400 pl-2">
