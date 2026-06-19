@@ -1,4 +1,4 @@
-import { Link, redirect, useLoaderData, useNavigate } from 'react-router';
+import { Link, redirect, useLoaderData, useNavigate, isRouteErrorResponse, useRouteError, useParams } from 'react-router';
 import type { Route } from './+types/products.$handle';
 import { useState } from 'react';
 import {
@@ -16,6 +16,7 @@ import { ProductTabs } from '~/components/ProductTabs';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import { InspirationSection } from '~/components/InspirationSection';
 
 import { MOCK_PRODUCTS } from '~/lib/mockData';
 
@@ -463,3 +464,75 @@ const PRODUCT_QUERY = `#graphql
   }
   ${PRODUCT_FRAGMENT}
 ` as const;
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const { handle } = useParams();
+
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    const formattedHandle = handle 
+      ? handle.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+      : 'This Product';
+
+    return (
+      <div className="bg-[#FDFCFB] min-h-screen">
+        {/* Dynamic Hero Section */}
+        <section className="py-24 bg-white border-b border-gray-100 text-center px-6">
+          <div className="max-w-3xl mx-auto space-y-6">
+            <span className="block font-sans text-[11px] font-bold tracking-[0.4em] uppercase text-[#4A89C8]">
+              Product Not Found
+            </span>
+            <h1 className="font-display text-5xl md:text-6xl text-primary tracking-tight">
+              Are you looking for {formattedHandle}?
+            </h1>
+            <p className="font-sans text-xl text-gray-500 leading-relaxed max-w-2xl mx-auto">
+              We are currently migrating our standard catalog to our new website. However, our team specializes in custom builds and can design exactly what you need.
+            </p>
+            <div className="pt-8">
+              <Link
+                to="/pages/bespoke-showers"
+                className="bg-primary text-white px-10 py-5 text-xs font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-all duration-300 shadow-xl inline-block"
+              >
+                Design Your Custom {formattedHandle}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Gallery / Inspiration Section */}
+        <InspirationSection />
+
+        {/* Contact Section */}
+        <section className="py-24 bg-white border-t border-gray-100 px-6">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <h2 className="font-display text-4xl text-primary">Need this specific item?</h2>
+            <p className="font-sans text-gray-500 max-w-xl mx-auto leading-relaxed">
+              Our sales consultants can check our offline inventory or order it directly for you. Get in touch with us today.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto pt-8">
+              <a href="tel:0313129095" className="flex flex-col items-center justify-center p-8 border border-gray-100 bg-gray-50 hover:bg-[#4A89C8]/5 hover:border-[#4A89C8] transition-all group">
+                <svg className="w-8 h-8 text-[#4A89C8] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span className="font-sans text-sm font-bold tracking-widest text-primary">031 312 9095</span>
+              </a>
+              <Link to="/contact" className="flex flex-col items-center justify-center p-8 border border-gray-100 bg-gray-50 hover:bg-[#4A89C8]/5 hover:border-[#4A89C8] transition-all group">
+                <svg className="w-8 h-8 text-[#4A89C8] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                <span className="font-sans text-sm font-bold tracking-widest text-primary uppercase">Contact Form</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-6 py-24 text-center">
+      <h1 className="font-display text-4xl text-primary mb-6">Something went wrong</h1>
+      <p className="font-sans text-gray-500">We're sorry, an error occurred while loading this product.</p>
+    </div>
+  );
+}
