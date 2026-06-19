@@ -98,6 +98,12 @@ export function Header({
               <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
                 <NavLink
                   to={path}
+                  onClick={(e) => {
+                    if (!isCollectionActive) {
+                      e.preventDefault();
+                      alert('We are currently migrating this collection to our new website. Please check back soon!');
+                    }
+                  }}
                   className="font-display text-[12px] font-normal tracking-[0.3em] uppercase text-[#111] no-underline whitespace-nowrap hover:text-gray-500 hover:underline hover:underline-offset-8 transition-all duration-300"
                 >
                   {item.title}
@@ -174,11 +180,11 @@ export function Header({
                         })()}
                       </div>
                       <div className="w-[200px] flex-shrink-0">
-                        <div className="relative overflow-hidden aspect-[4/5] group/image">
+                        <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-square bg-gray-50 flex items-center justify-center p-4' : 'aspect-[4/5]'}`}>
                           <img 
                             src={isSpares ? "/spares-menu.png" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
                             alt={shopifyCol?.title || item.title} 
-                            className="w-full h-full object-cover block transition-transform duration-700 group-hover/image:scale-110" 
+                            className={`w-full h-full block transition-transform duration-700 group-hover/image:scale-110 ${isSpares ? 'object-contain' : 'object-cover'}`} 
                           />
                           {!isSpares && (
                             <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">

@@ -46,7 +46,7 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   }
 
   const data = await storefront.query(CATALOG_QUERY, {
-    variables: { ...variables, filters: parsedFilters },
+    variables: { ...variables, ...(parsedFilters.length > 0 && { filters: parsedFilters }) },
   });
 
   return {
