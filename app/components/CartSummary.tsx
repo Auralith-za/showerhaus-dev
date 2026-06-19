@@ -83,7 +83,7 @@ function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; la
   if (layout === 'page') {
       return (
           <a
-            href="/checkout"
+            href={checkoutUrl}
             target="_self"
             className="block w-full bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase text-center py-5 hover:bg-secondary transition-colors"
           >
@@ -94,7 +94,7 @@ function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; la
 
   return (
     <a
-      href="/checkout"
+      href={checkoutUrl}
       target="_self"
       className="flex-1 bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase py-5 flex items-center justify-center hover:bg-secondary transition-colors"
     >
