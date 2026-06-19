@@ -106,7 +106,7 @@ function SearchAside() {
             }
 
             return (
-              <>
+              <div className="pt-6">
                 <SearchResultsPredictive.Queries
                   queries={queries}
                   queriesDatalistId={queriesDatalistId}
@@ -132,17 +132,17 @@ function SearchAside() {
                   term={term}
                 />
                 {term.current && total ? (
-                  <Link
-                    onClick={closeSearch}
-                    to={`${SEARCH_ENDPOINT}?q=${term.current}`}
-                  >
-                    <p>
-                      View all results for <q>{term.current}</q>
-                      &nbsp; →
-                    </p>
-                  </Link>
+                  <div className="pt-4 border-t border-gray-100 mt-4">
+                    <Link
+                      onClick={closeSearch}
+                      to={`${SEARCH_ENDPOINT}?q=${term.current}`}
+                      className="block w-full text-center bg-gray-50 hover:bg-gray-100 text-primary font-sans text-xs font-bold tracking-[0.2em] uppercase py-4 transition-colors"
+                    >
+                      View all results for "{term.current}" &rarr;
+                    </Link>
+                  </div>
                 ) : null}
-              </>
+              </div>
             );
           }}
         </SearchResultsPredictive>
