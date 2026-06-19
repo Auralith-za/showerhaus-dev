@@ -7,6 +7,7 @@ import { ProductItem } from '~/components/ProductItem';
 import type { ProductItemFragment } from 'storefrontapi.generated';
 import { MEGA_MENU_ITEMS } from '~/lib/navigation';
 import { useState } from 'react';
+import { CollectionFilters } from '~/components/CollectionFilters';
 
 export const meta: Route.MetaFunction = ({ data }: any) => {
   return [{ title: `ShowerHaus | ${data?.collection?.title ?? 'Collection'}` }];
@@ -22,8 +23,6 @@ export async function loader(args: Route.LoaderArgs) {
   return { ...deferredData, ...criticalData };
 }
 
-import { MOCK_PRODUCTS } from '~/lib/mockData';
-
 async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
   const { handle } = params;
 
@@ -31,48 +30,34 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
     throw redirect('/collections');
   }
 
-  // Filter mock products by collection handle
-  const collectionProducts = MOCK_PRODUCTS.filter((p) => p.collection === handle);
-  const title = handle.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const { storefront } = context;
+  const variables = getPaginationVariables(request, {
+    pageBy: 12,
+  });
 
-  const collection = {
-    id: `mock-collection-${handle}`,
-    handle,
-    title,
-    description: `Discover our premium range of ${title.toLowerCase()}, curated for modern architectural spaces.`,
-    products: {
-      nodes: collectionProducts.map((p) => ({
-        id: p.id,
-        handle: p.handle,
-        title: p.title,
-        featuredImage: {
-          id: `${p.id}-image`,
-          url: p.image,
-          altText: p.title,
-          width: 1000,
-          height: 1000,
-        },
-        priceRange: {
-          minVariantPrice: {
-            amount: p.price,
-            currencyCode: p.currency,
-          },
-          maxVariantPrice: {
-            amount: p.price,
-            currencyCode: p.currency,
-          },
-        },
-      })) as any,
-      pageInfo: {
-        hasPreviousPage: false,
-        hasNextPage: false,
-        endCursor: null,
-        startCursor: null,
-      },
-    },
-  };
+  const url = new URL(request.url);
+  const filtersParam = url.searchParams.getAll('filter');
+  const parsedFilters = filtersParam.map(f => {
+    try { return JSON.parse(f); } catch (e) { return null; }
+  }).filter(Boolean);
 
-  // The API handle might be localized, so redirect to the localized handle
+  const minPrice = url.searchParams.get('minPrice');
+  const maxPrice = url.searchParams.get('maxPrice');
+  if (minPrice || maxPrice) {
+    const priceFilter: any = {};
+    if (minPrice) priceFilter.min = parseFloat(minPrice);
+    if (maxPrice) priceFilter.max = parseFloat(maxPrice);
+    parsedFilters.push({ price: priceFilter });
+  }
+
+  const { collection } = await storefront.query(COLLECTION_QUERY, {
+    variables: { ...variables, handle, filters: parsedFilters },
+  });
+
+  if (!collection) {
+    throw new Response(null, { status: 404 });
+  }
+
   redirectIfHandleIsLocalized(request, { handle, data: collection });
 
   return {
@@ -171,37 +156,7 @@ export default function Collection() {
 
         {/* Filter Panel */}
         {activeFilter === 'filter' && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 p-8 bg-gray-50 rounded-xl animate-in fade-in slide-in-from-top-4 duration-300">
-            <div>
-              <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">Price Range</h4>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 font-sans text-xs text-gray-600 cursor-pointer hover:text-primary transition-colors">
-                  <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" />
-                  R0 - R1,000
-                </label>
-                <label className="flex items-center gap-2 font-sans text-xs text-gray-600 cursor-pointer hover:text-primary transition-colors">
-                  <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" />
-                  R1,000 - R5,000
-                </label>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">Finish</h4>
-              <div className="flex flex-wrap gap-2">
-                <button className="w-6 h-6 rounded-full bg-gray-200 border border-gray-300" title="Chrome"></button>
-                <button className="w-6 h-6 rounded-full bg-black border border-gray-800" title="Matte Black"></button>
-                <button className="w-6 h-6 rounded-full bg-[#D4AF37] border border-yellow-700" title="Brushed Gold"></button>
-              </div>
-            </div>
-            <div className="flex items-end md:col-start-4">
-              <button
-                onClick={() => setActiveFilter(null)}
-                className="w-full py-3 bg-primary text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-all rounded"
-              >
-                Apply Filters
-              </button>
-            </div>
-          </div>
+          <CollectionFilters filters={collection.products.filters || []} />
         )}
 
         {/* Product Grid */}
@@ -268,6 +223,7 @@ const COLLECTION_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $filters: [ProductFilter!]
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
@@ -278,8 +234,20 @@ const COLLECTION_QUERY = `#graphql
         first: $first,
         last: $last,
         before: $startCursor,
-        after: $endCursor
+        after: $endCursor,
+        filters: $filters
       ) {
+        filters {
+          id
+          label
+          type
+          values {
+            id
+            label
+            count
+            input
+          }
+        }
         nodes {
           ...ProductItem
         }
