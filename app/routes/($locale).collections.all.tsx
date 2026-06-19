@@ -50,7 +50,7 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   });
 
   return {
-    products: data.products,
+    products: data.collection?.products || { nodes: [], filters: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: '', endCursor: '' } },
     collections: data.collections?.nodes || [],
   };
 }
@@ -250,32 +250,34 @@ const CATALOG_QUERY = `#graphql
         }
       }
     }
-    products(
-      first: $first, 
-      last: $last, 
-      before: $startCursor, 
-      after: $endCursor,
-      filters: $filters
-    ) {
-      filters {
-        id
-        label
-        type
-        values {
+    collection(handle: "all") {
+      products(
+        first: $first, 
+        last: $last, 
+        before: $startCursor, 
+        after: $endCursor,
+        filters: $filters
+      ) {
+        filters {
           id
           label
-          count
-          input
+          type
+          values {
+            id
+            label
+            count
+            input
+          }
         }
-      }
-      nodes {
-        ...ProductItem
-      }
-      pageInfo {
-        hasPreviousPage
-        hasNextPage
-        startCursor
-        endCursor
+        nodes {
+          ...ProductItem
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
+        }
       }
     }
   }
