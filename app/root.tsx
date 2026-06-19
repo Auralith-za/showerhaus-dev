@@ -228,6 +228,8 @@ export default function App() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
+  const data = useRouteLoaderData<RootLoader>('root');
+  
   let errorMessage = 'Unknown error';
   let errorStatus = 500;
 
@@ -238,15 +240,41 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
-  return (
-    <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
-      {errorMessage && (
-        <fieldset>
-          <pre>{errorMessage}</pre>
-        </fieldset>
-      )}
+  const is404 = errorStatus === 404;
+
+  const content = (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center bg-gray-50 px-6 text-center">
+      <div className="max-w-md">
+        <h1 className="font-display text-5xl text-primary mb-4">{is404 ? 'Coming Soon' : 'Oops'}</h1>
+        <p className="font-sans text-sm text-gray-500 mb-8 leading-relaxed">
+          {is404 
+            ? "We are currently migrating our standard catalog and legacy pages to our new website. Please check back soon, or contact us directly for bespoke architectural builds." 
+            : "Something went wrong. Please try refreshing the page or navigating back home."}
+        </p>
+        <a href="/" className="inline-block bg-primary text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase py-4 px-8 hover:bg-secondary transition-colors rounded-sm">
+          Return Home
+        </a>
+      </div>
     </div>
+  );
+
+  if (data) {
+    return (
+      <PageLayout {...data}>
+        {content}
+      </PageLayout>
+    );
+  }
+
+  return (
+    <html>
+      <head>
+        <title>Error</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+      </head>
+      <body style={{ margin: 0, padding: 0 }}>
+        {content}
+      </body>
+    </html>
   );
 }

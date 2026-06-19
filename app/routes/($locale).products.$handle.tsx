@@ -18,7 +18,6 @@ import { useAside } from '~/components/Aside';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { InspirationSection } from '~/components/InspirationSection';
 
-import { MOCK_PRODUCTS } from '~/lib/mockData';
 
 export const meta: Route.MetaFunction = ({ data }: any) => {
   return [
@@ -68,59 +67,7 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
   }
 
   if (!product) {
-    const mockProduct = MOCK_PRODUCTS.find((p) => p.handle === handle);
-
-    if (!mockProduct) {
-      throw new Response(null, { status: 404 });
-    }
-
-    product = {
-      id: mockProduct.id,
-      title: mockProduct.title,
-      vendor: 'ShowerHaus',
-      handle: mockProduct.handle,
-      descriptionHtml: `<p>${mockProduct.description}</p>`,
-      description: mockProduct.description,
-      encodedVariantExistence: 'dummy',
-      encodedVariantAvailability: 'dummy',
-      options: [],
-      selectedOrFirstAvailableVariant: {
-        id: `${mockProduct.id}-variant`,
-        availableForSale: true,
-        image: {
-          __typename: 'Image',
-          id: `${mockProduct.id}-image`,
-          url: mockProduct.image,
-          altText: mockProduct.title,
-          width: 1000,
-          height: 1000,
-        },
-        price: { amount: mockProduct.price, currencyCode: mockProduct.currency },
-        compareAtPrice: null,
-        product: { title: mockProduct.title, handle: mockProduct.handle },
-        selectedOptions: [],
-        sku: mockProduct.id,
-        title: 'Default Title',
-        unitPrice: null,
-      },
-      adjacentVariants: [],
-      seo: { title: mockProduct.title, description: mockProduct.description },
-      media: {
-        nodes: [
-          {
-            __typename: 'MediaImage',
-            id: `${mockProduct.id}-media`,
-            image: {
-              id: `${mockProduct.id}-image`,
-              url: mockProduct.image,
-              altText: mockProduct.title,
-              width: 1000,
-              height: 1000,
-            },
-          },
-        ],
-      },
-    } as any;
+    throw new Response(null, { status: 404 });
   }
 
   // The API handle might be localized, so redirect to the localized handle

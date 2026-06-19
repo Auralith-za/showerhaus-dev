@@ -121,7 +121,6 @@ export const FOOTER_MENU = {
         { title: 'Contact Us', handle: 'contact' },
         { title: 'Delivery & Collections', handle: 'delivery-collections' },
         { title: 'Aftersales Care', handle: 'aftersales-care' },
-        { title: 'Find a Showroom', handle: 'showrooms' },
         { title: 'Newsletter', handle: 'newsletter' },
     ],
     discoverMore: [

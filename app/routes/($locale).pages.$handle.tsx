@@ -25,6 +25,14 @@ async function loadCriticalData({ context, request, params }: Route.LoaderArgs) 
     throw new Error('Missing page handle');
   }
 
+  // Handle redirects for old/custom pages
+  if (params.handle === 'contact') {
+    throw new Response(null, { status: 301, headers: { Location: '/contact' } });
+  }
+  if (params.handle === 'newsletter') {
+    throw new Response(null, { status: 301, headers: { Location: '/blogs' } });
+  }
+
   const [{ page }] = await Promise.all([
     context.storefront.query(PAGE_QUERY, {
       variables: {
