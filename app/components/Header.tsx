@@ -300,7 +300,6 @@ export function HeaderMenu({
 
         {/* Mega Menu Categories for Mobile */}
         <div className="pt-2">
-          <p className="text-xs font-sans tracking-[0.2em] uppercase text-gray-400 mb-4">Collections</p>
           <div className="flex flex-col space-y-4">
             {MEGA_MENU_ITEMS.map((item) => {
               const isSpares = item.handle === 'shower-spares';
