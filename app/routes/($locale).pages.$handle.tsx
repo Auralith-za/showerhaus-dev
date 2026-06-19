@@ -43,7 +43,29 @@ async function loadCriticalData({ context, request, params }: Route.LoaderArgs) 
   ]);
 
   if (!page) {
-    throw new Response('Not Found', { status: 404 });
+    const formattedTitle = params.handle.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    return {
+      page: {
+        id: 'mock-page',
+        handle: params.handle,
+        title: formattedTitle,
+        body: `
+          <div class="p-8 bg-gray-50 border border-gray-100 rounded-sm text-center my-8">
+            <h2 class="text-2xl font-display text-primary mb-4">Content Coming Soon</h2>
+            <p class="text-gray-600 mb-6">This is a temporary placeholder page for <strong>${formattedTitle}</strong>.</p>
+            <p class="text-sm text-gray-500">
+              You can replace this content by creating a page with the exact handle <code>${params.handle}</code> in your Shopify Admin -> Online Store -> Pages.
+              <br/><br/>
+              Once you create and publish it in Shopify, this placeholder will automatically be replaced with your actual content!
+            </p>
+          </div>
+        `,
+        seo: {
+          title: formattedTitle,
+          description: 'Placeholder page'
+        }
+      }
+    };
   }
 
   redirectIfHandleIsLocalized(request, { handle: params.handle, data: page });

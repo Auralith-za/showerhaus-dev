@@ -35,7 +35,26 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const policy = data.shop?.[policyName];
 
   if (!policy) {
-    throw new Response('Could not find the policy', { status: 404 });
+    const formattedTitle = params.handle.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    return {
+      policy: {
+        id: 'mock-policy',
+        handle: params.handle,
+        title: formattedTitle,
+        body: `
+          <div class="p-8 bg-gray-50 border border-gray-100 rounded-sm text-center my-8">
+            <h2 class="text-2xl font-display text-primary mb-4">Policy Coming Soon</h2>
+            <p class="text-gray-600 mb-6">This is a temporary placeholder policy for <strong>${formattedTitle}</strong>.</p>
+            <p class="text-sm text-gray-500">
+              You can replace this content by updating your store policies in your Shopify Admin -> Settings -> Policies.
+              <br/><br/>
+              Once you add the policy in Shopify, this placeholder will automatically be replaced with your actual content!
+            </p>
+          </div>
+        `,
+        url: ''
+      }
+    };
   }
 
   return { policy };
