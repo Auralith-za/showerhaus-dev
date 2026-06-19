@@ -28,15 +28,15 @@ export function HomeCategories() {
     return (
         <section className="py-24 bg-white">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 text-left">
                     <div className="max-w-xl">
                         
-                        <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary tracking-tighter leading-tight mt-6">
+                        <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary tracking-tighter leading-tight mt-6 text-left">
                             Complete your bathroom with <br />
                             <span className="font-light text-secondary">the right enclosure.</span>
                         </h2>
                     </div>
-                    <p className="font-sans text-gray-500 font-light max-w-sm mb-2">
+                    <p className="font-sans text-gray-500 font-light max-w-sm mb-2 text-left">
                         Browse our shower enclosures, based on type, from traditional framed showers through to modern semi-framed and completely frameless showers.
                     </p>
                 </div>
