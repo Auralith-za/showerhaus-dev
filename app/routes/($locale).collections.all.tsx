@@ -46,11 +46,11 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   }
 
   const data = await storefront.query(CATALOG_QUERY, {
-    variables: { ...variables, filters: parsedFilters },
+    variables: { ...variables },
   });
 
   return {
-    products: data.collection?.products || { nodes: [], filters: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: '', endCursor: '' } },
+    products: data.products || { nodes: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: '', endCursor: '' } },
     collections: data.collections?.nodes || [],
   };
 }
@@ -238,7 +238,6 @@ const CATALOG_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
-    $filters: [ProductFilter!]
   ) @inContext(country: $country, language: $language) {
     collections(first: 50) {
       nodes {
@@ -250,34 +249,20 @@ const CATALOG_QUERY = `#graphql
         }
       }
     }
-    collection(handle: "all") {
-      products(
-        first: $first, 
-        last: $last, 
-        before: $startCursor, 
-        after: $endCursor,
-        filters: $filters
-      ) {
-        filters {
-          id
-          label
-          type
-          values {
-            id
-            label
-            count
-            input
-          }
-        }
-        nodes {
-          ...ProductItem
-        }
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
+    products(
+      first: $first, 
+      last: $last, 
+      before: $startCursor, 
+      after: $endCursor
+    ) {
+      nodes {
+        ...ProductItem
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
       }
     }
   }
