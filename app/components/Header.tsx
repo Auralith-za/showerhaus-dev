@@ -130,7 +130,8 @@ export function Header({
                           if (isSpares) {
                             const sparesProducts = shopifyCol?.products?.nodes || products || [];
                             const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
-                            const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                            const filteredTypes = uniqueTypes.filter(t => (t as string).toLowerCase() !== 'parts' && (t as string).toLowerCase() !== 'spares');
+                            const displayTypes = filteredTypes.length > 0 ? filteredTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
 
                             return (
                               <div style={{ minWidth: '200px', marginBottom: '16px' }}>
@@ -193,18 +194,20 @@ export function Header({
                       <div className="w-[200px] flex-shrink-0">
                         <div className="relative overflow-hidden aspect-[4/5] group/image">
                           <img 
-                            src={shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp"} 
+                            src={isSpares ? "/spares-menu.png" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
                             alt={shopifyCol?.title || item.title} 
                             className="w-full h-full object-cover block transition-transform duration-700 group-hover/image:scale-110" 
                           />
-                          <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
-                            <span className="text-white font-sans text-[9px] font-bold tracking-[0.2em] uppercase mb-1 opacity-80">
-                              {isSpares ? 'SHOWER' : 'Store'}
-                            </span>
-                            <h3 className="text-white font-sans text-lg font-bold uppercase tracking-tight leading-tight m-0">
-                              {isSpares ? 'SPARES' : (shopifyCol?.title || item.title)}
-                            </h3>
-                          </div>
+                          {!isSpares && (
+                            <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
+                              <span className="text-white font-sans text-[9px] font-bold tracking-[0.2em] uppercase mb-1 opacity-80">
+                                Store
+                              </span>
+                              <h3 className="text-white font-sans text-lg font-bold uppercase tracking-tight leading-tight m-0">
+                                {shopifyCol?.title || item.title}
+                              </h3>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

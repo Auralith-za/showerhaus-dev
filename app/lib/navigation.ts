@@ -89,22 +89,7 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
             }
         ]
     },
-    {
-        title: 'Decorative',
-        handle: 'decorative',
-        featuredImage: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/hidraulico-decor-2-2.jpg',
-        featuredTitle: 'DESIGN ELEMENTS',
-        categories: [
-            {
-                title: 'Interior Accents',
-                handle: 'decorative',
-                items: [
-                    { title: 'Mirrors', handle: 'mirrors' },
-                    { title: 'Vanities & Basins', handle: 'vanities-basins' },
-                ],
-            }
-        ]
-    },
+
 ];
 
 export const PRIMARY_MENU_ITEMS = [
@@ -148,7 +133,7 @@ export const FOOTER_MENU = {
         { title: 'Spares', handle: 'shower-spares' },
         { title: 'Consumables', handle: 'consumables' },
         { title: 'Shower Care', handle: 'shower-care' },
-        { title: 'Decorative', handle: 'decorative' },
+
     ],
     bottom: [
         { title: 'Terms & Conditions', handle: 'terms-of-service' },
