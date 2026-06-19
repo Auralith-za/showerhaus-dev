@@ -480,13 +480,13 @@ export function ErrorBoundary() {
         <section className="py-24 bg-white border-b border-gray-100 text-center px-6">
           <div className="max-w-3xl mx-auto space-y-6">
             <span className="block font-sans text-[11px] font-bold tracking-[0.4em] uppercase text-[#4A89C8]">
-              Product Not Found
+              Welcome to Shower Haus
             </span>
             <h1 className="font-display text-5xl md:text-6xl text-primary tracking-tight">
               Are you looking for {formattedHandle}?
             </h1>
             <p className="font-sans text-xl text-gray-500 leading-relaxed max-w-2xl mx-auto">
-              We are currently migrating our standard catalog to our new website. However, our team specializes in custom builds and can design exactly what you need.
+              As South Africa's premier shower enclosure specialists, our expert team focuses on premium custom builds and can design exactly what you need to create your perfect bathroom sanctuary.
             </p>
             <div className="pt-8">
               <Link
