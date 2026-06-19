@@ -119,11 +119,11 @@ export function Footer() {
 
       {/* Bottom Bar */}
       <div className="bg-gray-50 border-t border-gray-100 py-6">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs tracking-[0.2em] text-gray-400 font-light uppercase">
-          <p className="order-2 md:order-1 text-center md:text-left mt-6 md:mt-0 text-gray-400 text-xs font-light tracking-[0.2em] uppercase">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-[10px] tracking-[0.2em] text-gray-400 font-light uppercase">
+          <p className="order-2 md:order-1 text-center md:text-left mt-4 md:mt-0 text-gray-400 text-[10px] font-light tracking-[0.2em] uppercase">
             &copy; {new Date().getFullYear()} SHOWERHAUS. THE RIGHT FIT.
           </p>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 order-1 md:order-2">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 order-1 md:order-2 text-xs md:text-[10px]">
             {FOOTER_MENU.bottom.map((item) => (
               <Link key={item.handle} to={`/policies/${item.handle}`} className="hover:text-primary transition-colors">
                 {item.title}

@@ -320,7 +320,7 @@ export function HeaderMenu({
                       {isSpares ? (() => {
                         const sparesProducts = shopifyCol?.products?.nodes || products || [];
                         const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
-                        const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                        const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals'];
                         return (
                           <div className="flex flex-col space-y-3 mt-2">
                             <span className="text-sm font-sans text-gray-400 pl-2">
