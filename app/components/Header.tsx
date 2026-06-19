@@ -255,13 +255,13 @@ export function HeaderMenu({
 
   if (viewport === 'mobile') {
     return (
-      <nav className="flex flex-col space-y-6" role="navigation">
+      <nav className="flex flex-col space-y-4 pb-12" role="navigation">
         <NavLink
           end
           onClick={close}
           prefetch="intent"
           to="/"
-          className="text-xs font-sans tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4"
+          className="text-sm font-sans tracking-[0.2em] uppercase font-bold text-primary border-b border-gray-100 pb-4"
         >
           Home
         </NavLink>
@@ -281,7 +281,7 @@ export function HeaderMenu({
                   <NavLink
                     key={sub.handle}
                     to={sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`}
-                    className="text-sm font-sans text-gray-500 hover:text-primary"
+                    className="text-base font-sans text-gray-500 hover:text-primary"
                     onClick={close}
                   >
                     {sub.title}
@@ -293,9 +293,9 @@ export function HeaderMenu({
         ))}
 
         {/* Mega Menu Categories for Mobile */}
-        <div className="pt-4">
-          <p className="text-[10px] font-sans tracking-[0.2em] uppercase text-gray-400 mb-6">Collections</p>
-          <div className="flex flex-col space-y-6">
+        <div className="pt-2">
+          <p className="text-xs font-sans tracking-[0.2em] uppercase text-gray-400 mb-4">Collections</p>
+          <div className="flex flex-col space-y-4">
             {MEGA_MENU_ITEMS.map((item) => {
               const isSpares = item.handle === 'shower-spares';
               const shopifyCol = shopifyCollections.find(col => 
@@ -309,7 +309,7 @@ export function HeaderMenu({
                 <div key={item.handle} className="flex flex-col space-y-2">
                   <NavLink
                     to={path}
-                    className="text-md font-sans font-light text-gray-800 hover:text-primary transition-colors flex justify-between items-center"
+                    className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
                     onClick={close}
                   >
                     {item.title}
@@ -322,8 +322,8 @@ export function HeaderMenu({
                         const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
                         const displayTypes = uniqueTypes.length > 0 ? uniqueTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
                         return (
-                          <div className="flex flex-col space-y-2 mt-2">
-                            <span className="text-xs font-sans tracking-[0.1em] uppercase font-bold text-primary">
+                          <div className="flex flex-col space-y-3 mt-2">
+                            <span className="text-sm font-sans text-gray-400 pl-2">
                               Spares
                             </span>
                             {displayTypes.map(type => {
@@ -332,7 +332,7 @@ export function HeaderMenu({
                                 <NavLink
                                   key={typeStr}
                                   to={`/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`}
-                                  className="text-xs font-sans text-gray-500 hover:text-primary pl-2"
+                                  className="text-base font-sans text-gray-500 hover:text-primary pl-4"
                                   onClick={close}
                                 >
                                   {typeStr}
@@ -350,15 +350,15 @@ export function HeaderMenu({
                           return acc;
                         }, {});
                         return Object.keys(colProductsByType).map(type => (
-                          <div key={type} className="flex flex-col space-y-1 mt-2">
-                            <span className="text-xs font-sans tracking-[0.1em] uppercase font-bold text-primary">
+                          <div key={type} className="flex flex-col space-y-3 mt-2">
+                            <span className="text-sm font-sans text-gray-400 pl-2">
                               {type}
                             </span>
                             {colProductsByType[type].map(p => (
                               <NavLink
                                 key={p.handle}
                                 to={`/products/${p.handle}`}
-                                className="text-xs font-sans text-gray-500 hover:text-primary pl-2"
+                                className="text-base font-sans text-gray-500 hover:text-primary pl-4"
                                 onClick={close}
                               >
                                 {p.title}
@@ -380,11 +380,11 @@ export function HeaderMenu({
         </div>
 
         {/* Mobile Bottom Links */}
-        <div className="pt-8 mt-4 border-t border-gray-100 flex flex-col gap-4 pb-8">
-          <NavLink to="/account" onClick={close} className="text-xs font-sans tracking-widest uppercase font-bold text-gray-800 hover:text-primary">
+        <div className="pt-6 mt-2 border-t border-gray-100 flex flex-col gap-4">
+          <NavLink to="/account" onClick={close} className="text-sm font-sans tracking-widest uppercase font-bold text-gray-800 hover:text-primary">
             Account / Login
           </NavLink>
-          <NavLink to="/contact" onClick={close} className="text-xs font-sans tracking-widest uppercase font-bold text-gray-800 hover:text-primary">
+          <NavLink to="/contact" onClick={close} className="text-sm font-sans tracking-widest uppercase font-bold text-gray-800 hover:text-primary">
             Contact
           </NavLink>
         </div>

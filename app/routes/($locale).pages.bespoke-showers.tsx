@@ -227,14 +227,14 @@ export default function BespokeShowers() {
                                                 <h2 className="font-display text-3xl text-primary mb-1">Select Configuration</h2>
                                                 <p className="font-sans text-sm text-gray-400">How the enclosure fits into your bathroom.</p>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-4">
+                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                                                 {CONFIGURATIONS.map(l => (
                                                     <button key={l} type="button"
                                                         onClick={() => handleSelectLayout(l)}
-                                                        className={`block p-8 text-center border rounded-sm transition-all duration-200 cursor-pointer ${
+                                                        className={`block p-4 md:p-8 flex flex-col justify-center items-center text-center border rounded-sm transition-all duration-200 cursor-pointer min-h-[120px] ${
                                                             layout === l ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400'
                                                         }`}>
-                                                        <h3 className="font-display text-xl text-primary">{l}</h3>
+                                                        <h3 className="font-display text-lg md:text-xl text-primary leading-tight">{l}</h3>
                                                         {layout === l && <div className="mt-2 w-6 h-1 bg-[#4A89C8] mx-auto" />}
                                                     </button>
                                                 ))}
