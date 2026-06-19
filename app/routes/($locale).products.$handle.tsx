@@ -112,7 +112,7 @@ export default function Product() {
   const [quantity, setQuantity] = useState(1);
 
   // Find the mock product to get the collection handle for related items
-  const mockProduct = MOCK_PRODUCTS.find(p => p.id === product.id);
+
 
   return (
     <div className="product-page bg-white">
@@ -249,7 +249,7 @@ export default function Product() {
             <ProductTabs description={descriptionHtml} />
 
             {/* Custom Shower Banner */}
-            {(mockProduct?.collection === 'showers' || product.handle.includes('shower')) && (
+            {product.handle.includes('shower') && (
                 <Link 
                     to="/pages/bespoke-showers"
                     className="mt-8 bg-sky-blue/10 border border-sky-blue/20 p-6 flex items-center justify-between group hover:bg-sky-blue/20 transition-all rounded-sm"
@@ -284,7 +284,7 @@ export default function Product() {
       </div>
 
       {/* Modern Tabbed Carousel Section */}
-      <ProductCarouselTabs currentProduct={mockProduct} />
+      <ProductCarouselTabs currentProduct={undefined} />
 
       <Analytics.ProductView
         data={{

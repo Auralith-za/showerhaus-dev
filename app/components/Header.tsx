@@ -118,7 +118,7 @@ export function Header({
                           if (isSpares) {
                             const sparesProducts = shopifyCol?.products?.nodes || products || [];
                             const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
-                            const filteredTypes = uniqueTypes.filter(t => (t as string).toLowerCase() !== 'parts' && (t as string).toLowerCase() !== 'spares');
+                            const filteredTypes = uniqueTypes.filter(t => (t as string).toLowerCase() !== 'parts' && (t as string).toLowerCase() !== 'spares' && (t as string).toLowerCase() !== 'shower parts');
                             const displayTypes = filteredTypes.length > 0 ? filteredTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
 
                             return (

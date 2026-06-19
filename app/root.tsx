@@ -251,7 +251,7 @@ export function ErrorBoundary() {
             ? "We are currently migrating our standard catalog and legacy pages to our new website. Please check back soon, or contact us directly for bespoke architectural builds." 
             : "Something went wrong. Please try refreshing the page or navigating back home."}
         </p>
-        <a href="/" className="inline-block bg-primary text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase py-4 px-8 hover:bg-secondary transition-colors rounded-sm">
+        <a href="/" className="inline-block mt-6 bg-primary text-white font-sans text-[10px] font-bold tracking-[0.2em] uppercase py-4 px-8 hover:bg-secondary transition-colors rounded-sm">
           Return Home
         </a>
       </div>
