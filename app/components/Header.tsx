@@ -179,8 +179,8 @@ export function Header({
                           ));
                         })()}
                       </div>
-                      <div className="w-[200px] flex-shrink-0">
-                        <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-square bg-gray-50 flex items-center justify-center p-4' : 'aspect-[4/5]'}`}>
+                      <div className="w-[350px] flex-shrink-0">
+                        <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[4/3] bg-gray-50 flex items-center justify-center p-4' : 'aspect-[4/5]'}`}>
                           <img 
                             src={isSpares ? "/spares-menu.png" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
                             alt={shopifyCol?.title || item.title} 

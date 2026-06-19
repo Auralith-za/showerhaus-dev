@@ -7,7 +7,7 @@ import { Hero } from '~/components/Hero';
 import { TrustBar } from '~/components/TrustBar';
 import { HomeCategories } from '~/components/HomeCategories';
 
-import { getMockRecommendedProducts } from '~/lib/mockData';
+
 import { InstallationSection } from '~/components/InstallationSection';
 import { QuotingSection } from '~/components/QuotingSection';
 
@@ -28,9 +28,9 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
   const recommendedProducts = context.storefront
     ? context.storefront.query(RECOMMENDED_PRODUCTS_QUERY).catch((err) => {
         console.error('Failed to fetch recommended products:', err);
-        return getMockRecommendedProducts() as any;
+        return null;
       })
-    : Promise.resolve(getMockRecommendedProducts() as any);
+    : Promise.resolve(null);
 
   return {
     recommendedProducts,

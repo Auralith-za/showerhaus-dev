@@ -22,7 +22,7 @@ export async function loader(args: Route.LoaderArgs) {
   return { ...deferredData, ...criticalData };
 }
 
-import { MOCK_PRODUCTS } from '~/lib/mockData';
+
 
 async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   const { storefront } = context;

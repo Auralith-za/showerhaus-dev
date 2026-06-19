@@ -30,11 +30,11 @@ export const meta: Route.MetaFunction = ({ data }: any) => {
 };
 
 export async function loader(args: Route.LoaderArgs) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
+
+  // Start fetching non-critical data after we have the product ID
+  const deferredData = loadDeferredData({ ...args, productId: criticalData.product.id });
 
   return { ...deferredData, ...criticalData };
 }
@@ -83,17 +83,23 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({ context, params }: Route.LoaderArgs) {
-  // Put any API calls that is not critical to be available on first page render
-  // For example: product reviews, product recommendations, social feeds.
+function loadDeferredData({ context, productId }: any) {
+  const relatedProducts = context.storefront.query(RECOMMENDATIONS_QUERY, {
+    variables: { productId },
+  }).catch((error: Error) => {
+    console.error(error);
+    return null;
+  });
 
-  return {};
+  return {
+    relatedProducts,
+  };
 }
 
 import { ProductCarouselTabs } from '~/components/ProductCarouselTabs';
 
 export default function Product() {
-  const { product } = useLoaderData<typeof loader>();
+  const { product, relatedProducts } = useLoaderData<typeof loader>();
   const { open } = useAside();
   const navigate = useNavigate();
 
@@ -284,7 +290,7 @@ export default function Product() {
       </div>
 
       {/* Modern Tabbed Carousel Section */}
-      <ProductCarouselTabs currentProduct={undefined} />
+      <ProductCarouselTabs currentProduct={product} relatedProducts={relatedProducts} />
 
       <Analytics.ProductView
         data={{
@@ -410,6 +416,36 @@ const PRODUCT_QUERY = `#graphql
     }
   }
   ${PRODUCT_FRAGMENT}
+` as const;
+
+const RECOMMENDATIONS_QUERY = `#graphql
+  fragment RecommendedProduct on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      url
+      altText
+      width
+      height
+    }
+  }
+  query ProductRecommendations(
+    $productId: ID!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    productRecommendations(productId: $productId) {
+      ...RecommendedProduct
+    }
+  }
 ` as const;
 
 export function ErrorBoundary() {
