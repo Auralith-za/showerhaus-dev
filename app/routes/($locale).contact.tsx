@@ -64,7 +64,7 @@ export default function Contact() {
                 <div className="lg:w-3/5 p-8 md:p-16 lg:p-24 flex flex-col justify-center bg-white">
                     <div className="max-w-2xl mx-auto w-full">
                         <h2 className="font-display text-4xl text-primary mb-4">Send us a message</h2>
-                        <p className="font-sans text-gray-500 mb-12">Whether it's a quote request or a design query, our team is ready to help.</p>
+                        <p className="font-sans text-gray-500 pb-16">Whether it's a quote request or a design query, our team is ready to help.</p>
 
                         <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -84,13 +84,8 @@ export default function Contact() {
                             </div>
 
                             <div className="space-y-2 group">
-                                <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 group-focus-within:text-secondary transition-colors">Project Type</label>
-                                <select className="w-full border-b border-gray-200 py-3 focus:border-secondary focus:ring-0 outline-none transition-all font-sans text-primary bg-transparent appearance-none">
-                                    <option>Residential</option>
-                                    <option>Commercial</option>
-                                    <option>Hotel / Resort</option>
-                                    <option>Other</option>
-                                </select>
+                                <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 group-focus-within:text-secondary transition-colors">Contact Number (Optional)</label>
+                                <input type="tel" className="w-full border-b border-gray-200 py-3 focus:border-secondary focus:ring-0 outline-none transition-all font-sans text-primary bg-transparent" />
                             </div>
 
                             <div className="space-y-2 group">

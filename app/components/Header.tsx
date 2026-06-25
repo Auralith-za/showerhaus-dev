@@ -1,5 +1,5 @@
 import { Suspense, useState } from 'react';
-import { Await, Link, NavLink, useAsyncValue } from 'react-router';
+import { Await, Link, NavLink, useAsyncValue, useLocation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -41,8 +41,17 @@ export function Header({
 
   const sparesTypes = Object.keys(sparesByType);
   
+  const location = useLocation();
+  const isShopPage = location.pathname.startsWith('/collections') || location.pathname.startsWith('/products');
+
   return (
     <>
+      {isShopPage && (
+        <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
+          Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
+          <Link to="/contact" className="underline hover:text-secondary">click here to provide feedback</Link>.
+        </div>
+      )}
       {/* Top Banner (White) */}
       <div className="hidden md:flex" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
@@ -207,7 +216,7 @@ export function Header({
                       <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Architectural Collections</span>
                       <h4 className="font-display" style={{ fontSize: '18px', color: '#111', margin: 0 }}>{item.title} Range</h4>
                       <p style={{ fontSize: '11px', color: '#999', margin: 0, lineHeight: '1.6', fontFamily: 'sans-serif' }}>
-                        Our curated range of {item.title.toLowerCase()} is currently being loaded on Shopify. Check back soon for our latest architectural arrivals.
+                        Our curated range of {item.title.toLowerCase()} is currently being loaded. Check back soon.
                       </p>
                       <div style={{ paddingTop: '8px' }}>
                         <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#999', border: '1px solid #e5e7eb', padding: '6px 12px', borderRadius: '2px' }}>
@@ -495,7 +504,7 @@ function CartBadge({ count }: { count: number | null }) {
   return (
     <a
       href="/cart"
-      className="flex items-center gap-2 bg-[#14294f] hover:bg-[#1e3b6e] text-white px-4 py-1.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer h-[32px] min-w-[66px] justify-center"
+      className="flex items-center gap-2 bg-[#14294f] hover:bg-[#1e3b6e] !no-underline text-white px-4 py-1.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer h-[32px] min-w-[66px] justify-center"
       onClick={(e) => {
         e.preventDefault();
         open('cart');

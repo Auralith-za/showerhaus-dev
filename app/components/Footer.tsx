@@ -4,30 +4,14 @@ import { FOOTER_MENU } from '~/lib/navigation';
 export function Footer() {
   return (
     <footer className="w-full bg-white border-t border-gray-50">
-      {/* Newsletter Section */}
+      {/* Newsletter Section - Hidden for now */}
+      {/* 
       <div className="bg-primary text-white py-12">
         <div className="container mx-auto px-6 flex flex-col items-center text-center">
-          <h3 className="font-sans text-4xl md:text-5xl tracking-tighter font-bold mb-4 !text-white">Specials and Giveaways</h3>
-          <p className="font-sans text-sm text-gray-300 mb-8 max-w-xl mx-auto font-light leading-relaxed">
-            Sign up to our newsletter and be the first to hear about upcoming specials and promotions
-          </p>
-          <form className="max-w-md w-full flex flex-col sm:flex-row gap-0 group border border-white/20 focus-within:border-white transition-colors mt-10">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="flex-1 bg-transparent py-4 px-6 text-white placeholder-gray-400 focus:outline-none transition-all font-sans text-sm"
-              style={{ border: 'none', borderRadius: 0, margin: 0 }}
-              required
-            />
-            <button
-              type="submit"
-              className="font-sans text-[10px] font-bold tracking-[0.3em] uppercase bg-white text-primary px-8 py-4 sm:py-0 hover:bg-secondary hover:text-white transition-all duration-300"
-            >
-              Subscribe
-            </button>
-          </form>
+          ...
         </div>
-      </div>
+      </div> 
+      */}
 
       {/* Main Footer Links */}
       <div className="container mx-auto px-6 py-12">

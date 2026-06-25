@@ -410,7 +410,10 @@ button.reset:hover:not(:has(> *)) {
 */
 .article img {
   height: auto;
+  max-width: 400px;
   width: 100%;
+  margin: 2rem auto;
+  border-radius: 4px;
 }
 
 /*

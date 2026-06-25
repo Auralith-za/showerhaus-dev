@@ -36,15 +36,13 @@ export function ProductTabs({ description }: { description: string }) {
                 {activeTab === 'delivery' && (
                     <div className="space-y-4">
                         <p><strong>Standard Delivery:</strong> 3-5 working days.</p>
-                        <p><strong>Express Delivery:</strong> Next working day if ordered before 12pm.</p>
                         <p>We offer a hassle-free 30-day return policy for all unused items in their original packaging.</p>
                     </div>
                 )}
 
                 {activeTab === 'returns' && (
                     <div className="space-y-4">
-                        <p>All ShowerHaus products come with a minimum 5-year manufacturer guarantee.</p>
-                        <p>Our brassware and ceramics are covered for 10 years against manufacturing defects.</p>
+                        <p>Shower Haus hardware (hinges, clamps, frame) carries a 1 year guarantee whereas silicone and seals carry a 3 month guarantee.</p>
                     </div>
                 )}
             </div>

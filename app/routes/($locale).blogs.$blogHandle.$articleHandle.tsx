@@ -73,28 +73,24 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Article() {
   const {article} = useLoaderData<typeof loader>();
-  const {title, image, contentHtml, author} = article;
-
-  const publishedDate = new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(article.publishedAt));
+  const {title, image, contentHtml} = article;
 
   return (
-    <div className="article">
-      <h1>
-        {title}
-        <div>
-          <time dateTime={article.publishedAt}>{publishedDate}</time> &middot;{' '}
-          <address>{author?.name}</address>
-        </div>
-      </h1>
+    <div className="container mx-auto px-6 py-24 max-w-4xl bg-white mt-10">
+      <header className="mb-16 text-center">
+        <h1 className="font-display text-4xl md:text-5xl text-primary font-bold mb-8">
+          {title}
+        </h1>
+        {image && (
+          <div className="max-w-md mx-auto overflow-hidden shadow-sm mb-12">
+            <Image data={image} sizes="90vw" loading="eager" className="w-full h-auto object-cover" />
+          </div>
+        )}
+      </header>
 
-      {image && <Image data={image} sizes="90vw" loading="eager" />}
       <div
         dangerouslySetInnerHTML={{__html: contentHtml}}
-        className="article"
+        className="prose prose-lg max-w-none prose-headings:font-display prose-headings:text-primary prose-p:font-sans prose-p:font-light prose-p:text-gray-600 prose-a:text-secondary"
       />
     </div>
   );

@@ -6,35 +6,35 @@ export async function loader() {
 
 const STORIES = [
     {
-        quote: "The attention to detail in their frameless enclosures is unmatched. It completely transformed our master suite into a true sanctuary.",
-        author: "Sarah Mitchell",
-        location: "Umhlanga Rocks",
+        quote: "Excellent service from Martyn and the team. From the enquiry to completion, a seamless job, well done with great value, the best service delivered promptly. Shower Haus lives up to the great reputation built over many years.",
+        author: "Rehna Wollentine",
+        location: "Google Review",
         rating: 5
     },
     {
-        quote: "Professional, efficient, and a result that exceeded every expectation. The custom mirrors they designed are nothing short of a work of art.",
-        author: "David van der Merwe",
-        location: "Zimbali Estate",
+        quote: "We just recently bought 4 shower doors and received an exceptional service from the Shower Haus team. The staff at the shop, the advice from technician taking measurements and the installers was super. I would highly recommend them for great quality, exceptional service and quick turnaround time.",
+        author: "Mxolisi Phiri",
+        location: "Google Review",
         rating: 5
     },
     {
-        quote: "ShowerHaus was the missing piece in our architectural vision. Their team truly understands what luxury means and how to deliver it.",
-        author: "Marcus Thorne",
-        location: "Steyn City",
+        quote: "I'm really impressed with the sales and installation team at Shower Haus. The quality of the product is excellent and functional. Brandon and Pierre are knowledgeable, experienced and friendly installers while the sales person Clinton provided the best advice and was very punctual. I had cheaper quotes but when I looked at the reviews and unprofessional suggestions, I changed my mind. Well done Shower Haus",
+        author: "jayan pillay",
+        location: "Google Review",
         rating: 5
     },
     {
-        quote: "From the first consultation to final installation, the process was seamless. I wouldn't trust anyone else with my next project.",
-        author: "Anita Patel",
-        location: "Ballito",
-        rating: 5
+        quote: "Friendly staff with honest advice was experience here. I went in looking for a roller replacement for a corner shower unit which they offer and recieved good advice from the staff. They have shower units and mirrors as their primary material for sale with replacement wheels and rollers for shower door as well.",
+        author: "Ashley Parbhoo",
+        location: "Google Review",
+        rating: 4
     },
     {
-        quote: "We specified ShowerHaus for our entire development. Consistent quality, on time, every single time. An outstanding supplier.",
-        author: "James Fourie",
-        location: "Sandton",
+        quote: "I just wanted to take a moment to compliment your team on their professionalism. It's rare these days to come across a company that conducts itself with such high standards. Well done to you and your team — truly impressive.",
+        author: "Annelize Jacobs",
+        location: "Google Review",
         rating: 5
-    },
+    }
 ];
 
 export default function CustomerStories() {
@@ -108,12 +108,11 @@ export default function CustomerStories() {
             {/* Stats Strip */}
             <section className="py-20 bg-white border-t border-b border-gray-100">
                 <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                         {[
-                            { num: '20+', label: 'Years of excellence' },
-                            { num: '5,000+', label: 'Projects completed' },
-                            { num: '100%', label: 'Client satisfaction' },
-                            { num: '4.9★', label: 'Average rating' },
+                            { num: '22+', label: 'Years of excellence' },
+                            { num: '10 000+', label: 'Showers installed' },
+                            { num: '4.3★', label: 'Google rating' },
                         ].map((stat, i) => (
                             <div key={i}>
                                 <div className="font-display text-4xl md:text-5xl text-primary mb-3">{stat.num}</div>

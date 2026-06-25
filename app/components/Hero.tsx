@@ -56,6 +56,8 @@ export function Hero() {
                     <img
                         src={slide.image}
                         alt={slide.title}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchPriority={index === 0 ? "high" : "auto"}
                         className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-105' : 'scale-100'
                             }`}
                         style={{
