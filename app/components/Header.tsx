@@ -447,7 +447,7 @@ function HeaderCtas({
 
       {/* Account Links & Icon */}
       <div className="flex items-center gap-3">
-        <NavLink prefetch="intent" to="/account" className="text-primary hover:opacity-80 transition-opacity flex items-center">
+        <NavLink prefetch="intent" to="/account" className="hover:opacity-80 transition-opacity flex items-center" style={{ color: '#14294f' }}>
           <Suspense fallback={<IconUser />}>
             <Await resolve={isLoggedIn} errorElement={<IconUser />}>
               {(isLoggedIn) => <IconUser loggedIn={isLoggedIn} />}
@@ -455,19 +455,19 @@ function HeaderCtas({
           </Suspense>
         </NavLink>
         <Suspense fallback={null}>
-          <Await resolve={isLoggedIn} errorElement={<Link to="/account/login" className="text-primary hover:opacity-80 transition-opacity text-[10px] tracking-wider uppercase font-medium">Log In</Link>}>
+          <Await resolve={isLoggedIn} errorElement={<Link to="/account/login" className="hover:opacity-80 transition-opacity text-[10px] tracking-wider uppercase font-medium" style={{ color: '#14294f' }}>Log In</Link>}>
             {(loggedIn) => loggedIn ? (
-              <Suspense fallback={<Link to="/account" className="text-primary hover:opacity-80 transition-opacity text-[10px] tracking-wider uppercase font-medium">Account</Link>}>
+              <Suspense fallback={<Link to="/account" className="hover:opacity-80 transition-opacity text-[10px] tracking-wider uppercase font-medium" style={{ color: '#14294f' }}>Account</Link>}>
                 <Await resolve={customer}>
                   {(customerData) => (
-                    <Link to="/account" className="text-primary hover:opacity-80 transition-all text-[10px] tracking-wider uppercase font-medium">
+                    <Link to="/account" className="hover:opacity-80 transition-all text-[10px] tracking-wider uppercase font-medium" style={{ color: '#14294f' }}>
                       {customerData?.firstName ? customerData.firstName : 'Account'}
                     </Link>
                   )}
                 </Await>
               </Suspense>
             ) : (
-              <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase font-medium text-primary">
+              <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase font-medium" style={{ color: '#14294f' }}>
                 <Link to="/account/login" className="hover:opacity-80 transition-opacity">Log In /</Link>
                 <Link to="/account/register" className="hover:opacity-80 transition-opacity">Register</Link>
               </div>
@@ -501,7 +501,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const { open } = useAside();
   return (
-    <button className="reset hover:text-primary transition-colors" onClick={() => open('search')}>
+    <button className="reset hover:opacity-80 transition-opacity" style={{ color: '#14294f' }} onClick={() => open('search')}>
       <IconSearch />
     </button>
   );
