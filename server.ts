@@ -2,6 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import * as build from 'virtual:react-router/server-build';
 import { createRequestHandler } from 'react-router';
+import { storefrontRedirect } from '@shopify/hydrogen';
 import { createHydrogenRouterContext } from '~/lib/context';
 
 export default {
@@ -12,6 +13,19 @@ export default {
       const handleRequest = createRequestHandler(build, 'production');
 
       const response = await handleRequest(request, appLoadContext as any);
+
+      // Save the session cookie back to the browser if there are pending updates (e.g. OAuth state, login token)
+      if (appLoadContext.session.isPending) {
+        response.headers.set('Set-Cookie', await appLoadContext.session.commit());
+      }
+
+      if (response.status === 404) {
+        return storefrontRedirect({
+          request,
+          response,
+          storefront: appLoadContext.storefront,
+        });
+      }
 
       return response;
     } catch (error) {
