@@ -29,7 +29,7 @@ export class AppSession implements HydrogenSession {
         path: '/',
         sameSite: 'lax',
         secrets,
-        secure: process.env.NODE_ENV === 'production',
+        secure: request.url.startsWith('https://'),
       },
     });
 
