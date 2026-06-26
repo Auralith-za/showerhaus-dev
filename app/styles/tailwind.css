@@ -4,6 +4,7 @@
  */
 
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @theme {
   --color-royal-blue: #14294f;
