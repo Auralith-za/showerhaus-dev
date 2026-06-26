@@ -11,7 +11,7 @@ export default {
 
       const handleRequest = createRequestHandler(build, 'production');
 
-      const response = await handleRequest(request, appLoadContext);
+      const response = await handleRequest(request, appLoadContext as any);
 
       return response;
     } catch (error) {
