@@ -90,7 +90,7 @@ export default function Article() {
 
       <div
         dangerouslySetInnerHTML={{__html: contentHtml}}
-        className="prose prose-lg max-w-none prose-headings:font-display prose-headings:text-primary prose-p:font-sans prose-p:font-light prose-p:text-gray-600 prose-a:text-secondary"
+        className="article prose prose-lg max-w-none prose-headings:font-display prose-headings:text-primary prose-p:font-sans prose-p:font-light prose-p:text-gray-600 prose-a:text-secondary"
       />
     </div>
   );
