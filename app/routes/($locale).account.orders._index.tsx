@@ -106,23 +106,27 @@ function EmptyOrders({ hasFilters = false }: { hasFilters?: boolean }) {
     <div className="text-center py-20 bg-gray-50/50 border border-dashed border-gray-200">
       {hasFilters ? (
         <>
-          <p className="font-sans text-xs tracking-widest uppercase text-gray-400 mb-6">No orders found matching your search.</p>
-          <Link
-            to="/account/orders"
-            className="font-sans text-[10px] tracking-[0.2em] uppercase font-bold text-primary border-b border-primary pb-1 hover:text-secondary hover:border-secondary transition-all"
-          >
-            Clear filters
-          </Link>
+          <p className="font-sans text-xs tracking-widest uppercase text-gray-400 font-semibold" style={{ marginBottom: '24px' }}>No orders found matching your search.</p>
+          <div style={{ marginTop: '24px' }}>
+            <Link
+              to="/account/orders"
+              className="font-sans text-[10px] tracking-[0.2em] uppercase font-bold text-primary border-b border-primary pb-1 hover:text-secondary hover:border-secondary transition-all"
+            >
+              Clear filters
+            </Link>
+          </div>
         </>
       ) : (
         <>
-          <p className="font-sans text-xs tracking-widest uppercase text-gray-400 mb-8 font-semibold">You haven&apos;t placed any orders yet.</p>
-          <Link
-            to="/collections"
-            className="inline-block bg-primary text-white px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-primary/90 transition-all duration-300"
-          >
-            Start Shopping
-          </Link>
+          <p className="font-sans text-xs tracking-widest uppercase text-gray-400 font-semibold" style={{ marginBottom: '24px' }}>You haven&apos;t placed any orders yet.</p>
+          <div style={{ marginTop: '24px' }}>
+            <Link
+              to="/collections"
+              className="inline-block bg-primary text-white px-10 py-4 text-[10px] tracking-[0.2em] font-semibold uppercase hover:bg-primary/90 transition-all duration-300"
+            >
+              Start Shopping
+            </Link>
+          </div>
         </>
       )}
     </div>
