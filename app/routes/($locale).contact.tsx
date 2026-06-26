@@ -132,12 +132,12 @@ export default function Contact() {
                         <p className="font-sans text-gray-500 mb-12">Whether it's a quote request or a design query, our team is ready to help.</p>
 
                         {actionData?.success ? (
-                            <div className="bg-green-50 border border-green-200 text-green-800 rounded-md p-6 mb-8">
+                            <div className="bg-green-50 border border-green-200 text-green-800 rounded-md p-6 mt-10 mb-8">
                                 <h3 className="font-display text-xl mb-2">Message Sent!</h3>
                                 <p className="font-sans text-sm">Thank you for getting in touch. We will get back to you as soon as possible.</p>
                             </div>
                         ) : (
-                            <Form method="post" className="space-y-8">
+                            <Form method="post" className="space-y-8 mt-10">
                                 {actionData?.error && (
                                     <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-4 mb-8 font-sans text-sm">
                                         {actionData.error}
