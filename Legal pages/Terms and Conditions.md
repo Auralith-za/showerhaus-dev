@@ -1,5 +1,5 @@
 
-## Terms & Conditions
+
 
 These Terms & Conditions ("Terms") govern the sale of products and services by Shower Haus and your use of our website at www.showerhaus.co.za (the "website"). Please read them carefully. By placing an order with us, you agree to these Terms.
 

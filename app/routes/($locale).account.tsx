@@ -13,10 +13,12 @@ export function shouldRevalidate() {
 }
 
 export async function loader({ context }: Route.LoaderArgs) {
-  const { customerAccount } = context;
+  const { customerAccount, storefront } = context;
+  await customerAccount.handleAuthStatus();
+  
   const { data, errors } = await customerAccount.query(CUSTOMER_DETAILS_QUERY, {
     variables: {
-      language: customerAccount.i18n.language,
+      language: storefront.i18n.language,
     },
   });
 

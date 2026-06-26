@@ -1,5 +1,5 @@
 
-## Cookies Policy
+
 
 This policy explains how the Shower Haus website uses cookies and similar technologies. It should be read together with our Privacy & POPI Policy, which explains how we handle your personal information.
 

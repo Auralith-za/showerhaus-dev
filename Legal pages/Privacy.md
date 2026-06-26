@@ -1,5 +1,5 @@
 
-## Privacy & POPI Policy
+
 
 Shower Haus respects your privacy and is committed to protecting your personal information. This policy explains what personal information we collect, how we use it, and your rights under the Protection of Personal Information Act, 2013 (POPIA). It should be read together with our Cookies Policy and our PAIA Policy.
 

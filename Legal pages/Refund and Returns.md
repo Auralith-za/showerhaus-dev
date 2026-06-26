@@ -1,6 +1,6 @@
 
 
-## Refund and Returns Policy
+
 
 We want you to be happy with what you buy from Shower Haus. This policy explains when and how you can return a product and get a refund. It should be read together with our Terms & Conditions.
 

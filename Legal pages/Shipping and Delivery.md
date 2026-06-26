@@ -1,5 +1,5 @@
 
-## Shipping and Delivery Policy
+
 
 This policy explains how we deliver orders placed through the Shower Haus website. It should be read together with our Terms & Conditions and our Refund and Returns Policy.
 

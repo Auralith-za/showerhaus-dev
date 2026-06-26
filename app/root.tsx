@@ -19,6 +19,14 @@ import tailwindCss from './styles/tailwind.css?url';
 import { PageLayout } from './components/PageLayout';
 import { CookieConsent } from '~/components/CookieConsent';
 
+const CUSTOMER_NAME_QUERY = `#graphql
+  query CustomerName {
+    customer {
+      firstName
+    }
+  }
+` as const;
+
 export type RootLoader = typeof loader;
 
 /**
@@ -177,9 +185,15 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
       return null;
     });
 
+  const customer = customerAccount.isLoggedIn().then(loggedIn => {
+    if (!loggedIn) return null;
+    return customerAccount.query(CUSTOMER_NAME_QUERY).then(res => res.data?.customer).catch(() => null);
+  });
+
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
+    customer,
     footer,
   };
 }
@@ -195,6 +209,20 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="stylesheet" href={tailwindCss}></link>
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        
+        {/* Google Ads Tracking */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17650233161"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-17650233161');
+            `,
+          }}
+        />
+
         <Meta />
         <Links />
       </head>

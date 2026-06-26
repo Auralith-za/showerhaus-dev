@@ -14,6 +14,7 @@ interface HeaderProps {
   header: HeaderQuery;
   cart: Promise<CartApiQueryFragment | null>;
   isLoggedIn: Promise<boolean>;
+  customer?: Promise<any | null>;
   publicStoreDomain: string;
 }
 
@@ -23,6 +24,7 @@ export function Header({
   header,
   isLoggedIn,
   cart,
+  customer,
   publicStoreDomain,
 }: HeaderProps) {
   const { shop } = header;
@@ -73,7 +75,7 @@ export function Header({
           <Link to="/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact</Link>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', minWidth: '120px', justifyContent: 'flex-end' }}>
-          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} customer={customer} />
         </div>
       </div>
 
@@ -436,7 +438,8 @@ function MobileAccordionItem({ title, children }: { title: string, children: Rea
 function HeaderCtas({
   isLoggedIn,
   cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+  customer,
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart' | 'customer'>) {
   return (
     <nav className="flex items-center gap-6 text-gray-700" role="navigation">
       {/* Search Icon */}
@@ -454,11 +457,18 @@ function HeaderCtas({
         <Suspense fallback={null}>
           <Await resolve={isLoggedIn} errorElement={<Link to="/account/login" className="hover:text-primary transition-colors text-[10px] tracking-wider uppercase font-medium">Log In</Link>}>
             {(loggedIn) => loggedIn ? (
-              <Link to="/account" className="hover:text-primary transition-colors text-[10px] tracking-wider uppercase font-medium">Account</Link>
+              <Suspense fallback={<Link to="/account" className="hover:text-primary transition-colors text-[10px] tracking-wider uppercase font-medium">Account</Link>}>
+                <Await resolve={customer}>
+                  {(customerData) => (
+                    <Link to="/account" className="hover:text-primary transition-colors text-[10px] tracking-wider uppercase font-medium">
+                      {customerData?.firstName ? customerData.firstName : 'Account'}
+                    </Link>
+                  )}
+                </Await>
+              </Suspense>
             ) : (
               <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase font-medium">
-                <Link to="/account/login" className="hover:text-primary transition-colors">Log In</Link>
-                <span className="text-gray-300">/</span>
+                <Link to="/account/login" className="hover:text-primary transition-colors">Log In /</Link>
                 <Link to="/account/register" className="hover:text-primary transition-colors">Register</Link>
               </div>
             )}

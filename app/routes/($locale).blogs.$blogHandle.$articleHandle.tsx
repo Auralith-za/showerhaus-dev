@@ -82,7 +82,7 @@ export default function Article() {
           {title}
         </h1>
         {image && (
-          <div className="max-w-md mx-auto overflow-hidden shadow-sm mb-12">
+          <div className="w-full overflow-hidden shadow-sm mb-12">
             <Image data={image} sizes="90vw" loading="eager" className="w-full h-auto object-cover" />
           </div>
         )}
@@ -90,7 +90,7 @@ export default function Article() {
 
       <div
         dangerouslySetInnerHTML={{__html: contentHtml}}
-        className="article prose prose-lg max-w-none prose-headings:font-display prose-headings:text-primary prose-p:font-sans prose-p:font-light prose-p:text-gray-600 prose-a:text-secondary"
+        className="article prose prose-lg max-w-none prose-headings:font-display prose-headings:text-primary prose-p:font-sans prose-p:font-light prose-p:text-gray-600 prose-a:text-secondary prose-img:w-full"
       />
     </div>
   );

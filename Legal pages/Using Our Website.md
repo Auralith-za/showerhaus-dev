@@ -1,5 +1,5 @@
 
-## Using Our Website
+
 
 This policy explains the terms on which you may use the Shower Haus website at www.showerhaus.co.za (the "website"). Please read it carefully. By browsing, using, or making a purchase through the website, you agree to these terms. If you do not agree with them, please do not use the website.
 
