@@ -1,14 +1,17 @@
-import { defineConfig } from 'vite';
-import { hydrogen } from '@shopify/hydrogen/vite';
-import { oxygen } from '@shopify/mini-oxygen/vite';
-import { reactRouter } from '@react-router/dev/vite';
+import {defineConfig} from 'vite';
+import {hydrogen} from '@shopify/hydrogen/vite';
+import {oxygen} from '@shopify/mini-oxygen/vite';
+import {reactRouter} from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig(({ mode }) => ({
-  define: mode === 'production' ? {
-    'process.env.NODE_ENV': JSON.stringify('production'),
-  } : {},
+export default defineConfig(({mode}) => ({
+  define:
+    mode === 'production'
+      ? {
+          'process.env.NODE_ENV': JSON.stringify('production'),
+        }
+      : {},
   plugins: [
     tailwindcss(),
     hydrogen(),
@@ -33,7 +36,12 @@ export default defineConfig(({ mode }) => ({
   ssr: {
     noExternal: true, // Bundle all dependencies for Oxygen
     optimizeDeps: {
-      include: ['set-cookie-parser', 'cookie', 'react-router'],
+      include: [
+        'standardwebhooks',
+        'set-cookie-parser',
+        'cookie',
+        'react-router',
+      ],
     },
   },
   server: {
