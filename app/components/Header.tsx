@@ -51,7 +51,7 @@ export function Header({
       {isShopPage && (
         <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
           Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-          <Link to="/contact" className="underline hover:text-secondary">click here to provide feedback</Link>.
+          <Link to="/contact" className="text-white underline hover:text-secondary">click here to provide feedback</Link>.
         </div>
       )}
       {/* Top Banner (White) */}
