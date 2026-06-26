@@ -1,16 +1,4 @@
 import * as React from 'react';
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Hr,
-  Html,
-  Img,
-  Preview,
-  Section,
-  Text,
-} from '@react-email/components';
 
 interface ContactEmailProps {
   firstName: string;
@@ -32,53 +20,53 @@ export const ContactEmail = ({
   const previewText = `New Enquiry from ${firstName} ${lastName}`;
 
   return (
-    <Html>
-      <Head />
-      <Preview>{previewText}</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Section style={logoContainer}>
-            <Img
+    <html lang="en">
+      <head>
+        <title>{previewText}</title>
+      </head>
+      <body style={main}>
+        <div style={container}>
+          <div style={logoContainer}>
+            <img
               src={`${baseUrl}/logo.png`}
               width="200"
-              height="auto"
               alt="Shower Haus Logo"
               style={logo}
             />
-          </Section>
+          </div>
           
-          <Heading style={heading}>New Website Enquiry</Heading>
-          <Text style={paragraph}>
+          <h1 style={heading}>New Website Enquiry</h1>
+          <p style={paragraph}>
             You have received a new message from the contact form on your website.
-          </Text>
+          </p>
 
-          <Section style={detailsContainer}>
-            <Text style={detailRow}>
+          <div style={detailsContainer}>
+            <p style={detailRow}>
               <strong>Name:</strong> {firstName} {lastName}
-            </Text>
-            <Text style={detailRow}>
+            </p>
+            <p style={detailRow}>
               <strong>Email:</strong> <a href={`mailto:${email}`} style={link}>{email}</a>
-            </Text>
-            <Text style={detailRow}>
+            </p>
+            <p style={detailRow}>
               <strong>Phone:</strong> {phone || 'Not provided'}
-            </Text>
-          </Section>
+            </p>
+          </div>
 
-          <Hr style={hr} />
+          <hr style={hr} />
 
-          <Section>
-            <Text style={subheading}>Message:</Text>
-            <Text style={messageText}>{message}</Text>
-          </Section>
+          <div>
+            <p style={subheading}>Message:</p>
+            <p style={messageText}>{message}</p>
+          </div>
 
-          <Hr style={hr} />
+          <hr style={hr} />
           
-          <Text style={footer}>
+          <p style={footer}>
             This email was sent automatically from the ShowerHaus website contact form.
-          </Text>
-        </Container>
-      </Body>
-    </Html>
+          </p>
+        </div>
+      </body>
+    </html>
   );
 };
 

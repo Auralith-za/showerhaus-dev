@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Form, useActionData, useNavigation } from 'react-router';
-import { render } from '@react-email/components';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
 import type { Route } from './+types/contact';
 import ContactEmail from '~/components/ContactEmail';
@@ -24,7 +24,8 @@ export async function action({ request }: Route.ActionArgs) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     try {
-        const html = await render(
+        // Generate the HTML email
+        const html = renderToStaticMarkup(
             <ContactEmail
                 firstName={firstName}
                 lastName={lastName}
