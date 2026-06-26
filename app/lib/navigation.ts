@@ -135,10 +135,12 @@ export const FOOTER_MENU = {
 
     ],
     bottom: [
-        { title: 'Terms & Conditions', handle: 'terms-of-service' },
+        { title: 'Terms & Conditions', handle: 'terms-and-conditions' },
         { title: 'Using Our Website', handle: 'using-our-website' },
-        { title: 'Cookies Policy', handle: 'cookies-policy' },
-        { title: 'Privacy Policy', handle: 'privacy-policy' },
+        { title: 'Cookies Policy', handle: 'cookies' },
+        { title: 'Privacy Policy', handle: 'privacy' },
+        { title: 'Refund & Returns', handle: 'refund-and-returns' },
+        { title: 'Shipping & Delivery', handle: 'shipping-and-delivery' },
     ],
 };
 

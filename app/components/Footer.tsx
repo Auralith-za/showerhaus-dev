@@ -109,7 +109,7 @@ export function Footer() {
           </p>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 order-1 md:order-2 text-xs md:text-[10px]">
             {FOOTER_MENU.bottom.map((item) => (
-              <Link key={item.handle} to={`/policies/${item.handle}`} className="hover:text-primary transition-colors">
+              <Link key={item.handle} to={`/legal/${item.handle}`} className="hover:text-primary transition-colors">
                 {item.title}
               </Link>
             ))}
