@@ -8,18 +8,18 @@ export default function AboutUs() {
     return (
         <div className="bg-[#FAF9F6] min-h-screen font-sans text-primary">
             {/* Parallax Hero Header */}
-            <section className="relative h-[65vh] flex items-center justify-center overflow-hidden">
+            <section className="relative h-[55vh] flex items-center justify-center overflow-hidden">
                 <img
                     src="/images/about-us-hero.png"
-                    className="absolute inset-0 w-full h-full object-cover grayscale opacity-90 transition-transform duration-[2000ms] hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] hover:scale-105"
                     alt="Shower Haus Durban"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#14294f]/80 via-[#14294f]/60 to-[#FAF9F6]" />
+                <div className="absolute inset-0 bg-black/50" />
                 
                 <div className="relative z-10 text-center px-6 max-w-4xl">
-                    <span className="block font-sans text-[11px] font-extrabold tracking-[0.5em] uppercase text-[#4A89C8] mb-6">SINCE 2006</span>
+                    <span className="block font-sans text-[11px] font-extrabold tracking-[0.5em] uppercase text-white/70 mb-6">SINCE 2006</span>
                     <h1 className="font-display text-5xl md:text-8xl text-white tracking-tight mb-8">About Shower Haus</h1>
-                    <div className="w-16 h-[2px] bg-[#4A89C8] mx-auto mb-8" />
+                    <div className="w-16 h-[1px] bg-white/40 mx-auto mb-8" />
                     <p className="font-sans text-white/95 leading-relaxed text-lg md:text-xl font-light max-w-3xl mx-auto drop-shadow-sm">
                         For over 20 years, Shower Haus has been Durban’s trusted specialist in shower doors, enclosures, and screens. In that time, we have designed, supplied, and installed more than 30,000 showers across the region — for homeowners furnishing their bathrooms, and for the builders, plumbers, contractors, architects, and designers who rely on us to get it right, project after project.
                     </p>
