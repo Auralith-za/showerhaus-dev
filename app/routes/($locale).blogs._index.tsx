@@ -51,7 +51,7 @@ export default function Blogs() {
             {/* Hero */}
             <section className="relative h-[55vh] flex items-center justify-center overflow-hidden">
                 <img
-                    src="https://images.unsplash.com/photo-1600566752229-250ed79470f8?w=1800&q=80"
+                    src="/images/hero-3.png"
                     className="absolute inset-0 w-full h-full object-cover"
                     alt="ShowerHaus Journal"
                 />
