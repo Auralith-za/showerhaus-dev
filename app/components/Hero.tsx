@@ -7,7 +7,7 @@ const SLIDES = [
         title: 'The Art of the Bathroom.',
         subtitle: 'Bespoke frameless showers designed with precision and crafted for the most discerning architectural interiors.',
         label: 'Architectural Excellence',
-        image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1800&q=80',
+        image: '/images/hero-1.png',
         url: '/contact',
         buttonText: 'Coming Soon'
     },
@@ -16,7 +16,7 @@ const SLIDES = [
         title: 'Seamless Wet Rooms.',
         subtitle: 'Minimalist walk-in solutions that transform your daily ritual into a spa-like experience within your home.',
         label: 'Modern Minimalism',
-        image: 'https://images.unsplash.com/photo-1600566752229-250ed79470f8?w=1800&q=80',
+        image: '/images/hero-2.png',
         url: '/contact',
         buttonText: 'Coming Soon'
     },
@@ -25,7 +25,7 @@ const SLIDES = [
         title: 'Precision Glass Craft.',
         subtitle: 'Tailored glass enclosures that define space with clarity and sophisticated architectural engineering.',
         label: 'Signature Engineering',
-        image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1800&q=80',
+        image: '/images/hero-3.png',
         url: '/pages/bespoke-showers',
         buttonText: 'Discover Bespoke'
     }

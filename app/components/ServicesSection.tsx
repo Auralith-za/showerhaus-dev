@@ -13,7 +13,7 @@ export function ServicesSection() {
                     {/* Channel 1 */}
                     <div className="relative overflow-hidden aspect-[3/4] group cursor-pointer shadow-2xl">
                         <img
-                            src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/TahunaTerrace-MasterBathroom3-bde23112c62e4595a651d9733a93dfbe-77dee1e3a73648b597f8555771375d87.jpg"
+                            src="/images/engage-showroom.jpeg"
                             alt="At Our Showroom"
                             className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
                         />
@@ -41,7 +41,7 @@ export function ServicesSection() {
                     {/* Channel 2 */}
                     <div className="relative overflow-hidden aspect-[3/4] group cursor-pointer shadow-2xl">
                         <img
-                            src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/hidraulico-decor-2-2.jpg"
+                            src="/images/engage-home.png"
                             alt="At Your Home"
                             className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
                         />
@@ -69,7 +69,7 @@ export function ServicesSection() {
                     {/* Channel 3 */}
                     <div className="relative overflow-hidden aspect-[3/4] group cursor-pointer shadow-2xl">
                         <img
-                            src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/streamline-house-hufft-imge941bd7c0c6f2d3d_14-3747-1-fcbd831.jpg"
+                            src="/images/engage-online.png"
                             alt="Online"
                             className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
                         />

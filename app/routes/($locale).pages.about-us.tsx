@@ -10,7 +10,7 @@ export default function AboutUs() {
             {/* Parallax Hero Header */}
             <section className="relative h-[65vh] flex items-center justify-center overflow-hidden">
                 <img
-                    src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp"
+                    src="/images/about-us-hero.png"
                     className="absolute inset-0 w-full h-full object-cover grayscale opacity-90 transition-transform duration-[2000ms] hover:scale-105"
                     alt="Shower Haus Durban"
                 />
@@ -45,7 +45,7 @@ export default function AboutUs() {
                             <div className="absolute -inset-4 bg-[#FAF9F6] rounded-xl transform -rotate-2" />
                             <div className="relative overflow-hidden rounded-lg shadow-xl border border-gray-100">
                                 <img 
-                                    src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80" 
+                                    src="/images/about-us-narrative.png" 
                                     alt="Expert alignment" 
                                     className="w-full h-[400px] object-cover transition-transform duration-700 hover:scale-105"
                                 />

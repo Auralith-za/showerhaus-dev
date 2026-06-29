@@ -82,46 +82,58 @@ export default function Contact() {
             <section className="relative min-h-screen flex flex-col lg:flex-row bg-white">
 
                 {/* Left Side: Information */}
-                <div className="lg:w-2/5 bg-[#F9F8F6] p-8 md:p-16 lg:p-24 flex flex-col justify-between">
-                    <div>
-                        <span className="block font-sans text-[10px] font-bold tracking-[0.4em] uppercase text-gray-400 mb-8">GET IN TOUCH</span>
-                        <h1 className="font-display text-5xl md:text-7xl text-primary tracking-tight mb-12">Contact Us</h1>
+                <div className="lg:w-2/5 relative p-8 md:p-16 lg:p-24 flex flex-col justify-between text-white overflow-hidden">
+                    {/* Background Image with Overlay */}
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src="/images/contact-us.jpg"
+                            alt="Contact Us"
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-[#14294f]/85 mix-blend-multiply"></div>
+                    </div>
 
-                        <div className="space-y-12">
-                            <div>
-                                <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Phone</h3>
-                                <a href="tel:0313129095" className="font-sans text-2xl text-primary hover:text-secondary transition-colors duration-300">031 312 9095</a>
-                            </div>
+                    <div className="relative z-10 flex flex-col justify-between h-full">
+                        <div>
+                            <span className="block font-sans text-[10px] font-bold tracking-[0.4em] uppercase text-white/70 mb-8">GET IN TOUCH</span>
+                            <h1 className="font-display text-5xl md:text-7xl text-white tracking-tight mb-12">Contact Us</h1>
 
-                            <div>
-                                <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Email</h3>
-                                <a href="mailto:hello@showerhaus.co.za" className="font-sans text-2xl text-primary hover:text-secondary transition-colors duration-300">hello@showerhaus.co.za</a>
-                            </div>
+                            <div className="space-y-12">
+                                <div>
+                                    <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3">Phone</h3>
+                                    <a href="tel:0313129095" className="font-sans text-2xl text-white hover:text-white/80 transition-colors duration-300">031 312 9095</a>
+                                </div>
 
-                            <div>
-                                <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Address</h3>
-                                <p className="font-sans text-lg text-primary leading-relaxed max-w-sm">
-                                    90A Intersite Avenue, Umgeni Business Park, Springfield, Durban
-                                </p>
-                            </div>
+                                <div>
+                                    <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3">Email</h3>
+                                    <a href="mailto:hello@showerhaus.co.za" className="font-sans text-2xl text-white hover:text-white/80 transition-colors duration-300">hello@showerhaus.co.za</a>
+                                </div>
 
-                            <div className="pt-8 border-t border-gray-200">
-                                <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-secondary mb-6">Business Hours</h3>
-                                <div className="space-y-4">
-                                    {businessHours.map((item, idx) => (
-                                        <div key={idx} className="flex justify-between items-center text-[11px] font-sans text-primary border-b border-gray-200 pb-2 uppercase tracking-wider">
-                                            <span className="font-medium text-gray-500">{item.day}</span>
-                                            <span className="font-bold">{item.hours}</span>
-                                        </div>
-                                    ))}
+                                <div>
+                                    <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3">Address</h3>
+                                    <p className="font-sans text-lg text-white/90 leading-relaxed max-w-sm">
+                                        90A Intersite Avenue, Umgeni Business Park, Springfield, Durban
+                                    </p>
+                                </div>
+
+                                <div className="pt-8 border-t border-white/20">
+                                    <h3 className="font-sans text-[9px] font-bold tracking-[0.2em] uppercase text-white/50 mb-6">Business Hours</h3>
+                                    <div className="space-y-4">
+                                        {businessHours.map((item, idx) => (
+                                            <div key={idx} className="flex justify-between items-center text-[11px] font-sans text-white border-b border-white/10 pb-2 uppercase tracking-wider">
+                                                <span className="font-medium text-white/60">{item.day}</span>
+                                                <span className="font-bold">{item.hours}</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="mt-16 flex gap-8">
-                        <a href="#" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary hover:text-secondary transition-colors">Instagram</a>
-                        <a href="#" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary hover:text-secondary transition-colors">Facebook</a>
+                        <div className="mt-16 flex gap-8">
+                            <a href="#" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Instagram</a>
+                            <a href="#" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Facebook</a>
+                        </div>
                     </div>
                 </div>
 

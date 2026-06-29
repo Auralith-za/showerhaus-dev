@@ -10,7 +10,7 @@ export function InstallationSection() {
                         {/* Background Image with Overlay */}
                         <div className="absolute inset-0 z-0">
                             <img
-                                src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/contemporary-bathroom.jpg"
+                                src="/images/free-consultation.jpg"
                                 alt="ShowerHaus Professional Installation"
                                 className="w-full h-full object-cover opacity-60"
                             />
