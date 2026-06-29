@@ -254,7 +254,7 @@ function HomepageBlogsSection({ blogsData }: { blogsData: Promise<any> }) {
                 <div className="text-center mt-16">
                   <Link
                     to="/blogs/journal"
-                    className="inline-block border border-primary text-primary px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-primary hover:text-white transition-all duration-300"
+                    className="inline-block bg-primary border border-primary !text-white px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-[#1a3466] hover:border-[#1a3466] transition-all duration-300"
                   >
                     View All Articles
                   </Link>
