@@ -85,7 +85,7 @@ export default function Blogs() {
                     <div className="container mx-auto px-6">
                         {/* Featured large card */}
                         {featuredArticle && (
-                            <Link to={`/blogs/${featuredArticle.blog.handle}/${featuredArticle.handle}`} className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-16 group cursor-pointer border border-gray-100 hover:shadow-2xl transition-all duration-700">
+                            <Link to={`/blogs/${featuredArticle.blog.handle}/${featuredArticle.handle}`} className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-16 group cursor-pointer border border-gray-100 hover:shadow-2xl hover:no-underline transition-all duration-700">
                                 <div className="relative overflow-hidden" style={{ minHeight: '400px' }}>
                                     <img
                                         src={featuredArticle.image?.url || 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80'}
@@ -114,7 +114,7 @@ export default function Blogs() {
                         {gridArticles.length > 0 && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                 {gridArticles.map((article) => (
-                                    <Link to={`/blogs/${article.blog.handle}/${article.handle}`} key={article.id} className="group cursor-pointer block">
+                                    <Link to={`/blogs/${article.blog.handle}/${article.handle}`} key={article.id} className="group cursor-pointer block hover:no-underline">
                                         <div className="relative overflow-hidden mb-6 bg-gray-100" style={{ aspectRatio: '16/9' }}>
                                             <img
                                                 src={article.image?.url || 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&q=80'}

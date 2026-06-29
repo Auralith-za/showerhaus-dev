@@ -162,7 +162,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
 const HOMEPAGE_BLOGS_QUERY = `#graphql
   query HomepageBlogs($country: CountryCode, $language: LanguageCode)
     @inContext(language: $language, country: $country) {
-    blogs(first: 1) {
+    blogs(first: 10) {
       nodes {
         title
         handle
@@ -203,7 +203,9 @@ function HomepageBlogsSection({ blogsData }: { blogsData: Promise<any> }) {
     <Suspense fallback={<div className="text-center text-gray-400 py-12">Loading journal posts...</div>}>
       <Await resolve={blogsData}>
         {(response) => {
-          const shopifyArticles = response?.blogs?.nodes?.[0]?.articles?.nodes || [];
+          const shopifyArticles = response?.blogs?.nodes
+            ?.flatMap((blog: any) => blog.articles?.nodes || [])
+            ?.sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) || [];
           const hasNoShopifyArticles = shopifyArticles.length === 0;
           const displayArticles = hasNoShopifyArticles 
             ? DRAFT_ARTICLES.slice(0, 3) 
@@ -225,7 +227,7 @@ function HomepageBlogsSection({ blogsData }: { blogsData: Promise<any> }) {
                     <Link
                       key={article.id}
                       to={`/blogs/${article.blog.handle}/${article.handle}`}
-                      className="group cursor-pointer block"
+                      className="group cursor-pointer block hover:no-underline"
                     >
                       <div className="relative overflow-hidden bg-gray-100 aspect-[16/10] rounded-sm shadow-sm">
                         <img
