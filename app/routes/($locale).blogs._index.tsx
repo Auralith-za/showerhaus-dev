@@ -136,32 +136,7 @@ export default function Blogs() {
                 </section>
             )}
 
-            {/* Shopify Blogs if present */}
-            {blogs.nodes.length > 0 && (
-                <section className="py-20 bg-gray-50 border-t border-gray-100">
-                    <div className="container mx-auto px-6">
-                        <h2 className="font-display text-3xl text-primary mb-12">More from the Journal</h2>
-                        <PaginatedResourceSection<BlogNode> connection={blogs} resourcesClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {({ node: blog }) => (
-                                <Link
-                                    className="bg-white p-8 border border-gray-100 hover:shadow-xl transition-all group block"
-                                    key={blog.handle}
-                                    prefetch="intent"
-                                    to={`/blogs/${blog.handle}`}
-                                >
-                                    <h3 className="font-display text-xl text-primary group-hover:text-secondary transition-colors mb-4">{blog.title}</h3>
-                                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                                        Read More
-                                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                </Link>
-                            )}
-                        </PaginatedResourceSection>
-                    </div>
-                </section>
-            )}
+
 
             {/* Newsletter Strip */}
             <section className="py-24 bg-primary text-white text-center">

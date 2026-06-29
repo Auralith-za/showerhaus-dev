@@ -1,6 +1,8 @@
-import { useState } from 'react';
-
-const STEPS = ['Style', 'Configurations', 'Dimensions', 'Hardware', 'Details'];
+import { useState, useEffect } from 'react';
+import { useActionData, useNavigation, useSubmit } from 'react-router';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Resend } from 'resend';
+import BespokeEmail from '~/components/BespokeEmail';const STEPS = ['Style', 'Configurations', 'Dimensions', 'Hardware', 'Details'];
 
 const STYLES = [
     { name: 'Frameless', desc: 'Minimalist 8mm–12mm safety glass for a seamless architectural look.' },
@@ -45,6 +47,63 @@ const MATERIALS = [
     { name: 'Brass', desc: 'A superior metal alloy for harder-wearing longer-lasting hinges.' }
 ];
 
+export async function action({ request }: any) {
+    const formData = await request.formData();
+    const style = formData.get('style') as string;
+    const layout = formData.get('layout') as string;
+    const width = formData.get('width') as string;
+    const length = formData.get('length') as string;
+    const height = formData.get('height') as string;
+    const finish = formData.get('finish') as string;
+    const material = formData.get('material') as string;
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
+    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
+    const notes = formData.get('notes') as string;
+
+    if (!firstName || !lastName || !email) {
+        return { error: 'Please fill out all required fields.' };
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    try {
+        const html = renderToStaticMarkup(
+            <BespokeEmail
+                style={style}
+                layout={layout}
+                width={width}
+                length={length}
+                height={height}
+                finish={finish}
+                material={material}
+                firstName={firstName}
+                lastName={lastName}
+                email={email}
+                phone={phone}
+                notes={notes}
+            />, { pretty: true }
+        );
+
+        const data = await resend.emails.send({
+            from: 'ShowerHaus Website <hello@showerhaus.co.za>',
+            to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
+            subject: `New Bespoke Shower Request from ${firstName} ${lastName}`,
+            replyTo: email,
+            html,
+        });
+
+        if (data.error) {
+            return { error: data.error.message };
+        }
+
+        return { success: true };
+    } catch (error: any) {
+        return { error: error.message || 'Something went wrong. Please try again.' };
+    }
+}
+
 export default function BespokeShowers() {
     const [step, setStep] = useState(0);
     const [style, setStyle] = useState('');
@@ -62,6 +121,17 @@ export default function BespokeShowers() {
     const [phone, setPhone] = useState('');
     const [notes, setNotes] = useState('');
     const [submitted, setSubmitted] = useState(false);
+
+    const actionData = useActionData<typeof action>();
+    const navigation = useNavigation();
+    const submit = useSubmit();
+    const isSubmitting = navigation.state === 'submitting';
+
+    useEffect(() => {
+        if (actionData?.success) {
+            setSubmitted(true);
+        }
+    }, [actionData]);
 
     const progress = ((step + 1) / STEPS.length) * 100;
 
@@ -98,21 +168,22 @@ export default function BespokeShowers() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Submitting bespoke configurator request:', {
-            style,
-            layout,
-            width,
-            length,
-            height,
-            finish,
-            material,
-            firstName,
-            lastName,
-            email,
-            phone,
-            notes
-        });
-        setSubmitted(true);
+        
+        const formData = new FormData();
+        formData.append('style', style);
+        formData.append('layout', layout);
+        formData.append('width', width);
+        formData.append('length', length);
+        formData.append('height', height);
+        formData.append('finish', finish);
+        formData.append('material', material);
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('notes', notes);
+        
+        submit(formData, { method: "post" });
     };
 
     return (
@@ -381,6 +452,11 @@ export default function BespokeShowers() {
                                                 <h2 className="font-display text-3xl text-primary mb-1">Final Details</h2>
                                                 <p className="font-sans text-sm text-gray-400">Add any notes and submit your request.</p>
                                             </div>
+                                            {actionData?.error && (
+                                                <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-4 mb-8 font-sans text-sm">
+                                                    {actionData.error}
+                                                </div>
+                                            )}
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-2">
                                                     <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">First Name</label>
@@ -461,9 +537,10 @@ export default function BespokeShowers() {
                                             <button
                                                 type="button"
                                                 onClick={handleSubmit}
-                                                className="bg-[#4A89C8] text-white px-12 py-5 text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-primary transition-all duration-300 shadow-lg focus:outline-none cursor-pointer"
+                                                disabled={isSubmitting}
+                                                className="bg-[#4A89C8] text-white px-12 py-5 text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-primary transition-all duration-300 shadow-lg focus:outline-none cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                                             >
-                                                Submit Request
+                                                {isSubmitting ? 'Submitting...' : 'Submit Request'}
                                             </button>
                                         )}
                                     </div>

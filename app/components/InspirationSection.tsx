@@ -1,6 +1,14 @@
 import { Link } from 'react-router';
+import { DRAFT_ARTICLES } from '~/lib/draftArticles';
 
-export function InspirationSection() {
+interface InspirationSectionProps {
+    articles?: any[];
+}
+
+export function InspirationSection({ articles = DRAFT_ARTICLES.slice(0, 3) }: InspirationSectionProps) {
+    // Ensure we only show up to 3 articles
+    const displayArticles = articles.slice(0, 3);
+
     return (
         <section className="w-full bg-white py-32 border-b border-gray-100">
             <div className="container mx-auto px-6 max-w-7xl">
@@ -22,52 +30,31 @@ export function InspirationSection() {
 
                     {/* Right Images Grid */}
                     <div className="lg:col-span-8 lg:col-start-5 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {displayArticles.map((article) => {
+                            const imageUrl = article.image?.url || 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&q=80';
+                            const title = article.title;
+                            const link = `/blogs/${article.blog.handle}/${article.handle}`;
 
-                        {/* Image 1 */}
-                        <div className="group cursor-pointer">
-                            <div className="relative overflow-hidden aspect-[4/5] mb-6 shadow-sm transition-shadow duration-500 group-hover:shadow-xl">
-                                <img
-                                    src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/swan-veritek-pro-vp6030csl-shower-kit-pano.jpg"
-                                    alt="Luxury Bathroom Design"
-                                    className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
-                            </div>
-                            <h3 className="font-sans text-xs tracking-[0.2em] uppercase font-bold text-primary border-b border-gray-300 pb-2 w-fit group-hover:border-primary transition-colors">
-                                HOW TO DESIGN A LUXURY BATHROOM
-                            </h3>
-                        </div>
-
-                        {/* Image 2 */}
-                        <div className="group cursor-pointer">
-                            <div className="relative overflow-hidden aspect-[4/5] mb-6 shadow-sm transition-shadow duration-500 group-hover:shadow-xl">
-                                <img
-                                    src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/luxury_shower.jpeg"
-                                    alt="Inspirational Brochures"
-                                    className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
-                            </div>
-                            <h3 className="font-sans text-xs tracking-[0.2em] uppercase font-bold text-primary border-b border-gray-300 pb-2 w-fit group-hover:border-primary transition-colors">
-                                BROWSE INSPIRATIONAL BROCHURES
-                            </h3>
-                        </div>
-
-                        {/* Image 3 */}
-                        <div className="group cursor-pointer">
-                            <div className="relative overflow-hidden aspect-[4/5] mb-6 shadow-sm transition-shadow duration-500 group-hover:shadow-xl">
-                                <img
-                                    src="https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Design-Inspirations-8-Luxury-Shower-Ideas-that-Will-Motivate-Your-Day-2.jpg"
-                                    alt="Design Trends"
-                                    className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
-                            </div>
-                            <h3 className="font-sans text-xs tracking-[0.2em] uppercase font-bold text-primary border-b border-gray-300 pb-2 w-fit group-hover:border-primary transition-colors">
-                                LEADING DESIGN TRENDS FOR 2026
-                            </h3>
-                        </div>
-
+                            return (
+                                <Link
+                                    key={article.id || article.handle}
+                                    to={link}
+                                    className="group cursor-pointer block hover:no-underline"
+                                >
+                                    <div className="relative overflow-hidden aspect-[4/5] mb-6 shadow-sm transition-shadow duration-500 group-hover:shadow-xl">
+                                        <img
+                                            src={imageUrl}
+                                            alt={title}
+                                            className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+                                    </div>
+                                    <h3 className="font-sans text-xs tracking-[0.2em] uppercase font-bold text-primary border-b border-gray-300 pb-2 w-fit group-hover:border-primary transition-colors line-clamp-2">
+                                        {title}
+                                    </h3>
+                                </Link>
+                            );
+                        })}
                     </div>
 
                 </div>
@@ -75,3 +62,4 @@ export function InspirationSection() {
         </section>
     );
 }
+

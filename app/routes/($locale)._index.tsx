@@ -81,11 +81,21 @@ export default function Homepage() {
 
       {/* Section 8: Inspiration (Let Us Inspire You) */}
       <div className="bg-white">
-        <InspirationSection />
+        <Suspense fallback={<div className="text-center text-gray-400 py-12">Loading inspiration guides...</div>}>
+          <Await resolve={data.homepageBlogs}>
+            {(response) => {
+              const shopifyArticles = response?.blogs?.nodes
+                ?.flatMap((blog: any) => blog.articles?.nodes || [])
+                ?.sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) || [];
+              const hasNoShopifyArticles = shopifyArticles.length === 0;
+              const displayArticles = hasNoShopifyArticles 
+                ? DRAFT_ARTICLES.slice(0, 3) 
+                : shopifyArticles.slice(0, 3);
+              return <InspirationSection articles={displayArticles} />;
+            }}
+          </Await>
+        </Suspense>
       </div>
-
-      {/* Section 8.5: Blog / Journal Section */}
-      <HomepageBlogsSection blogsData={data.homepageBlogs} />
 
       {/* Section 9: Quoting / CTA */}
       <QuotingSection />
@@ -191,81 +201,4 @@ const HOMEPAGE_BLOGS_QUERY = `#graphql
   }
 ` as const;
 
-function HomepageBlogsSection({ blogsData }: { blogsData: Promise<any> }) {
-  const formatDate = (dateStr: string) => {
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-    }).format(new Date(dateStr));
-  };
 
-  return (
-    <Suspense fallback={<div className="text-center text-gray-400 py-12">Loading journal posts...</div>}>
-      <Await resolve={blogsData}>
-        {(response) => {
-          const shopifyArticles = response?.blogs?.nodes
-            ?.flatMap((blog: any) => blog.articles?.nodes || [])
-            ?.sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) || [];
-          const hasNoShopifyArticles = shopifyArticles.length === 0;
-          const displayArticles = hasNoShopifyArticles 
-            ? DRAFT_ARTICLES.slice(0, 3) 
-            : shopifyArticles.slice(0, 3);
-
-          if (displayArticles.length === 0) return null;
-
-          return (
-            <section className="py-24 bg-white border-t border-gray-200/50">
-              <div className="container mx-auto px-6 max-w-7xl">
-                <div className="text-center mb-16">
-                  <span className="block font-sans text-[11px] font-bold tracking-[0.4em] uppercase text-secondary/70 mb-4">JOURNAL</span>
-                  <h2 className="font-display text-4xl md:text-5xl text-primary tracking-tight font-light">Latest from the Journal</h2>
-                  <div className="w-12 h-px bg-secondary/35 mx-auto mt-6" />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                  {displayArticles.map((article: any) => (
-                    <Link
-                      key={article.id}
-                      to={`/blogs/${article.blog.handle}/${article.handle}`}
-                      className="group cursor-pointer block hover:no-underline"
-                    >
-                      <div className="relative overflow-hidden bg-gray-100 aspect-[16/10] rounded-sm shadow-sm">
-                        <img
-                          src={article.image?.url || 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&q=80'}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          alt={article.title}
-                        />
-                      </div>
-                      <span className="block font-sans text-[10px] text-gray-400 uppercase tracking-widest mt-6 mb-2">
-                        {formatDate(article.publishedAt)}
-                      </span>
-                      <h3 className="font-display text-xl md:text-2xl text-primary group-hover:text-secondary transition-colors duration-300 mb-3 leading-snug">
-                        {article.title}
-                      </h3>
-                      <div
-                        className="font-sans text-sm text-gray-500 leading-relaxed line-clamp-2"
-                        dangerouslySetInnerHTML={{ __html: article.excerptHtml || '' }}
-                      />
-                      <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-[#4A89C8] pt-4 group-hover:text-primary transition-colors">
-                        Read Article →
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="text-center mt-16">
-                  <Link
-                    to="/blogs/journal"
-                    className="inline-block bg-primary border border-primary !text-white px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-[#1a3466] hover:border-[#1a3466] transition-all duration-300"
-                  >
-                    View All Articles
-                  </Link>
-                </div>
-              </div>
-            </section>
-          );
-        }}
-      </Await>
-    </Suspense>
-  );
-}

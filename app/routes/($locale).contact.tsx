@@ -39,7 +39,7 @@ export async function action({ request }: Route.ActionArgs) {
 
         const data = await resend.emails.send({
             from: 'ShowerHaus Website <hello@showerhaus.co.za>',
-            to: ['hello@showerhaus.co.za'],
+            to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
             subject: `New Enquiry from ${firstName} ${lastName}`,
             replyTo: email,
             html,

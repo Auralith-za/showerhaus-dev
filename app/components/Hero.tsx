@@ -4,30 +4,30 @@ import { Link } from 'react-router';
 const SLIDES = [
     {
         id: 'tahuna-terrace',
-        title: 'The Art of the Bathroom.',
-        subtitle: 'Bespoke frameless showers designed with precision and crafted for the most discerning architectural interiors.',
-        label: 'Architectural Excellence',
+        title: 'Installed Right. Built to Last.',
+        subtitle: 'Custom-made shower enclosures designed to fit your space and installed properly from the start.',
+        label: 'SHOWER GLASS SPECIALISTS',
         image: '/images/hero-1.png',
-        url: '/contact',
-        buttonText: 'Coming Soon'
+        url: '/collections/showers',
+        buttonText: 'VIEW ENCLOSURES'
     },
     {
         id: 'bespoke-shower-design',
-        title: 'Seamless Wet Rooms.',
-        subtitle: 'Minimalist walk-in solutions that transform your daily ritual into a spa-like experience within your home.',
-        label: 'Modern Minimalism',
+        title: 'The Right Fit, Every Time.',
+        subtitle: 'From your first measurement to the final installation, we make sure it fits, works, and lasts.',
+        label: 'CUSTOM-MADE SHOWER GLASS',
         image: '/images/hero-2.png',
         url: '/contact',
-        buttonText: 'Coming Soon'
+        buttonText: 'GET A FREE CONSULTATION'
     },
     {
         id: 'architectural-glass',
-        title: 'Precision Glass Craft.',
-        subtitle: 'Tailored glass enclosures that define space with clarity and sophisticated architectural engineering.',
-        label: 'Signature Engineering',
+        title: 'Over two Decades. Thousands of Showers.',
+        subtitle: "Shower Haus has been getting it right for over 20 years. Durban's trusted shower glass specialists.",
+        label: 'SINCE 2004',
         image: '/images/hero-3.png',
         url: '/pages/bespoke-showers',
-        buttonText: 'Discover Bespoke'
+        buttonText: 'DISCOVER BESPOKE'
     }
 ];
 
