@@ -232,17 +232,17 @@ export default function BespokeShowers() {
                         {/* Step Panel */}
                         <div className="lg:col-span-3 bg-white border border-gray-100 shadow-sm p-10">
                             {submitted ? (
-                                <div className="space-y-8 py-10 text-center">
-                                    <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto text-3xl shadow-sm">
+                                <div className="flex flex-col items-center justify-center space-y-8 py-10 text-center w-full">
+                                    <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-3xl shadow-sm">
                                         ✓
                                     </div>
-                                    <div className="space-y-3">
-                                        <h2 className="font-display text-4xl text-primary">Thank You!</h2>
-                                        <p className="font-sans text-gray-500 max-w-md mx-auto leading-relaxed">
+                                    <div className="flex flex-col items-center justify-center space-y-3 w-full">
+                                        <h2 className="font-display text-4xl text-primary text-center">Thank You!</h2>
+                                        <p className="font-sans text-gray-500 max-w-md text-center leading-relaxed">
                                             Your bespoke request has been successfully submitted. Our team will review your specifications and contact you within 24 hours to coordinate.
                                         </p>
                                     </div>
-                                    <div className="pt-6 border-t border-gray-100 max-w-xs mx-auto">
+                                    <div className="pt-6 border-t border-gray-100 w-full max-w-xs">
                                         <button
                                             type="button"
                                             onClick={() => {
