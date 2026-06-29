@@ -1,5 +1,5 @@
 import { Suspense, useState } from 'react';
-import { Await, Link, NavLink, useAsyncValue, useLocation } from 'react-router';
+import { Await, Link, NavLink, useAsyncValue } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -43,17 +43,12 @@ export function Header({
 
   const sparesTypes = Object.keys(sparesByType);
   
-  const location = useLocation();
-  const isShopPage = location.pathname.startsWith('/collections') || location.pathname.startsWith('/products');
-
   return (
     <>
-      {isShopPage && (
-        <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
-          Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-          <Link to="/contact" className="text-white underline hover:text-secondary">click here to provide feedback</Link>.
-        </div>
-      )}
+      <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
+        Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
+        <Link to="/contact" className="text-white underline hover:text-secondary">click here to provide feedback</Link>.
+      </div>
       {/* Top Banner (White) */}
       <div className="hidden md:flex" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
