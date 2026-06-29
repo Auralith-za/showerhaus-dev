@@ -9,7 +9,7 @@ export const meta: Route.MetaFunction = () => {
     return [{ title: 'Contact Us | ShowerHaus' }];
 };
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
     const formData = await request.formData();
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
@@ -21,7 +21,7 @@ export async function action({ request }: Route.ActionArgs) {
         return { error: 'Please fill out all required fields.' };
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = new Resend((context.env as any).RESEND_API_KEY);
 
     try {
         // Generate the HTML email
@@ -32,9 +32,7 @@ export async function action({ request }: Route.ActionArgs) {
                 email={email}
                 phone={phone}
                 message={message}
-            />, {
-                pretty: true,
-            }
+            />
         );
 
         const data = await resend.emails.send({

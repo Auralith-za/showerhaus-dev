@@ -47,7 +47,7 @@ const MATERIALS = [
     { name: 'Brass', desc: 'A superior metal alloy for harder-wearing longer-lasting hinges.' }
 ];
 
-export async function action({ request }: any) {
+export async function action({ request, context }: any) {
     const formData = await request.formData();
     const style = formData.get('style') as string;
     const layout = formData.get('layout') as string;
@@ -66,7 +66,7 @@ export async function action({ request }: any) {
         return { error: 'Please fill out all required fields.' };
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = new Resend((context.env as any).RESEND_API_KEY);
 
     try {
         const html = renderToStaticMarkup(
@@ -83,7 +83,7 @@ export async function action({ request }: any) {
                 email={email}
                 phone={phone}
                 notes={notes}
-            />, { pretty: true }
+            />
         );
 
         const data = await resend.emails.send({
