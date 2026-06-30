@@ -270,18 +270,12 @@ export default function Product() {
             )}
 
             {/* Trust/Delivery Badges (Static for now) */}
-            <div className="grid grid-cols-2 gap-4 mt-12 pt-8 border-t border-gray-100">
+            <div className="flex gap-4 mt-12 pt-8 border-t border-gray-100">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-gray-50 rounded-full text-secondary">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <span className="text-xs font-sans text-gray-500 uppercase tracking-wider">In Stock</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gray-50 rounded-full text-secondary">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                </div>
-                <span className="text-xs font-sans text-gray-500 uppercase tracking-wider">Free Delivery</span>
               </div>
             </div>
 
