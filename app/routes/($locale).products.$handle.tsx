@@ -163,7 +163,7 @@ export default function Product() {
                     
                     {isColorOrFinish ? (
                       <div className="flex gap-2 ml-32">
-                        {option.optionValues.map((val) => {
+                        {option.optionValues.filter(val => val.exists).map((val) => {
                           const colorMap: Record<string, string> = {
                             'chrome': '#e5e7eb',
                             'polished stainless steel': '#E5E7EB',
@@ -177,7 +177,7 @@ export default function Product() {
                           return (
                             <Link
                               key={val.name}
-                              to={val.to}
+                              to={`?${val.variantUriQuery}`}
                               replace
                               preventScrollReset
                               title={val.name}
@@ -195,13 +195,13 @@ export default function Product() {
                           value={option.optionValues.find(v => v.selected)?.name || ''}
                           onChange={(e) => {
                             const selectedVal = option.optionValues.find(v => v.name === e.target.value);
-                            if (selectedVal) {
-                              navigate(selectedVal.to, { replace: true, preventScrollReset: true });
+                            if (selectedVal && selectedVal.variantUriQuery !== undefined) {
+                              navigate(`?${selectedVal.variantUriQuery}`, { replace: true, preventScrollReset: true });
                             }
                           }}
                           className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
                         >
-                          {option.optionValues.map(val => (
+                          {option.optionValues.filter(val => val.exists).map(val => (
                             <option key={val.name} value={val.name}>
                               {val.name} {val.available ? '' : '(Sold Out)'}
                             </option>
