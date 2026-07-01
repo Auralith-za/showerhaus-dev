@@ -38,9 +38,16 @@ export async function action({ request, context }: { request: Request; context: 
     let attachments = [];
     if (attachment && attachment.size > 0) {
         const arrayBuffer = await attachment.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        let binary = '';
+        for (let i = 0; i < uint8Array.byteLength; i++) {
+            binary += String.fromCharCode(uint8Array[i]);
+        }
+        const base64 = btoa(binary);
+        
         attachments.push({
             filename: attachment.name,
-            content: Buffer.from(arrayBuffer),
+            content: base64,
         });
     }
 
