@@ -246,7 +246,7 @@ export default function App() {
     <Analytics.Provider
       cart={data.cart}
       shop={data.shop}
-      consent={data.consent || { checkoutDomain: '', storefrontAccessToken: '', withPrivacyBanner: false, country: 'US', language: 'EN' }}
+      consent={data.consent ? { ...data.consent, hasUserConsent: true } : { checkoutDomain: '', storefrontAccessToken: '', withPrivacyBanner: false, country: 'US', language: 'EN', hasUserConsent: true }}
     >
       <PageLayout {...data}>
         <Outlet />

@@ -80,7 +80,7 @@ export function CookieConsent() {
             <h3 className="font-display text-xl font-bold text-primary mb-2">We value your privacy</h3>
             <p className="font-sans text-sm text-gray-600 leading-relaxed">
               We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies. 
-              Read more in our <Link to="/legal/cookies" className="text-secondary hover:underline">Cookie Policy</Link> and <Link to="/legal/privacy" className="text-secondary hover:underline">Privacy Policy</Link>.
+              Read more in our <Link to="/legal/cookies" className="text-secondary hover:underline">Cookies Policy</Link> and <Link to="/legal/privacy" className="text-secondary hover:underline">Privacy Policy</Link>.
             </p>
           </div>
 

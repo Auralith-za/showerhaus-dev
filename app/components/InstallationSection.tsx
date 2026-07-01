@@ -11,7 +11,7 @@ export function InstallationSection() {
                         <div className="absolute inset-0 z-0">
                             <img
                                 src="/images/free-consultation.jpg"
-                                alt="ShowerHaus Professional Installation"
+                                alt="Shower Haus Professional Installation"
                                 className="w-full h-full object-cover opacity-60"
                             />
                             <div className="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
@@ -60,8 +60,7 @@ export function InstallationSection() {
                                     <input
                                         type="text"
                                         id="name"
-                                        className="w-full border-b border-gray-300 py-3 bg-transparent text-primary placeholder-gray-400 focus:outline-none focus:border-primary transition-colors font-sans"
-                                        placeholder="Jane Doe"
+                                        className="w-full border-b border-gray-300 py-3 bg-transparent text-primary focus:outline-none focus:border-primary transition-colors font-sans"
                                         required
                                     />
                                 </div>
@@ -72,8 +71,7 @@ export function InstallationSection() {
                                         <input
                                             type="email"
                                             id="email"
-                                            className="w-full border-b border-gray-300 py-3 bg-transparent text-primary placeholder-gray-400 focus:outline-none focus:border-primary transition-colors font-sans"
-                                            placeholder="jane@example.com"
+                                            className="w-full border-b border-gray-300 py-3 bg-transparent text-primary focus:outline-none focus:border-primary transition-colors font-sans"
                                             required
                                         />
                                     </div>
@@ -82,8 +80,7 @@ export function InstallationSection() {
                                         <input
                                             type="tel"
                                             id="phone"
-                                            className="w-full border-b border-gray-300 py-3 bg-transparent text-primary placeholder-gray-400 focus:outline-none focus:border-primary transition-colors font-sans"
-                                            placeholder="+44 20"
+                                            className="w-full border-b border-gray-300 py-3 bg-transparent text-primary focus:outline-none focus:border-primary transition-colors font-sans"
                                         />
                                     </div>
                                 </div>
@@ -93,8 +90,7 @@ export function InstallationSection() {
                                     <input
                                         type="text"
                                         id="address"
-                                        className="w-full border-b border-gray-300 py-3 bg-transparent text-primary placeholder-gray-400 focus:outline-none focus:border-primary transition-colors font-sans"
-                                        placeholder="123 Example Street, City Name"
+                                        className="w-full border-b border-gray-300 py-3 bg-transparent text-primary focus:outline-none focus:border-primary transition-colors font-sans"
                                         required
                                     />
                                 </div>
@@ -104,8 +100,7 @@ export function InstallationSection() {
                                     <textarea
                                         id="message"
                                         rows={2}
-                                        className="w-full border-b border-gray-300 py-3 bg-transparent text-primary placeholder-gray-400 focus:outline-none focus:border-primary transition-colors resize-none font-sans"
-                                        placeholder="Tell us a bit about your vision..."
+                                        className="w-full border-b border-gray-300 py-3 bg-transparent text-primary focus:outline-none focus:border-primary transition-colors resize-none font-sans"
                                     ></textarea>
                                 </div>
 

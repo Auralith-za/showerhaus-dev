@@ -10,7 +10,7 @@ export default function OurStory() {
                 <img
                     src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1800&q=80"
                     className="absolute inset-0 w-full h-full object-cover"
-                    alt="ShowerHaus Heritage"
+                    alt="Shower Haus Heritage"
                 />
                 {/* Simple dark overlay */}
                 <div className="absolute inset-0 bg-black/45" />
@@ -35,7 +35,7 @@ export default function OurStory() {
                                 Defining Luxury in <br /><span className="italic">Every Detail.</span>
                             </h2>
                             <p className="font-sans text-gray-600 leading-relaxed text-lg">
-                                For over two decades, ShowerHaus has been at the forefront of bathroom innovation in South Africa. What started as a passion for precision engineering has evolved into a full-service design house for premium shower solutions.
+                                For over Two decades, Shower Haus has been at the forefront of bathroom innovation in South Africa. What started as a passion for precision engineering has evolved into a full-service design house for premium shower solutions.
                             </p>
                             <p className="font-sans text-gray-500 leading-relaxed">
                                 Our journey began with a simple observation: the bathroom is no longer just a functional space, but a sanctuary of wellness and personal expression. This philosophy drives everything we do — from the hardware we source to the craftspeople we employ.

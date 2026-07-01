@@ -9,7 +9,7 @@ export function QuotingSection() {
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
                     <span className="font-sans text-xs tracking-widest uppercase font-bold text-gray-400 mb-4 block">
-                        Bespoke Consultations
+                        Custom-made Consultations
                     </span>
                     <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary mb-6 tracking-tighter w-fit mx-auto">
                         Your Vision, Our Precision
@@ -23,7 +23,7 @@ export function QuotingSection() {
                             to="/pages/quote"
                             className="bg-primary !text-white font-sans text-sm tracking-widest uppercase font-bold px-10 py-5 hover:bg-primary/90 transition-all duration-300 shadow-xl shadow-primary/10"
                         >
-                            Request a Bespoke Quote
+                            Request a Custom-made Quote
                         </NavLink>
                         <NavLink
                             to="/pages/contact"

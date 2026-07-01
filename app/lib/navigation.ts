@@ -94,7 +94,7 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
 
 export const PRIMARY_MENU_ITEMS = [
     { title: 'Shop', handle: 'all' },
-    { title: 'Bespoke Showers', handle: 'bespoke-showers' },
+    { title: 'Custom-made Showers', handle: 'custom-made-showers' },
     { 
         title: 'About Us', 
         handle: 'about-us',

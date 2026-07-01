@@ -43,7 +43,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
         title: formattedTitle,
         body: `
           <div class="prose prose-lg mx-auto">
-            <p class="lead text-xl text-gray-500 mb-8">This is the official ${formattedTitle} for ShowerHaus. Please read this document carefully before using our services. This placeholder can be replaced in your Shopify Admin Policies settings.</p>
+            <p class="lead text-xl text-gray-500 mb-8">This is the official ${formattedTitle} for Shower Haus. Please read this document carefully before using our services. This placeholder can be replaced in your Shopify Admin Policies settings.</p>
             
             <h3 class="text-2xl font-display text-primary mt-12 mb-4">1. Introduction</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.</p>

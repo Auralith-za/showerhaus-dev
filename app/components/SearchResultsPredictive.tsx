@@ -85,6 +85,7 @@ function SearchResultsPredictiveArticles({
   articles,
   closeSearch,
 }: PartialPredictiveSearchResult<'articles'>) {
+  if (!articles || !articles.length) return null;
   return (
     <div className="predictive-search-result mb-8" key="articles">
       <h5 className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-2 mb-4">Articles</h5>
@@ -131,6 +132,7 @@ function SearchResultsPredictiveCollections({
   collections,
   closeSearch,
 }: PartialPredictiveSearchResult<'collections'>) {
+  if (!collections || !collections.length) return null;
   return (
     <div className="predictive-search-result mb-8" key="collections">
       <h5 className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-2 mb-4">Collections</h5>
@@ -177,6 +179,7 @@ function SearchResultsPredictivePages({
   pages,
   closeSearch,
 }: PartialPredictiveSearchResult<'pages'>) {
+  if (!pages || !pages.length) return null;
   return (
     <div className="predictive-search-result mb-8" key="pages">
       <h5 className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-2 mb-4">Pages</h5>

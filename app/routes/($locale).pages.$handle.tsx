@@ -54,7 +54,7 @@ async function loadCriticalData({ context, request, params }: Route.LoaderArgs) 
             <p class="lead text-xl text-gray-500 mb-8">Welcome to our ${formattedTitle} page. This is a beautifully designed placeholder for your actual content. You can seamlessly replace this text by creating a page with handle <code>${params.handle}</code> in your Shopify Admin.</p>
             
             <h3 class="text-2xl font-display text-primary mt-12 mb-4">Our Commitment</h3>
-            <p>At ShowerHaus, we pride ourselves on delivering exceptional quality and service. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>At Shower Haus, we pride ourselves on delivering exceptional quality and service. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
             
             <h3 class="text-2xl font-display text-primary mt-12 mb-4">Key Information</h3>
             <ul class="space-y-4 my-6">

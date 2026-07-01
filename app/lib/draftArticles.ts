@@ -46,7 +46,7 @@ export const DRAFT_ARTICLES: DraftArticle[] = [
       handle: 'news'
     },
     author: {
-      name: 'ShowerHaus Design Team'
+      name: 'Shower Haus Design Team'
     }
   },
   {
@@ -116,7 +116,7 @@ export const DRAFT_ARTICLES: DraftArticle[] = [
     publishedAt: '2026-05-17T11:15:00Z',
     excerptHtml: '<p>Learn about stabiliser bars, when you need them, and how they secure frameless glass panels for maximum safety and rigidity.</p>',
     contentHtml: `
-      <p>For builders, plumbers, and interior designers, details are everything. A successful bespoke shower installation depends on coordinating wall preparation and measurements before ordering custom panels.</p>
+      <p>For builders, plumbers, and interior designers, details are everything. A successful custom-made shower installation depends on coordinating wall preparation and measurements before ordering custom panels.</p>
       <br/>
       <h3 class="text-xl font-bold font-display text-primary mt-6 mb-2">1. The Importance of Out-of-Plumb Walls</h3>
       <p>In renovation projects, walls are rarely perfectly vertical. For custom frameless installations, even a 3mm tilt over a 2-meter height can leave a gap. Always take width measurements at three points: the bottom, middle, and top. This lets us water-cut the glass panels at precise tapers to align flush against tilted walls.</p>

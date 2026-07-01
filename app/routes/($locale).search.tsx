@@ -43,41 +43,43 @@ export default function SearchPage() {
   return (
     <div className="search-page bg-white min-h-screen pt-12 pb-24">
       <div className="container mx-auto px-6 max-w-5xl">
-        <div className="mb-12 text-center">
-          <h1 className="font-display text-4xl md:text-5xl text-primary tracking-tight mb-8">Search our store</h1>
-          <div className="max-w-2xl mx-auto">
-            <SearchForm>
-              {({inputRef}) => (
-                <div className="relative flex items-center">
-                  <input
-                    defaultValue={term}
-                    name="q"
-                    placeholder="Search for products, categories, or guides..."
-                    ref={inputRef}
-                    type="search"
-                    className="w-full bg-gray-50 border border-gray-200 px-6 py-4 pr-32 font-sans text-sm outline-none focus:border-primary transition-colors focus:bg-white"
-                  />
-                  <button 
-                    type="submit"
-                    className="absolute right-2 top-2 bottom-2 bg-primary text-white px-6 font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-colors"
-                  >
-                    Search
-                  </button>
-                </div>
-              )}
-            </SearchForm>
+        <div className="mb-12">
+          <h1 className="font-display text-4xl md:text-5xl text-primary tracking-tight mb-8 text-center">Search our store</h1>
+          <div className="flex justify-center w-full">
+            <div className="w-full max-w-2xl">
+              <SearchForm className="w-full">
+                {({inputRef}) => (
+                  <div className="w-full relative flex items-center shadow-sm hover:shadow-md transition-shadow duration-300 rounded-sm overflow-hidden border border-gray-200 focus-within:border-primary bg-white">
+                    <input
+                      defaultValue={term}
+                      name="q"
+                      placeholder="Search for products, categories, or guides..."
+                      ref={inputRef}
+                      type="text"
+                      className="w-full bg-transparent px-6 py-5 pr-36 font-sans text-sm !outline-none !border-0 !ring-0 m-0"
+                    />
+                    <button 
+                      type="submit"
+                      className="absolute right-0 top-0 bottom-0 bg-primary text-white px-8 font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-colors"
+                    >
+                      Search
+                    </button>
+                  </div>
+                )}
+              </SearchForm>
+            </div>
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-100 text-red-600 p-6 text-center font-sans text-sm mb-12">
+          <div className="max-w-2xl mx-auto bg-red-50 border border-red-100 text-red-600 p-6 text-center font-sans text-sm mb-12">
             {error}
           </div>
         )}
 
-        <div className="search-results">
+        <div className="search-results max-w-3xl mx-auto">
           {!term || !result?.total ? (
-            <div className="text-center py-24 bg-gray-50 border border-gray-100 mt-8">
+            <div className="text-center py-24 bg-gray-50 border border-gray-100 mt-8 rounded-sm">
               <span className="block font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-gray-400 mb-4">No Results</span>
               <p className="font-sans text-gray-500 max-w-md mx-auto">
                 {term ? `We couldn't find anything matching "${term}". Try checking your spelling or using more general terms.` : 'Enter a search term above to begin.'}
@@ -86,23 +88,23 @@ export default function SearchPage() {
           ) : (
             <SearchResults result={result} term={term}>
               {({articles, pages, products, term}) => (
-                <div className="space-y-16 mt-12">
+                <div className="space-y-16 mt-16">
                   {products?.nodes?.length > 0 && (
                     <div className="search-products-section">
-                      <h2 className="font-sans text-xs font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-4 mb-8">Products ({products.nodes.length})</h2>
+                      <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
+                        <h2 className="font-sans text-xs font-bold tracking-[0.25em] uppercase text-primary">Products</h2>
+                        <span className="font-sans text-xs text-gray-400">{products.nodes.length} Results</span>
+                      </div>
                       <SearchResults.Products products={products} term={term} />
                     </div>
                   )}
                   {pages?.nodes?.length > 0 && (
                     <div className="search-pages-section">
-                      <h2 className="font-sans text-xs font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-4 mb-8">Pages ({pages.nodes.length})</h2>
+                      <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
+                        <h2 className="font-sans text-xs font-bold tracking-[0.25em] uppercase text-primary">Pages</h2>
+                        <span className="font-sans text-xs text-gray-400">{pages.nodes.length} Results</span>
+                      </div>
                       <SearchResults.Pages pages={pages} term={term} />
-                    </div>
-                  )}
-                  {articles?.nodes?.length > 0 && (
-                    <div className="search-articles-section">
-                      <h2 className="font-sans text-xs font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-4 mb-8">Articles ({articles.nodes.length})</h2>
-                      <SearchResults.Articles articles={articles} term={term} />
                     </div>
                   )}
                 </div>

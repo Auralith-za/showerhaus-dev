@@ -46,41 +46,38 @@ export function CollectionFilters({ filters }: { filters: any[] }) {
     navigate(`${location.pathname}?${params.toString()}`, { preventScrollReset: true });
   };
 
-  if (!filters || filters.length === 0) return null;
-
+  // We removed the early return so the Price Range filter always shows up even if Shopify returns no dynamic filters.
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 p-8 bg-gray-50 rounded-xl animate-in fade-in slide-in-from-top-4 duration-300">
       
       {/* Price Slider Section */}
-      <div>
-        <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">Price Range (ZAR)</h4>
-        <div className="flex items-center gap-2">
+      <div className="md:col-span-2 lg:col-span-1">
+        <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">Max Price (ZAR)</h4>
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between items-center font-sans text-xs text-gray-500">
+            <span>R0</span>
+            <span className="font-bold text-primary">R{localMaxPrice || 10000}</span>
+          </div>
           <input 
-            type="number" 
-            placeholder="Min" 
-            value={localMinPrice}
-            onChange={(e) => setLocalMinPrice(e.target.value)}
-            className="w-full bg-white border border-gray-300 rounded p-2 text-xs focus:border-primary focus:ring-0 outline-none"
-          />
-          <span className="text-gray-400">-</span>
-          <input 
-            type="number" 
-            placeholder="Max" 
-            value={localMaxPrice}
+            type="range" 
+            min="0" 
+            max="10000" 
+            step="100"
+            value={localMaxPrice || 10000}
             onChange={(e) => setLocalMaxPrice(e.target.value)}
-            className="w-full bg-white border border-gray-300 rounded p-2 text-xs focus:border-primary focus:ring-0 outline-none"
+            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
           />
         </div>
         <button 
           onClick={applyPrice}
-          className="mt-3 w-full py-2 bg-gray-200 text-primary text-[10px] font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors rounded"
+          className="mt-6 w-full py-2 bg-primary text-white text-[10px] font-bold tracking-widest uppercase hover:bg-secondary transition-colors rounded"
         >
           Apply Price
         </button>
       </div>
 
       {/* Dynamic Shopify Filters */}
-      {filters.filter(f => f.type !== 'PRICE_RANGE').map(filter => (
+      {(filters || []).filter(f => f.type !== 'PRICE_RANGE').map(filter => (
         <div key={filter.id}>
           <h4 className="font-display text-sm text-primary mb-4 border-b border-gray-200 pb-2">{filter.label}</h4>
           <div className="space-y-2 max-h-48 overflow-y-auto pr-2">

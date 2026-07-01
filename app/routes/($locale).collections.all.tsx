@@ -9,7 +9,7 @@ import { useState, useMemo } from 'react';
 import { CollectionFilters } from '~/components/CollectionFilters';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: `ShowerHaus | Shop All` }];
+  return [{ title: `Shower Haus | Shop All` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -31,27 +31,66 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   });
 
   const url = new URL(request.url);
-  const filtersParam = url.searchParams.getAll('filter');
-  const parsedFilters = filtersParam.map(f => {
-    try { return JSON.parse(f); } catch (e) { return null; }
-  }).filter(Boolean);
+  let queryParts: string[] = [];
 
-  const minPrice = url.searchParams.get('minPrice');
+  const filtersParam = url.searchParams.getAll('filter');
+  filtersParam.forEach(f => {
+    try {
+      const parsed = JSON.parse(f);
+      if (parsed.productType) {
+        queryParts.push(`product_type:"${parsed.productType}"`);
+      }
+    } catch (e) {
+      // ignore invalid JSON
+    }
+  });
+
+  // Backwards compatibility for old links in browser cache
+  const oldProductTypeFilter = url.searchParams.get('filter.p.product_type');
+  if (oldProductTypeFilter) {
+    queryParts.push(`product_type:"${oldProductTypeFilter}"`);
+  }
+
   const maxPrice = url.searchParams.get('maxPrice');
-  if (minPrice || maxPrice) {
-    const priceFilter: any = {};
-    if (minPrice) priceFilter.min = parseFloat(minPrice);
-    if (maxPrice) priceFilter.max = parseFloat(maxPrice);
-    parsedFilters.push({ price: priceFilter });
+  if (maxPrice) {
+    queryParts.push(`variants.price:<=${parseFloat(maxPrice)}`);
+  }
+
+  const sort = url.searchParams.get('sort') || 'Featured';
+  let sortKey = 'RELEVANCE';
+  let reverse = false;
+
+  switch (sort) {
+    case 'Price: Low to High':
+      sortKey = 'PRICE';
+      reverse = false;
+      break;
+    case 'Price: High to Low':
+      sortKey = 'PRICE';
+      reverse = true;
+      break;
+    case 'Newest':
+      sortKey = 'CREATED';
+      reverse = true;
+      break;
+    default:
+      sortKey = 'RELEVANCE';
+      reverse = false;
+  }
+
+  const queryVariables: any = { ...variables, sortKey, reverse };
+  if (queryParts.length > 0) {
+    queryVariables.query = queryParts.join(' AND ');
   }
 
   const data = await storefront.query(CATALOG_QUERY, {
-    variables: { ...variables },
+    variables: queryVariables,
   });
 
   return {
     products: data.products || { nodes: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: '', endCursor: '' } },
     collections: data.collections?.nodes || [],
+    sort
   };
 }
 
@@ -70,7 +109,7 @@ const placeholderImages: Record<string, string> = {
 
 export default function Collection() {
   const { products, collections } = useLoaderData<typeof loader>();
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string | null>('filter');
   const [sortBy, setSortBy] = useState('Featured');
 
   const categories = collections.filter(
@@ -137,6 +176,19 @@ export default function Collection() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
+        {/* New Site Shop Beta Banner */}
+        <div className="bg-[#f0f7ff] border border-blue-100 p-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 rounded-sm">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 text-[#4A89C8] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="font-sans text-xs text-primary font-medium leading-relaxed">
+              Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
+              <Link to="/webmaster-feedback?ref=%2Fcollections%2Fall" className="underline hover:text-secondary transition-colors font-semibold" style={{ color: '#4a89c8' }}>click here to provide feedback</Link>.
+            </p>
+          </div>
+        </div>
+
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-8">
@@ -149,11 +201,6 @@ export default function Collection() {
               </svg>
               Filters
             </button>
-            <div className="hidden md:flex items-center gap-6">
-              <button className="font-sans text-[10px] font-medium tracking-widest uppercase text-gray-400 hover:text-primary transition-colors">Enclosures</button>
-              <button className="font-sans text-[10px] font-medium tracking-widest uppercase text-gray-400 hover:text-primary transition-colors">Screens</button>
-              <button className="font-sans text-[10px] font-medium tracking-widest uppercase text-gray-400 hover:text-primary transition-colors">Spares</button>
-            </div>
           </div>
 
           <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
@@ -163,13 +210,18 @@ export default function Collection() {
             <div className="relative group">
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                  const url = new URL(window.location.href);
+                  url.searchParams.set('sort', e.target.value);
+                  window.location.href = url.toString();
+                }}
                 className="appearance-none bg-transparent font-sans text-[10px] font-bold tracking-widest uppercase text-primary pr-8 focus:outline-none cursor-pointer"
               >
-                <option>Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Newest</option>
+                <option value="Featured">Featured</option>
+                <option value="Price: Low to High">Price: Low to High</option>
+                <option value="Price: High to Low">Price: High to Low</option>
+                <option value="Newest">Newest</option>
               </select>
               <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,9 +233,9 @@ export default function Collection() {
         </div>
 
         {/* Filter Drawer / Panel */}
-        {activeFilter === 'filter' && (
+        <div style={{ display: activeFilter === 'filter' ? 'block' : 'none' }}>
           <CollectionFilters filters={products.filters || []} />
-        )}
+        </div>
 
         {/* Product Grid */}
         <PaginatedResourceSection<ProductItemFragment>
@@ -238,6 +290,9 @@ const CATALOG_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $query: String
+    $sortKey: ProductSortKeys
+    $reverse: Boolean
   ) @inContext(country: $country, language: $language) {
     collections(first: 50) {
       nodes {
@@ -254,6 +309,9 @@ const CATALOG_QUERY = `#graphql
       last: $last, 
       before: $startCursor, 
       after: $endCursor
+      query: $query
+      sortKey: $sortKey
+      reverse: $reverse
     ) {
       nodes {
         ...ProductItem

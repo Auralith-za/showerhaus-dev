@@ -17,7 +17,7 @@ export default function Accreditation() {
                 <img
                     src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1800&q=80"
                     className="absolute inset-0 w-full h-full object-cover"
-                    alt="ShowerHaus Quality Standards"
+                    alt="Shower Haus Quality Standards"
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="relative z-10 text-center px-6">

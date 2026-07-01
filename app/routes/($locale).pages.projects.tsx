@@ -19,7 +19,7 @@ export default function Projects() {
                 <img
                     src="https://images.unsplash.com/photo-1600566752229-250ed79470f8?w=1800&q=80"
                     className="absolute inset-0 w-full h-full object-cover"
-                    alt="ShowerHaus Projects"
+                    alt="Shower Haus Projects"
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="relative z-10 text-center px-6">

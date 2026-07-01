@@ -27,7 +27,7 @@ export function ProductItem({
       prefetch="intent"
       to={variantUrl}
     >
-      <div className="relative overflow-hidden bg-gray-50 aspect-[4/5] mb-4 shadow-sm group-hover:shadow-xl transition-all duration-700">
+      <div className="relative overflow-hidden bg-gray-50 aspect-[4/5] mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
         {image && (
           <Image
             alt={image.altText || product.title}
@@ -35,7 +35,7 @@ export function ProductItem({
             data={image}
             loading={loading}
             sizes="(min-width: 45em) 400px, 100vw"
-            className="object-cover w-full h-full transition-transform duration-[1500ms] ease-out group-hover:scale-110"
+            className="object-cover w-full h-full transition-transform duration-[300ms] ease-out group-hover:scale-110"
           />
         )}
         <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500" />

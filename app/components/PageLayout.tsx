@@ -129,11 +129,6 @@ function SearchAside() {
                   closeSearch={closeSearch}
                   term={term}
                 />
-                <SearchResultsPredictive.Articles
-                  articles={articles}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
                 {term.current && total ? (
                   <div className="pt-4 border-t border-gray-100 mt-4">
                     <Link

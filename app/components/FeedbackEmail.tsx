@@ -1,23 +1,23 @@
 import * as React from 'react';
 
-interface ContactEmailProps {
-  firstName: string;
-  lastName: string;
+interface FeedbackEmailProps {
+  name?: string;
   email: string;
-  phone?: string;
+  issueType: string;
+  pageUrl?: string;
   message: string;
   baseUrl?: string;
 }
 
-export const ContactEmail = ({
-  firstName = 'John',
-  lastName = 'Doe',
-  email = 'john@example.com',
-  phone = '082 123 4567',
-  message = 'I would like a quote for a frameless shower.',
+export const FeedbackEmail = ({
+  name = 'Anonymous',
+  email = 'user@example.com',
+  issueType = 'Bug / Issue',
+  pageUrl = 'Not specified',
+  message = 'Something went wrong.',
   baseUrl = 'https://www.showerhaus.co.za',
-}: ContactEmailProps) => {
-  const previewText = `New Enquiry from ${firstName} ${lastName}`;
+}: FeedbackEmailProps) => {
+  const previewText = `Webmaster Feedback: ${issueType}`;
 
   return (
     <html lang="en">
@@ -35,34 +35,37 @@ export const ContactEmail = ({
             />
           </div>
           
-          <h1 style={heading}>New Website Enquiry</h1>
+          <h1 style={heading}>Webmaster Feedback Submission</h1>
           <p style={paragraph}>
-            You have received a new message from the contact form on your website.
+            A user has submitted feedback regarding the new website.
           </p>
 
           <div style={detailsContainer}>
             <p style={detailRow}>
-              <strong>Name:</strong> {firstName} {lastName}
+              <strong>Name:</strong> {name || 'Anonymous'}
             </p>
             <p style={detailRow}>
               <strong>Email:</strong> <a href={`mailto:${email}`} style={link}>{email}</a>
             </p>
             <p style={detailRow}>
-              <strong>Phone:</strong> {phone || 'Not provided'}
+              <strong>Feedback Type:</strong> {issueType}
+            </p>
+            <p style={detailRow}>
+              <strong>Page URL:</strong> {pageUrl}
             </p>
           </div>
 
           <hr style={hr} />
 
           <div>
-            <p style={subheading}>Message:</p>
+            <p style={subheading}>Message / Description:</p>
             <p style={messageText}>{message}</p>
           </div>
 
           <hr style={hr} />
           
           <p style={footer}>
-            This email was sent automatically from the Shower Haus website contact form.
+            This email was sent automatically from the Shower Haus website feedback form.
           </p>
         </div>
       </body>
@@ -70,7 +73,7 @@ export const ContactEmail = ({
   );
 };
 
-export default ContactEmail;
+export default FeedbackEmail;
 
 // Styles matching website branding
 const main = {

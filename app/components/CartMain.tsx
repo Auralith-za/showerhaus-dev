@@ -75,7 +75,7 @@ function CartEmpty({
       </div>
       <p className="font-sans text-xs tracking-[0.3em] uppercase font-semibold text-primary mb-6">Your Cart is Empty</p>
       <p className="font-sans text-xs text-gray-400 font-light mb-8 max-w-xs leading-relaxed">
-        Discover our latest collections and bespoke shower solutions.
+        Discover our latest collections and custom-made shower solutions.
       </p>
       <div style={{ paddingTop: '24px' }}>
         <Link

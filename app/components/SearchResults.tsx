@@ -40,8 +40,7 @@ function SearchResultsArticles({
 
   return (
     <div className="search-result">
-      <h2>Articles</h2>
-      <div>
+      <div className="space-y-1">
         {articles?.nodes?.map((article) => {
           const articleUrl = urlWithTrackingParams({
             baseUrl: `/blogs/${article.handle}`,
@@ -50,15 +49,14 @@ function SearchResultsArticles({
           });
 
           return (
-            <div className="search-results-item" key={article.id}>
-              <Link prefetch="intent" to={articleUrl}>
-                {article.title}
-              </Link>
-            </div>
+              <div className="search-results-item border border-transparent border-b-gray-100 py-6 last:border-b-0 hover:bg-gray-50/80 transition-all duration-300 px-4 rounded-xl" key={article.id}>
+                <Link prefetch="intent" to={articleUrl} className="font-display font-medium text-lg text-primary hover:text-secondary transition-colors block">
+                  {article.title}
+                </Link>
+              </div>
           );
         })}
       </div>
-      <br />
     </div>
   );
 }
@@ -70,8 +68,7 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
 
   return (
     <div className="search-result">
-      <h2>Pages</h2>
-      <div>
+      <div className="space-y-1">
         {pages?.nodes?.map((page) => {
           const pageUrl = urlWithTrackingParams({
             baseUrl: `/pages/${page.handle}`,
@@ -80,15 +77,14 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
           });
 
           return (
-            <div className="search-results-item" key={page.id}>
-              <Link prefetch="intent" to={pageUrl}>
-                {page.title}
-              </Link>
-            </div>
+              <div className="search-results-item border border-transparent border-b-gray-100 py-6 last:border-b-0 hover:bg-gray-50/80 transition-all duration-300 px-4 rounded-xl" key={page.id}>
+                <Link prefetch="intent" to={pageUrl} className="font-display font-medium text-lg text-primary hover:text-secondary transition-colors block">
+                  {page.title}
+                </Link>
+              </div>
           );
         })}
       </div>
-      <br />
     </div>
   );
 }
@@ -103,7 +99,6 @@ function SearchResultsProducts({
 
   return (
     <div className="search-result">
-      <h2>Products</h2>
       <Pagination connection={products}>
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const ItemsMarkup = nodes.map((product) => {
@@ -117,14 +112,16 @@ function SearchResultsProducts({
             const image = product?.selectedOrFirstAvailableVariant?.image;
 
             return (
-              <div className="search-results-item" key={product.id}>
-                <Link prefetch="intent" to={productUrl}>
+              <div className="search-results-item border border-transparent border-b-gray-100 py-6 last:border-b-0 hover:bg-gray-50/80 transition-all duration-300 px-4 rounded-xl" key={product.id}>
+                <Link prefetch="intent" to={productUrl} className="flex items-center gap-8 group">
                   {image && (
-                    <Image data={image} alt={product.title} width={50} />
+                    <div className="w-24 h-24 bg-white overflow-hidden rounded-lg flex-shrink-0 border border-gray-100 flex items-center justify-center p-2 shadow-sm group-hover:shadow-md transition-shadow">
+                      <Image data={image} alt={product.title} className="w-full h-full object-contain mix-blend-multiply" />
+                    </div>
                   )}
-                  <div>
-                    <p>{product.title}</p>
-                    <small>{price && <Money data={price} />}</small>
+                  <div className="flex-1">
+                    <p className="font-display text-lg text-primary group-hover:text-secondary transition-colors mb-2">{product.title}</p>
+                    <span className="font-sans text-sm font-medium text-gray-500 block">{price && <Money data={price} />}</span>
                   </div>
                 </Link>
               </div>
@@ -133,25 +130,23 @@ function SearchResultsProducts({
 
           return (
             <div>
-              <div>
-                <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+              <div className="flex justify-center mb-6">
+                <PreviousLink className="inline-block bg-white !text-primary border border-primary px-8 py-3.5 font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:!bg-primary hover:!text-white transition-colors cursor-pointer rounded-none">
+                  {isLoading ? 'Loading...' : '↑ Load previous'}
                 </PreviousLink>
               </div>
-              <div>
+              <div className="space-y-1">
                 {ItemsMarkup}
-                <br />
               </div>
-              <div>
-                <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+              <div className="flex justify-center mt-8">
+                <NextLink className="inline-block bg-white !text-primary border border-primary px-8 py-3.5 font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:!bg-primary hover:!text-white transition-colors cursor-pointer rounded-none">
+                  {isLoading ? 'Loading...' : 'Load more ↓'}
                 </NextLink>
               </div>
             </div>
           );
         }}
       </Pagination>
-      <br />
     </div>
   );
 }

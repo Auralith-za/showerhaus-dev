@@ -31,7 +31,7 @@ export const BespokeEmail = ({
   notes,
   baseUrl = 'https://www.showerhaus.co.za',
 }: BespokeEmailProps) => {
-  const previewText = `New Bespoke Shower Request from ${firstName} ${lastName}`;
+  const previewText = `New Custom-made Shower Request from ${firstName} ${lastName}`;
 
   return (
     <html lang="en">
@@ -49,9 +49,9 @@ export const BespokeEmail = ({
             />
           </div>
           
-          <h1 style={heading}>New Bespoke Request</h1>
+          <h1 style={heading}>New Custom-made Request</h1>
           <p style={paragraph}>
-            You have received a new bespoke shower request from the configurator.
+            You have received a new custom-made shower request from the configurator.
           </p>
 
           <div style={section}>
@@ -86,7 +86,7 @@ export const BespokeEmail = ({
           <hr style={hr} />
           
           <p style={footer}>
-            This email was sent automatically from the ShowerHaus bespoke configurator.
+            This email was sent automatically from the Shower Haus custom-made configurator.
           </p>
         </div>
       </body>

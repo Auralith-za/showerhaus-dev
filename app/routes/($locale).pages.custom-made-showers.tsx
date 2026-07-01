@@ -87,9 +87,9 @@ export async function action({ request, context }: any) {
         );
 
         const data = await resend.emails.send({
-            from: 'ShowerHaus Website <hello@showerhaus.co.za>',
+            from: 'Shower Haus Website <hello@showerhaus.co.za>',
             to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
-            subject: `New Bespoke Shower Request from ${firstName} ${lastName}`,
+            subject: `New Custom-made Shower Request from ${firstName} ${lastName}`,
             replyTo: email,
             html,
         });
@@ -130,6 +130,13 @@ export default function BespokeShowers() {
     useEffect(() => {
         if (actionData?.success) {
             setSubmitted(true);
+            if (typeof window !== 'undefined') {
+                const gtag = (window as any).gtag;
+                if (typeof gtag === 'function') {
+                    // Tracking custom shower form submission
+                    gtag('event', 'conversion', { 'send_to': 'AW-17650233161/REPLACE_ME_BESPOKE' });
+                }
+            }
         }
     }, [actionData]);
 
@@ -192,7 +199,7 @@ export default function BespokeShowers() {
             <section className="py-16 bg-white border-b border-gray-100">
                 <div className="container mx-auto px-6 text-center">
                     <span className="block font-sans text-[11px] font-bold tracking-[0.4em] uppercase text-[#4A89C8] mb-4">CUSTOM CONFIGURATOR</span>
-                    <h1 className="font-display text-5xl md:text-6xl text-primary tracking-tight mb-4">Bespoke Showers</h1>
+                    <h1 className="font-display text-5xl md:text-6xl text-primary tracking-tight mb-4">Custom-made Showers</h1>
                     <div className="flex justify-center w-full">
                         <p className="max-w-xl font-sans text-gray-500 leading-relaxed text-center">
                             Design your perfect sanctuary. Follow the steps and our team will provide a tailored quote.
@@ -239,7 +246,7 @@ export default function BespokeShowers() {
                                     <div className="flex flex-col items-center justify-center space-y-3 w-full">
                                         <h2 className="font-display text-4xl text-primary text-center">Thank You!</h2>
                                         <p className="font-sans text-gray-500 max-w-md text-center leading-relaxed">
-                                            Your bespoke request has been successfully submitted. Our team will review your specifications and contact you within 24 hours to coordinate.
+                                            Your custom-made request has been successfully submitted. Our team will review your specifications and contact you within 24 hours to coordinate.
                                         </p>
                                     </div>
                                     <div className="pt-6 border-t border-gray-100 w-full max-w-xs">

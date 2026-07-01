@@ -8,7 +8,7 @@ import { DRAFT_ARTICLES } from '~/lib/draftArticles';
 type BlogNode = BlogsQuery['blogs']['nodes'][0];
 
 export const meta: Route.MetaFunction = () => {
-    return [{ title: `Journal | ShowerHaus` }];
+    return [{ title: `Guides | Shower Haus` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -53,12 +53,12 @@ export default function Blogs() {
                 <img
                     src="/images/hero-3.png"
                     className="absolute inset-0 w-full h-full object-cover"
-                    alt="ShowerHaus Journal"
+                    alt="Shower Haus Guides"
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="relative z-10 text-center px-6">
-                    <span className="block font-sans text-[11px] font-bold tracking-[0.5em] uppercase text-white/70 mb-6">JOURNAL</span>
-                    <h1 className="font-display text-6xl md:text-8xl text-white tracking-tight">Design & Innovation</h1>
+                    <span className="block font-sans text-[11px] font-bold tracking-[0.5em] uppercase text-white/70 mb-6">GUIDES</span>
+                    <h1 className="font-display text-6xl md:text-8xl text-white tracking-tight">Learning About Showers</h1>
                     <div className="w-20 h-px bg-white/40 mx-auto mt-8" />
                 </div>
             </section>
@@ -135,26 +135,6 @@ export default function Blogs() {
                     </div>
                 </section>
             )}
-
-
-
-            {/* Newsletter Strip */}
-            <section className="py-24 bg-primary text-white text-center">
-                <div className="container mx-auto px-6 max-w-2xl">
-                    <h2 className="font-display text-4xl mb-6">Stay Inspired</h2>
-                    <p className="font-sans text-gray-300 mb-10">Get the latest design insights and product launches delivered to your inbox.</p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                        <input
-                            type="email"
-                            placeholder="Your email address"
-                            className="flex-1 px-6 py-4 bg-white/10 border border-white/30 text-white placeholder-white/50 outline-none focus:border-white transition-colors font-sans text-sm"
-                        />
-                        <button className="bg-white text-primary px-8 py-4 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-secondary hover:text-white transition-all duration-300 flex-shrink-0">
-                            Subscribe
-                        </button>
-                    </div>
-                </div>
-            </section>
         </div>
     );
 }

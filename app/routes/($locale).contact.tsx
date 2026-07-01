@@ -6,7 +6,7 @@ import type { Route } from './+types/contact';
 import ContactEmail from '~/components/ContactEmail';
 
 export const meta: Route.MetaFunction = () => {
-    return [{ title: 'Contact Us | ShowerHaus' }];
+    return [{ title: 'Contact Us | Shower Haus' }];
 };
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -19,6 +19,13 @@ export async function action({ request, context }: Route.ActionArgs) {
 
     if (!firstName || !lastName || !email || !message) {
         return { error: 'Please fill out all required fields.' };
+    }
+
+    const companyName = formData.get('companyName') as string;
+    // Honeypot check for bots
+    if (companyName) {
+        // Silently succeed for bots, but don't send the email
+        return { success: true };
     }
 
     const resend = new Resend((context.env as any).RESEND_API_KEY);
@@ -36,7 +43,7 @@ export async function action({ request, context }: Route.ActionArgs) {
         );
 
         const data = await resend.emails.send({
-            from: 'ShowerHaus Website <hello@showerhaus.co.za>',
+            from: 'Shower Haus Website <hello@showerhaus.co.za>',
             to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
             subject: `New Enquiry from ${firstName} ${lastName}`,
             replyTo: email,
@@ -129,8 +136,8 @@ export default function Contact() {
                         </div>
 
                         <div className="mt-16 flex gap-8">
-                            <a href="#" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Instagram</a>
-                            <a href="#" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Facebook</a>
+                            <a href="https://www.instagram.com/showerhaussa/" target="_blank" rel="noopener noreferrer" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Instagram</a>
+                            <a href="https://www.facebook.com/Shower Haus/" target="_blank" rel="noopener noreferrer" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Facebook</a>
                         </div>
                     </div>
                 </div>
@@ -153,6 +160,13 @@ export default function Contact() {
                                         {actionData.error}
                                     </div>
                                 )}
+                                
+                                {/* Honeypot field - hidden from real users */}
+                                <div style={{ display: 'none' }} aria-hidden="true">
+                                    <label htmlFor="companyName">Company Name</label>
+                                    <input type="text" name="companyName" id="companyName" tabIndex={-1} autoComplete="off" />
+                                </div>
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div className="space-y-2 group">
                                         <label htmlFor="firstName" className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 group-focus-within:text-secondary transition-colors">First Name</label>

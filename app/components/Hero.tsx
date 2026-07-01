@@ -22,11 +22,11 @@ const SLIDES = [
     },
     {
         id: 'architectural-glass',
-        title: 'Over two Decades. Thousands of Showers.',
+        title: 'Over Two Decades. Thousands of Showers.',
         subtitle: "Shower Haus has been getting it right for over 20 years. Durban's trusted shower glass specialists.",
         label: 'SINCE 2004',
         image: '/images/hero-3.png',
-        url: '/pages/bespoke-showers',
+        url: '/pages/custom-made-showers',
         buttonText: 'DISCOVER BESPOKE'
     }
 ];

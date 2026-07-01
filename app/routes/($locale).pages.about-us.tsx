@@ -17,7 +17,7 @@ export default function AboutUs() {
                 <div className="absolute inset-0 bg-black/50" />
                 
                 <div className="relative z-10 text-center px-6 max-w-4xl">
-                    <span className="block font-sans text-[11px] font-extrabold tracking-[0.5em] uppercase text-white/70 mb-6">SINCE 2006</span>
+                    <span className="block font-sans text-[11px] font-extrabold tracking-[0.5em] uppercase text-white/70 mb-6">SINCE 2004</span>
                     <h1 className="font-display text-5xl md:text-8xl text-white tracking-tight mb-8">About Shower Haus</h1>
                     <div className="w-16 h-[1px] bg-white/40 mx-auto mb-8" />
                     <p className="font-sans text-white/95 leading-relaxed text-lg md:text-xl font-light max-w-3xl mx-auto drop-shadow-sm">
@@ -162,7 +162,7 @@ export default function AboutUs() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                         {/* Book Consultation */}
                         <Link 
-                            to="/pages/bespoke-showers" 
+                            to="/pages/custom-made-showers" 
                             className="bg-white border border-gray-200/60 p-10 rounded-sm hover:border-[#4A89C8]/50 hover:shadow-lg transition-all duration-300 flex items-start gap-6 group"
                         >
                             <span className="p-3 bg-[#FAF9F6] text-primary rounded-sm group-hover:bg-[#4A89C8]/10 group-hover:text-[#4A89C8] transition-colors">

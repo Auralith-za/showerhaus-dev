@@ -20,7 +20,7 @@ export function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-1 space-y-8">
             <Link to="/" className="block">
-              <img src="/logo.png" alt="ShowerHaus" className="h-16 w-auto object-contain" />
+              <img src="/logo.png" alt="Shower Haus" className="h-16 w-auto object-contain" />
             </Link>
             <div className="font-sans text-gray-500 text-sm space-y-6 font-light leading-relaxed">
               <div className="flex items-start gap-4">

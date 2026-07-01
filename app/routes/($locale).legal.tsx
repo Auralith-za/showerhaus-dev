@@ -2,14 +2,14 @@ import { Outlet, NavLink, useLocation } from 'react-router';
 import type { Route } from './+types/legal';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: 'Legal | ShowerHaus' }];
+  return [{ title: 'Legal | Shower Haus' }];
 };
 
 const POLICIES = [
   { name: 'Using Our Website', path: '/legal/using-our-website' },
   { name: 'Terms and Conditions', path: '/legal/terms-and-conditions' },
   { name: 'Privacy Policy', path: '/legal/privacy' },
-  { name: 'Cookie Policy', path: '/legal/cookies' },
+  { name: 'Cookies Policy', path: '/legal/cookies' },
   { name: 'Refund and Returns', path: '/legal/refund-and-returns' },
   { name: 'Shipping and Delivery', path: '/legal/shipping-and-delivery' },
 ];
@@ -34,7 +34,7 @@ export default function LegalLayout() {
           <aside className="w-full md:w-1/4 flex-shrink-0">
             <nav className="flex flex-col space-y-2 sticky top-32">
               <span className="font-sans text-[11px] font-bold tracking-[0.1em] uppercase text-primary border-b border-gray-200 pb-3 mb-3">
-                Categories
+                Documents
               </span>
               {POLICIES.map((policy) => {
                 const isActive = location.pathname.includes(policy.path);

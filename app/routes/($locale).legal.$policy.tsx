@@ -18,13 +18,13 @@ const POLICY_TITLE_MAP: Record<string, string> = {
   'using-our-website': 'Using Our Website',
   'terms-and-conditions': 'Terms and Conditions',
   'privacy': 'Privacy Policy',
-  'cookies': 'Cookie Policy',
+  'cookies': 'Cookies Policy',
   'refund-and-returns': 'Refund and Returns',
   'shipping-and-delivery': 'Shipping and Delivery',
 };
 
 export const meta: Route.MetaFunction = ({ data }) => {
-  return [{ title: `${data?.title || 'Legal'} | ShowerHaus` }];
+  return [{ title: `${data?.title || 'Legal'} | Shower Haus` }];
 };
 
 export async function loader({ params }: Route.LoaderArgs) {

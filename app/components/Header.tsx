@@ -47,21 +47,18 @@ export function Header({
     <>
       <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
         Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-        <Link to="/contact" className="text-white underline hover:text-secondary">click here to provide feedback</Link>.
+        <Link to="/webmaster-feedback" className="underline hover:opacity-80 transition-opacity font-semibold" style={{ color: '#82b7ed' }}>click here to provide feedback</Link>.
       </div>
       {/* Top Banner (White) */}
-      <div className="hidden md:flex" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-          <Link to="/pages/bespoke-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Bespoke Showers</Link>
+      <div className="hidden md:flex relative" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
+        <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flex: 1 }}>
+          <Link to="/pages/custom-made-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Custom-made Showers</Link>
           
           <div className="relative group flex items-center h-[30px] cursor-pointer">
             <Link to="/pages/about-us" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
             <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
               <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[220px]">
-                {/* <Link to="/pages/our-story" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Our Story</Link> */}
-                {/* <Link to="/pages/projects" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Projects</Link> */}
                 <Link to="/pages/customer-stories" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Customer Stories</Link>
-                {/* <Link to="/pages/accreditation" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Accreditation</Link> */}
                 <Link to="/blogs" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Blog</Link>
               </div>
             </div>
@@ -69,7 +66,18 @@ export function Header({
 
           <Link to="/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact</Link>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', minWidth: '120px', justifyContent: 'flex-end' }}>
+
+        {/* Center: Phone Number */}
+        <div className="flex items-center justify-center font-bold text-primary hover:text-secondary transition-colors" style={{ flex: 1, whiteSpace: 'nowrap' }}>
+          <a href="tel:0313129095" className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.273-3.973-6.869-6.869l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
+            Call us on 031 312 9095
+          </a>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', minWidth: '120px', justifyContent: 'flex-end', flex: 1 }}>
           <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} customer={customer} />
         </div>
       </div>
@@ -124,7 +132,10 @@ export function Header({
                           if (isSpares) {
                             const sparesProducts = shopifyCol?.products?.nodes || products || [];
                             const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
-                            const filteredTypes = uniqueTypes.filter(t => (t as string).toLowerCase() !== 'parts' && (t as string).toLowerCase() !== 'spares' && (t as string).toLowerCase() !== 'shower parts');
+                            const filteredTypes = uniqueTypes.filter(t => {
+                              const tStr = (t as string).toLowerCase();
+                              return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures';
+                            });
                             const displayTypes = filteredTypes.length > 0 ? filteredTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
 
                             return (
@@ -137,7 +148,8 @@ export function Header({
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                   {displayTypes.map((type) => {
                                     const typeStr = type as string;
-                                    const filterPath = `/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`;
+                                    const filterObj = { productType: typeStr };
+                                    const filterPath = `/collections/all?filter=${encodeURIComponent(JSON.stringify(filterObj))}`;
                                     return (
                                       <Link
                                         key={typeStr}
@@ -213,7 +225,7 @@ export function Header({
                       <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Architectural Collections</span>
                       <h4 className="font-display" style={{ fontSize: '18px', color: '#111', margin: 0 }}>{item.title} Range</h4>
                       <p style={{ fontSize: '11px', color: '#999', margin: 0, lineHeight: '1.6', fontFamily: 'sans-serif' }}>
-                        Our curated range of {item.title.toLowerCase()} is currently being loaded. Check back soon.
+                        Our range of {item.title.toLowerCase()} is currently being loaded. Please call us on 031 312 9095 to place an order.
                       </p>
                       <div style={{ paddingTop: '8px' }}>
                         <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#999', border: '1px solid #e5e7eb', padding: '6px 12px', borderRadius: '2px' }}>
@@ -338,10 +350,11 @@ export function HeaderMenu({
                           </span>
                           {displayTypes.map(type => {
                             const typeStr = type as string;
+                            const filterObj = { productType: typeStr };
                             return (
                               <NavLink
                                 key={typeStr}
-                                to={`/collections/all?filter.p.product_type=${encodeURIComponent(typeStr)}`}
+                                to={`/collections/all?filter=${encodeURIComponent(JSON.stringify(filterObj))}`}
                                 className="text-base font-sans text-gray-500 hover:text-primary pl-4"
                                 onClick={close}
                               >
