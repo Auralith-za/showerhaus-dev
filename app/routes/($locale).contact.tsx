@@ -69,8 +69,8 @@ export default function Contact() {
         if (actionData?.success && typeof window !== 'undefined') {
             const gtag = (window as any).gtag;
             if (typeof gtag === 'function') {
-                // Tracking contact form submission (replace AW-17650233161/REPLACE_ME with your actual conversion label)
-                gtag('event', 'conversion', { 'send_to': 'AW-17650233161/REPLACE_ME' });
+                // Tracking contact form submission
+                gtag('event', 'conversion', { 'send_to': 'AW-17650233161/tzzICISdpckcEMnepOBB' });
             }
         }
     }, [actionData]);
