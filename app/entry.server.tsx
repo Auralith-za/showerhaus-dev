@@ -36,6 +36,18 @@ export default async function handleRequest(
       "'unsafe-inline'",
       'https://fonts.googleapis.com',
     ],
+    scriptSrc: [
+      "'self'",
+      'https://www.googletagmanager.com',
+      'https://www.googleadservices.com',
+      'https://googleads.g.doubleclick.net',
+    ],
+    connectSrc: [
+      "'self'",
+      'https://www.google-analytics.com',
+      'https://googleads.g.doubleclick.net',
+      'https://www.googletagmanager.com',
+    ],
   });
 
   const body = await renderToReadableStream(

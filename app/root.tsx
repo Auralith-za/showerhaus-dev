@@ -211,8 +211,9 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="stylesheet" href={appStyles}></link>
         
         {/* Google Ads Tracking */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17650233161"></script>
+        <script nonce={nonce} async src="https://www.googletagmanager.com/gtag/js?id=AW-17650233161"></script>
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
