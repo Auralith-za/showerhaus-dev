@@ -109,7 +109,7 @@ const placeholderImages: Record<string, string> = {
 
 export default function Collection() {
   const { products, collections } = useLoaderData<typeof loader>();
-  const [activeFilter, setActiveFilter] = useState<string | null>('filter');
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState('Featured');
 
   const categories = collections.filter(
@@ -192,6 +192,7 @@ export default function Collection() {
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-8">
+            {/* 
             <button
               onClick={() => setActiveFilter(activeFilter === 'filter' ? null : 'filter')}
               className="flex items-center gap-2 font-sans text-[10px] font-bold tracking-widest uppercase text-primary hover:text-gray-500 transition-colors"
@@ -201,6 +202,7 @@ export default function Collection() {
               </svg>
               Filters
             </button>
+            */}
           </div>
 
           <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
@@ -232,10 +234,11 @@ export default function Collection() {
           </div>
         </div>
 
-        {/* Filter Drawer / Panel */}
+        {/* Filter Drawer / Panel (Disabled for now)
         <div style={{ display: activeFilter === 'filter' ? 'block' : 'none' }}>
           <CollectionFilters filters={products.filters || []} />
         </div>
+        */}
 
         {/* Product Grid */}
         <PaginatedResourceSection<ProductItemFragment>

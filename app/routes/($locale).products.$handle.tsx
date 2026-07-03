@@ -480,7 +480,7 @@ export function ErrorBoundary() {
             </p>
             <div className="pt-8">
               <Link
-                to="/pages/custom-made-showers"
+                to="/pages/design-your-shower"
                 className="bg-primary text-white px-10 py-5 text-xs font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-all duration-300 shadow-xl inline-block"
               >
                 Design Your Custom {formattedHandle}

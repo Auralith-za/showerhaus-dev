@@ -110,7 +110,7 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary leading-tight mb-6 tracking-tighter text-left">Our Most Popular Products</h2>
+      <h2 className="font-sans text-4xl md:text-6xl font-bold text-primary leading-tight mb-6 tracking-tighter text-left">Trending on our online store</h2>
       
       <div style={{ height: '60px' }} className="w-full"></div>
       <Suspense fallback={<div className="text-center text-gray-400 py-12">Loading products...</div>}>

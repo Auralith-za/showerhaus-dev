@@ -13,7 +13,7 @@ export function ServicesSection() {
                     {/* Channel 1 */}
                     <div className="relative overflow-hidden aspect-[3/4] group cursor-pointer shadow-2xl">
                         <img
-                            src="/images/engage-showroom.jpeg"
+                            src="/images/image-1.png"
                             alt="At Our Showroom"
                             className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
                         />
@@ -41,7 +41,7 @@ export function ServicesSection() {
                     {/* Channel 2 */}
                     <div className="relative overflow-hidden aspect-[3/4] group cursor-pointer shadow-2xl">
                         <img
-                            src="/images/engage-home.png"
+                            src="/images/image.png"
                             alt="At Your Home"
                             className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
                         />

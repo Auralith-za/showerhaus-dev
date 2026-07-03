@@ -52,8 +52,15 @@ export function Header({
       {/* Top Banner (White) */}
       <div className="hidden md:flex relative" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flex: 1 }}>
-          <Link to="/pages/custom-made-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Custom-made Showers</Link>
-          
+          <div className="relative group flex items-center h-[30px] cursor-pointer">
+            <span className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Showers</span>
+            <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
+              <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[240px]">
+                <Link to="/pages/custom-made-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Custom-made Showers</Link>
+                <Link to="/pages/frameless-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Frameless Showers</Link>
+              </div>
+            </div>
+          </div>
           <div className="relative group flex items-center h-[30px] cursor-pointer">
             <Link to="/pages/about-us" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
             <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
@@ -218,8 +225,26 @@ export function Header({
                       </div>
                     </div>
                   </div>
+                ) : item.handle === 'showers' ? (
+                  <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
+                    <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '400px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center', textAlign: 'center' }}>
+                      <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Shower Options</span>
+                      <h4 className="font-display" style={{ fontSize: '18px', color: '#111', margin: 0 }}>Choose Your Shower</h4>
+                      <p style={{ fontSize: '11px', color: '#999', margin: 0, lineHeight: '1.6', fontFamily: 'sans-serif' }}>
+                        Explore our range of premium custom-made and frameless shower enclosures.
+                      </p>
+                      <div className="flex flex-col gap-4 w-full mt-4">
+                        <Link to="/pages/custom-made-showers" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
+                          Custom-made Showers
+                        </Link>
+                        <Link to="/pages/frameless-showers" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
+                          Frameless Showers
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 ) : (
-                  /* Coming Soon Dropdown for Showers, Consumables, Shower Care, Decorative */
+                  /* Coming Soon Dropdown for Consumables, Shower Care, Decorative */
                   <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
                     <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '400px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center', textAlign: 'center' }}>
                       <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Architectural Collections</span>
@@ -301,10 +326,17 @@ export function HeaderMenu({
           return (
             <MobileAccordionItem key={item.handle} title={item.title}>
               <div className="pl-4 mt-2 flex flex-col space-y-3">
+                <NavLink
+                  to={`/pages/${item.handle}`}
+                  className="text-base font-sans font-medium text-gray-700 hover:text-primary transition-colors pb-1"
+                  onClick={close}
+                >
+                  {item.title} Overview
+                </NavLink>
                 {item.items.map((sub) => (
                   <NavLink
                     key={sub.handle}
-                    to={sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`}
+                    to={sub.handle === 'journal' ? '/blogs' : (sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`)}
                     className="text-base font-sans text-gray-500 hover:text-primary"
                     onClick={close}
                   >
@@ -329,6 +361,20 @@ export function HeaderMenu({
               const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
               
               if (!isCollectionActive) {
+                if (item.handle === 'showers') {
+                  return (
+                    <MobileAccordionItem key={item.handle} title={item.title}>
+                      <div className="pl-4 border-l border-gray-100 flex flex-col space-y-4 mt-2">
+                        <NavLink to="/pages/custom-made-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
+                          Custom-made Showers
+                        </NavLink>
+                        <NavLink to="/pages/frameless-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
+                          Frameless Showers
+                        </NavLink>
+                      </div>
+                    </MobileAccordionItem>
+                  );
+                }
                 return (
                   <MobileAccordionItem key={item.handle} title={item.title}>
                     <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">

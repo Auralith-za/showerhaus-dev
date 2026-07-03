@@ -137,7 +137,7 @@ export default function Contact() {
 
                         <div className="mt-16 flex gap-8">
                             <a href="https://www.instagram.com/showerhaussa/" target="_blank" rel="noopener noreferrer" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Instagram</a>
-                            <a href="https://www.facebook.com/Shower Haus/" target="_blank" rel="noopener noreferrer" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Facebook</a>
+                            <a href="https://www.facebook.com/ShowerHaus" target="_blank" rel="noopener noreferrer" className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-white/80 transition-colors">Facebook</a>
                         </div>
                     </div>
                 </div>
