@@ -80,12 +80,10 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
 function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; layout?: CartLayout }) {
   if (!checkoutUrl) return null;
 
-  const formattedCheckoutUrl = checkoutUrl.replace(/showerhaus-2\.myshopify\.com|ueicbp-za\.myshopify\.com/g, 'showerhaus.co.za');
-
   if (layout === 'page') {
       return (
           <a
-            href={formattedCheckoutUrl}
+            href={checkoutUrl}
             target="_self"
             className="block w-full bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase text-center py-5 hover:bg-secondary transition-colors"
           >
@@ -96,7 +94,7 @@ function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; la
 
   return (
     <a
-      href={formattedCheckoutUrl}
+      href={checkoutUrl}
       target="_self"
       className="flex-1 bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase py-5 flex items-center justify-center hover:bg-secondary transition-colors"
     >
