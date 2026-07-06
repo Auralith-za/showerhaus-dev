@@ -74,11 +74,20 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
       reverse = true;
       break;
     default:
-      sortKey = 'BEST_SELLING';
+      sortKey = undefined;
       reverse = false;
   }
 
-  const queryVariables: any = { ...variables, sortKey, reverse };
+  const queryVariables: any = { 
+    first: variables.first,
+    last: variables.last,
+    after: variables.endCursor,
+    before: variables.startCursor,
+    reverse 
+  };
+  if (sortKey) {
+    queryVariables.sortKey = sortKey;
+  }
   if (queryParts.length > 0) {
     queryVariables.query = queryParts.join(' AND ');
   }

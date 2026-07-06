@@ -272,7 +272,13 @@ async function regularSearch({
     ...items
   }: {errors?: Array<{message: string}>} & RegularSearchQuery =
     await storefront.query(SEARCH_QUERY, {
-      variables: {...variables, term},
+      variables: {
+        first: variables.first,
+        last: variables.last,
+        after: variables.endCursor,
+        before: variables.startCursor,
+        term
+      },
     });
 
   if (!items) {

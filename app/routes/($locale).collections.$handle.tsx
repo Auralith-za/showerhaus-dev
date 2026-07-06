@@ -68,11 +68,21 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
       reverse = true;
       break;
     default:
-      sortKey = 'COLLECTION_DEFAULT';
+      sortKey = undefined;
       reverse = false;
   }
 
-  const queryVariables: any = { ...variables, handle, sortKey, reverse };
+  const queryVariables: any = { 
+    first: variables.first,
+    last: variables.last,
+    after: variables.endCursor,
+    before: variables.startCursor,
+    handle, 
+    reverse 
+  };
+  if (sortKey) {
+    queryVariables.sortKey = sortKey;
+  }
   if (parsedFilters.length > 0) {
     queryVariables.filters = parsedFilters;
   }
