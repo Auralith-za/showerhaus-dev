@@ -61,7 +61,7 @@ export function Aside({
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className={`absolute inset-0 bg-black/40 ${expanded ? 'backdrop-blur-sm' : ''}`}
         onClick={close}
       />
 
