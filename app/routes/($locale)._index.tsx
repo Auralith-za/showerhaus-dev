@@ -17,7 +17,7 @@ import { ProjectsSection } from '~/components/ProjectsSection';
 import { ServicesSection } from '~/components/ServicesSection';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: 'Shower Haus | Premium Bathroom & Kitchen' }];
+  return [{ title: 'Shower Haus | Premium Showers' }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
