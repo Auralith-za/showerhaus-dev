@@ -360,21 +360,22 @@ export function HeaderMenu({
               const isCollectionActive = isSpares ? (products && products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
               const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
               
+              if (item.handle === 'showers') {
+                return (
+                  <MobileAccordionItem key={item.handle} title={item.title}>
+                    <div className="pl-4 border-l border-gray-100 flex flex-col space-y-4 mt-2">
+                      <NavLink to="/pages/custom-made-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
+                        Custom-made Showers
+                      </NavLink>
+                      <NavLink to="/pages/frameless-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
+                        Frameless Showers
+                      </NavLink>
+                    </div>
+                  </MobileAccordionItem>
+                );
+              }
+
               if (!isCollectionActive) {
-                if (item.handle === 'showers') {
-                  return (
-                    <MobileAccordionItem key={item.handle} title={item.title}>
-                      <div className="pl-4 border-l border-gray-100 flex flex-col space-y-4 mt-2">
-                        <NavLink to="/pages/custom-made-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
-                          Custom-made Showers
-                        </NavLink>
-                        <NavLink to="/pages/frameless-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
-                          Frameless Showers
-                        </NavLink>
-                      </div>
-                    </MobileAccordionItem>
-                  );
-                }
                 return (
                   <MobileAccordionItem key={item.handle} title={item.title}>
                     <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">

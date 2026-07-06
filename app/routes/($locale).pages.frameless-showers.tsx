@@ -116,7 +116,7 @@ export default function FramelessShowersLanding() {
             Why Frameless
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl text-primary font-bold mb-8 leading-tight tracking-tight">
-            Clean lines. More light. Less to get in the way.
+            Clean lines. More light.
           </h2>
           <div className="flex flex-col">
             {[
@@ -223,9 +223,9 @@ export default function FramelessShowersLanding() {
                     View Photo
                   </span>
                 </div>
-                <span className="relative font-mono text-[10px] text-white bg-black/45 px-2 py-1 rounded">
+                {/* <span className="relative font-mono text-[10px] text-white bg-black/45 px-2 py-1 rounded">
                   {item.location}
-                </span>
+                </span> */}
               </div>
             ))}
           </div>
@@ -252,7 +252,7 @@ export default function FramelessShowersLanding() {
             </div>
           )}
 
-          <div className="text-center mt-14">
+          <div className="text-center mt-14 pb-12 md:pb-0">
             <Link
               to="/pages/design-your-shower"
               className="inline-block bg-primary text-white hover:bg-secondary transition-all duration-300 px-10 py-5 text-[10px] tracking-[0.3em] font-bold uppercase rounded-none text-center"
@@ -396,7 +396,7 @@ export default function FramelessShowersLanding() {
             ));
           })()}
         </div>
-          <div className="text-center mt-16">
+          <div className="text-center mt-16 pb-12 md:pb-0">
             <Link
               to="/pages/design-your-shower"
               className="inline-block bg-primary text-white hover:bg-secondary transition-all duration-300 px-10 py-5 text-[10px] tracking-[0.3em] font-bold uppercase rounded-none text-center"
@@ -418,7 +418,7 @@ export default function FramelessShowersLanding() {
             </h2>
             <div className="w-[70px] h-[1px] bg-[#C6CBCE] mx-auto mb-5"></div>
             <p className="text-[16px] text-[#5C6572]">
-              Hinges, clamps, handles and rails in a choice of finishes — chosen step by step in the configurator.
+              A choice of hardware finishes to match the rest of your bathroom
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
@@ -524,9 +524,9 @@ export default function FramelessShowersLanding() {
             <div className="aspect-square bg-cover bg-center border border-[#DED8CB] rounded-sm" style={{ backgroundImage: "url('/images/engage-home.png')" }}></div>
             <div className="aspect-square bg-cover bg-center border border-[#DED8CB] rounded-sm" style={{ backgroundImage: "url('/images/contact-us.jpg')" }}></div>
           </div>
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 pb-12 md:pb-0">
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/showerhaussa"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-3 bg-primary text-white hover:bg-secondary transition-all duration-300 px-10 py-5 text-[10px] tracking-[0.3em] font-bold uppercase rounded-none text-center"
@@ -553,48 +553,39 @@ export default function FramelessShowersLanding() {
           </h2>
           <div className="w-[70px] h-[1px] bg-[#C6CBCE] mx-auto"></div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="text-center sm:text-left">
             <div className="w-[52px] h-[52px] rounded-full bg-[#17233D] text-white flex items-center justify-center text-lg font-semibold mb-5 mx-auto sm:mx-0">
               1
             </div>
-            <h3 className="text-[18px] text-[#17233D] font-bold mb-3">Design</h3>
+            <h3 className="text-[18px] text-[#17233D] font-bold mb-3">Measure &amp; quote</h3>
             <p className="text-[14.5px] leading-relaxed text-[#5C6572]">
-              Tell us your style, configuration, dimensions and hardware in the configurator.
+              A specialist visits to measure accurately — usually within 2–3 working days — then we prepare a design and a clear, itemised quote to your specification. Consultations within 50 km of our showroom are free.
             </p>
           </div>
           <div className="text-center sm:text-left">
             <div className="w-[52px] h-[52px] rounded-full bg-[#17233D] text-white flex items-center justify-center text-lg font-semibold mb-5 mx-auto sm:mx-0">
               2
             </div>
-            <h3 className="text-[18px] text-[#17233D] font-bold mb-3">Measure</h3>
+            <h3 className="text-[18px] text-[#17233D] font-bold mb-3">Manufacture</h3>
             <p className="text-[14.5px] leading-relaxed text-[#5C6572]">
-              A specialist measures on site — free within 50 km, usually within 2–3 working days.
+              Your enclosure is made to your exact measurements, with a typical lead time of 10–12 working days from your deposit.
             </p>
           </div>
           <div className="text-center sm:text-left">
             <div className="w-[52px] h-[52px] rounded-full bg-[#17233D] text-white flex items-center justify-center text-lg font-semibold mb-5 mx-auto sm:mx-0">
               3
             </div>
-            <h3 className="text-[18px] text-[#17233D] font-bold mb-3">Make</h3>
-            <p className="text-[14.5px] leading-relaxed text-[#5C6572]">
-              Your enclosure is manufactured to your exact measurements — about 10–12 working days from deposit.
-            </p>
-          </div>
-          <div className="text-center sm:text-left">
-            <div className="w-[52px] h-[52px] rounded-full bg-[#17233D] text-white flex items-center justify-center text-lg font-semibold mb-5 mx-auto sm:mx-0">
-              4
-            </div>
             <h3 className="text-[18px] text-[#17233D] font-bold mb-3">Install</h3>
             <p className="text-[14.5px] leading-relaxed text-[#5C6572]">
-              Fitted properly, sealed and finished, and backed by our three-month workmanship guarantee.
+              Our technicians fit it properly — aligned, sealed and finished — backed by a three-month workmanship guarantee against leaks.
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-8 mt-14 pt-9 border-t border-[#EDE9DF]">
           <span className="text-[14.5px] text-[#5C6572] font-medium">
-            Fully accredited and insured — members of SAGGA, SASEMA and the MBA.
+            Fully accredited and insured — members of AAAMSA and SAGGA.
           </span>
           <Link
             to="/pages/custom-made-showers"
@@ -604,7 +595,7 @@ export default function FramelessShowersLanding() {
           </Link>
         </div>
 
-        <div className="text-center mt-16">
+        <div className="text-center mt-16 pb-12 md:pb-0">
           <Link
             to="/pages/design-your-shower"
             className="inline-block bg-primary text-white hover:bg-secondary transition-all duration-300 px-10 py-5 text-[10px] tracking-[0.3em] font-bold uppercase rounded-none text-center"

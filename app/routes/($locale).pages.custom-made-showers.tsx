@@ -62,7 +62,7 @@ export default function CustomMadeShowersLanding() {
               Over two decades of installations
             </div>
             <div className="flex-1 min-w-[230px] py-2 md:border-r border-white/10">
-              Over 10,000 showers installed
+              Over 30,000 showers installed
             </div>
             <div className="flex-1 min-w-[230px] py-2 md:border-r border-white/10">
               WORKMANSHIP GUARANTEED
@@ -85,7 +85,7 @@ export default function CustomMadeShowersLanding() {
               </div>
             </div>
             <div>
-              <div className="text-6xl font-bold text-[#17233D] leading-none">10 000+</div>
+              <div className="text-6xl font-bold text-[#17233D] leading-none">30 000+</div>
               <div className="text-[12px] tracking-[0.24em] text-[#93A0B2] mt-4 uppercase font-semibold">
                 Showers installed
               </div>
@@ -117,16 +117,14 @@ export default function CustomMadeShowersLanding() {
           <h2 className="text-4xl md:text-5xl lg:text-6xl text-primary font-bold mb-6 leading-tight tracking-tight">
             Made for your space — not off the shelf.
           </h2>
-          <p className="text-[16px] leading-relaxed mb-4 text-[#5C6572]">
-            Bathrooms are rarely perfectly square or level, and no two are the same. A custom enclosure is measured and made to the exact dimensions and layout of your space — so it fits properly, seals correctly and looks clean.
-          </p>
-          <p className="text-[16px] leading-relaxed mb-4 text-[#5C6572]">
-            Whether you want a frameless shower, a walk-in shower, or a framed enclosure with a hinged or sliding shower door, it's made to the exact dimensions of your space.
-          </p>
           <p className="text-[16px] leading-relaxed mb-8 text-[#5C6572]">
+            Bathrooms are rarely perfectly square or level, and no two are the same. A custom enclosure is measured and made to the exact dimensions and layout of your space — so it fits properly, seals correctly and looks clean.
+            <br /><br />
+            Whether you want a frameless shower, a walk-in shower, or a framed enclosure with a hinged or sliding shower door, it's made to the exact dimensions of your space.
+            <br /><br />
             We handle the whole job: advice, measuring, manufacture, installation and aftercare. One team is accountable for the result, from the first measurement to the finished shower.
           </p>
-          <div className="mt-10">
+          <div className="mt-10 pb-12 md:pb-0">
             <Link
               to="/pages/design-your-shower"
               className="inline-block bg-primary text-white hover:bg-secondary transition-all duration-300 px-10 py-5 text-[10px] tracking-[0.3em] font-bold uppercase rounded-none text-center"
@@ -175,7 +173,7 @@ export default function CustomMadeShowersLanding() {
                   Frameless
                 </h3>
                 <p className="text-[14px] text-[#E4E8EF] leading-relaxed">
-                  Our most popular look — minimal, modern, 8–10 mm toughened glass with hardware kept to a minimum.
+                  Our most popular look — minimal, modern, 8–10 mm toughened glass with metal kept to a minimum.
                 </p>
               </div>
             </div>
@@ -213,7 +211,7 @@ export default function CustomMadeShowersLanding() {
             </div>
           </div>
 
-          <div className="text-center mt-14">
+          <div className="text-center mt-14 pb-12 md:pb-0">
             <Link
               to="/pages/design-your-shower"
               className="inline-block bg-primary text-white hover:bg-secondary transition-all duration-300 px-10 py-5 text-[10px] tracking-[0.3em] font-bold uppercase rounded-none text-center"
@@ -243,7 +241,7 @@ export default function CustomMadeShowersLanding() {
             <div>
               <h3 className="text-[18px] text-[#17233D] font-bold mb-2">Specialist focus</h3>
               <p className="text-[15px] leading-relaxed text-[#5C6572]">
-                Showers are all we do, from a single door to a complete enclosure. Better advice, fewer surprises.
+                Showers are all we do, from a single door to a complete enclosure.
               </p>
             </div>
           </div>
@@ -382,24 +380,24 @@ export default function CustomMadeShowersLanding() {
         {/* 4 item grid representing recent projects */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
           <div className="aspect-[4/5] bg-cover bg-center border border-[#E0DACE] flex items-end p-4 rounded-sm" style={{ backgroundImage: "url('/images/hero-2.png')" }}>
-            <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
+            {/* <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
               Umhlanga · frameless
-            </span>
+            </span> */}
           </div>
           <div className="aspect-[4/5] bg-cover bg-center border border-[#E0DACE] flex items-end p-4 rounded-sm" style={{ backgroundImage: "url('/images/about-us-hero.png')" }}>
-            <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
+            {/* <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
               Hillcrest · walk-in
-            </span>
+            </span> */}
           </div>
           <div className="aspect-[4/5] bg-cover bg-center border border-[#E0DACE] flex items-end p-4 rounded-sm" style={{ backgroundImage: "url('/images/about-us-narrative.png')" }}>
-            <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
+            {/* <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
               Durban N · framed
-            </span>
+            </span> */}
           </div>
           <div className="aspect-[4/5] bg-cover bg-center border border-[#E0DACE] flex items-end p-4 rounded-sm" style={{ backgroundImage: "url('/images/engage-home.png')" }}>
-            <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
+            {/* <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
               Ballito · over-bath
-            </span>
+            </span> */}
           </div>
         </div>
         <div className="mt-11">
