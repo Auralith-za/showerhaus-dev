@@ -169,9 +169,6 @@ export default function Product() {
                   <div key={option.name} className="flex flex-col gap-3">
                     <div className="flex items-center gap-8">
                       <span className="text-sm text-gray-700 w-24">{option.name}:</span>
-                      <span className="text-sm font-semibold text-gray-900">
-                        {option.optionValues.find(v => v.selected)?.name || ''}
-                      </span>
                     </div>
                     
                     {isColorOrFinish ? (
@@ -207,10 +204,9 @@ export default function Product() {
                         <select 
                           value={option.optionValues.find(v => v.selected)?.name || ''}
                           onChange={(e) => {
-                            const selectedVal = option.optionValues.find(v => v.name === e.target.value);
-                            if (selectedVal && selectedVal.variantUriQuery !== undefined) {
-                              navigate(`?${selectedVal.variantUriQuery}`, { replace: true, preventScrollReset: true });
-                            }
+                            const newParams = new URLSearchParams(window.location.search);
+                            newParams.set(option.name, e.target.value);
+                            navigate(`?${newParams.toString()}`, { replace: true, preventScrollReset: true });
                           }}
                           className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
                         >
