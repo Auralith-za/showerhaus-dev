@@ -74,7 +74,7 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
       reverse = true;
       break;
     default:
-      sortKey = 'RELEVANCE';
+      sortKey = 'BEST_SELLING';
       reverse = false;
   }
 

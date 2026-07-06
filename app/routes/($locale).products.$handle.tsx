@@ -106,29 +106,8 @@ export default function Product() {
   // ... (existing state and logic)
   const [searchParams] = useSearchParams();
 
-  // Determine active selected options by merging URL params with the fallback variant's options
-  const fallbackVariant = product.selectedOrFirstAvailableVariant;
-  const urlOptions = new Map<string, string>();
-  for (const option of product.options) {
-    const val = searchParams.get(option.name);
-    if (val) {
-      urlOptions.set(option.name, val);
-    }
-  }
-  const targetOptions = fallbackVariant?.selectedOptions?.map((opt: any) => {
-    return {
-      name: opt.name,
-      value: urlOptions.has(opt.name) ? urlOptions.get(opt.name)! : opt.value
-    };
-  }) || [];
-
-  // Find variant matching targetOptions exactly
-  const matchedVariant = product.variants?.nodes?.find((variant: any) => {
-    return targetOptions.every((targetOpt: any) => {
-      const varOpt = variant.selectedOptions.find((o: any) => o.name === targetOpt.name);
-      return varOpt && varOpt.value === targetOpt.value;
-    });
-  }) || fallbackVariant;
+  // Use Shopify's resolved variant from the loader directly
+  const matchedVariant = product.selectedOrFirstAvailableVariant;
 
   const selectedVariant = useOptimisticVariant(
     matchedVariant,
