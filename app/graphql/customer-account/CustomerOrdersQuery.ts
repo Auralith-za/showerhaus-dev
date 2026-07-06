@@ -27,8 +27,8 @@ export const CUSTOMER_ORDERS_FRAGMENT = `#graphql
       reverse: true,
       first: $first,
       last: $last,
-      before: $startCursor,
-      after: $endCursor,
+      before: $before,
+      after: $after,
       query: $query
     ) {
       nodes {
@@ -49,10 +49,10 @@ export const CUSTOMER_ORDERS_FRAGMENT = `#graphql
 export const CUSTOMER_ORDERS_QUERY = `#graphql
   ${CUSTOMER_ORDERS_FRAGMENT}
   query CustomerOrders(
-    $endCursor: String
+    $after: String
     $first: Int
     $last: Int
-    $startCursor: String
+    $before: String
     $query: String
     $language: LanguageCode
   ) @inContext(language: $language) {

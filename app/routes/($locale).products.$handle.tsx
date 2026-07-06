@@ -1,4 +1,4 @@
-import { Link, redirect, useLoaderData, useNavigate, isRouteErrorResponse, useRouteError, useParams } from 'react-router';
+import { Link, redirect, useLoaderData, useNavigate, isRouteErrorResponse, useRouteError, useParams, useSearchParams } from 'react-router';
 import type { Route } from './+types/products.$handle';
 import { useState } from 'react';
 import {
@@ -104,8 +104,34 @@ export default function Product() {
   const navigate = useNavigate();
 
   // ... (existing state and logic)
+  const [searchParams] = useSearchParams();
+
+  // Determine active selected options by merging URL params with the fallback variant's options
+  const fallbackVariant = product.selectedOrFirstAvailableVariant;
+  const urlOptions = new Map<string, string>();
+  for (const option of product.options) {
+    const val = searchParams.get(option.name);
+    if (val) {
+      urlOptions.set(option.name, val);
+    }
+  }
+  const targetOptions = fallbackVariant?.selectedOptions?.map((opt: any) => {
+    return {
+      name: opt.name,
+      value: urlOptions.has(opt.name) ? urlOptions.get(opt.name)! : opt.value
+    };
+  }) || [];
+
+  // Find variant matching targetOptions exactly
+  const matchedVariant = product.variants?.nodes?.find((variant: any) => {
+    return targetOptions.every((targetOpt: any) => {
+      const varOpt = variant.selectedOptions.find((o: any) => o.name === targetOpt.name);
+      return varOpt && varOpt.value === targetOpt.value;
+    });
+  }) || fallbackVariant;
+
   const selectedVariant = useOptimisticVariant(
-    product.selectedOrFirstAvailableVariant,
+    matchedVariant,
     getAdjacentAndFirstAvailableVariants(product),
   );
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
@@ -166,13 +192,11 @@ export default function Product() {
                 const isColorOrFinish = option.name.toLowerCase() === 'finish' || option.name.toLowerCase() === 'color';
                 
                 return (
-                  <div key={option.name} className="flex flex-col gap-3">
-                    <div className="flex items-center gap-8">
-                      <span className="text-sm text-gray-700 w-24">{option.name}:</span>
-                    </div>
+                  <div key={option.name} className="flex items-center gap-8">
+                    <span className="text-sm text-gray-700 w-24">{option.name}:</span>
                     
                     {isColorOrFinish ? (
-                      <div className="flex gap-2 ml-32">
+                      <div className="flex gap-2">
                         {option.optionValues.filter(val => val.exists).map((val) => {
                           const colorMap: Record<string, string> = {
                             'chrome': '#e5e7eb',
@@ -200,23 +224,22 @@ export default function Product() {
                         })}
                       </div>
                     ) : (
-                      <div className="flex items-center gap-8 ml-32">
-                        <select 
-                          value={option.optionValues.find(v => v.selected)?.name || ''}
-                          onChange={(e) => {
-                            const newParams = new URLSearchParams(window.location.search);
-                            newParams.set(option.name, e.target.value);
-                            navigate(`?${newParams.toString()}`, { replace: true, preventScrollReset: true });
-                          }}
-                          className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
-                        >
-                          {option.optionValues.filter(val => val.exists).map(val => (
-                            <option key={val.name} value={val.name}>
-                              {val.name} {val.available ? '' : '(Sold Out)'}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <select 
+                        value={option.optionValues.find(v => v.selected)?.name || ''}
+                        onChange={(e) => {
+                          const selectedVal = option.optionValues.find(v => v.name === e.target.value);
+                          if (selectedVal && selectedVal.variantUriQuery !== undefined) {
+                            navigate(`?${selectedVal.variantUriQuery}`, { replace: true, preventScrollReset: true });
+                          }
+                        }}
+                        className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
+                      >
+                        {option.optionValues.filter(val => val.exists).map(val => (
+                          <option key={val.name} value={val.name}>
+                            {val.name} {val.available ? '' : '(Sold Out)'}
+                          </option>
+                        ))}
+                      </select>
                     )}
                   </div>
                 );
@@ -384,6 +407,11 @@ const PRODUCT_FRAGMENT = `#graphql
     }
     adjacentVariants (selectedOptions: $selectedOptions) {
       ...ProductVariant
+    }
+    variants(first: 250) {
+      nodes {
+        ...ProductVariant
+      }
     }
     seo {
       description

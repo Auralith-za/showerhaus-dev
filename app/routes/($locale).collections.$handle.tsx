@@ -270,8 +270,8 @@ const COLLECTION_QUERY = `#graphql
     $language: LanguageCode
     $first: Int
     $last: Int
-    $startCursor: String
-    $endCursor: String
+    $before: String
+    $after: String
     $filters: [ProductFilter!]
     $sortKey: ProductCollectionSortKeys
     $reverse: Boolean
@@ -284,8 +284,8 @@ const COLLECTION_QUERY = `#graphql
       products(
         first: $first,
         last: $last,
-        before: $startCursor,
-        after: $endCursor,
+        before: $before,
+        after: $after,
         filters: $filters,
         sortKey: $sortKey,
         reverse: $reverse

@@ -196,12 +196,12 @@ const PAGE_INFO_FRAGMENT = `#graphql
 export const SEARCH_QUERY = `#graphql
   query RegularSearch(
     $country: CountryCode
-    $endCursor: String
+    $after: String
     $first: Int
     $language: LanguageCode
     $last: Int
     $term: String!
-    $startCursor: String
+    $before: String
   ) @inContext(country: $country, language: $language) {
     articles: search(
       query: $term,
@@ -226,8 +226,8 @@ export const SEARCH_QUERY = `#graphql
       }
     }
     products: search(
-      after: $endCursor,
-      before: $startCursor,
+      after: $after,
+      before: $before,
       first: $first,
       last: $last,
       query: $term,

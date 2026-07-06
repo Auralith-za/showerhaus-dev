@@ -281,10 +281,13 @@ export default function BespokeShowers() {
                                                 <p className="font-sans text-sm text-gray-400">The structural type of your shower enclosure.</p>
                                             </div>
                                             {STYLES.map(s => (
-                                                <button key={s.name} type="button"
+                                                <div key={s.name}
                                                     onClick={() => handleSelectStyle(s.name)}
-                                                    className={`block w-full p-7 text-left border rounded-sm transition-all duration-200 cursor-pointer ${
-                                                        style === s.name ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400'
+                                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelectStyle(s.name); }}
+                                                    role="button"
+                                                    tabIndex={0}
+                                                    className={`block w-full p-7 text-left border rounded-sm transition-all duration-200 cursor-pointer focus:outline-none ${
+                                                        style === s.name ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400 focus:border-gray-400'
                                                     }`}>
                                                     <div className="flex items-center justify-between mb-1">
                                                         <h3 className="font-display text-2xl text-primary">{s.name}</h3>
@@ -293,7 +296,7 @@ export default function BespokeShowers() {
                                                         )}
                                                     </div>
                                                     <p className="font-sans text-sm text-gray-500">{s.desc}</p>
-                                                </button>
+                                                </div>
                                             ))}
                                         </div>
                                     )}
@@ -307,14 +310,17 @@ export default function BespokeShowers() {
                                             </div>
                                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                                                 {CONFIGURATIONS.map(l => (
-                                                    <button key={l} type="button"
+                                                    <div key={l}
                                                         onClick={() => handleSelectLayout(l)}
-                                                        className={`block p-4 md:p-8 flex flex-col justify-center items-center text-center border rounded-sm transition-all duration-200 cursor-pointer min-h-[120px] ${
-                                                            layout === l ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400'
+                                                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelectLayout(l); }}
+                                                        role="button"
+                                                        tabIndex={0}
+                                                        className={`block p-4 md:p-8 flex flex-col justify-center items-center text-center border rounded-sm transition-all duration-200 cursor-pointer min-h-[120px] focus:outline-none ${
+                                                            layout === l ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400 focus:border-gray-400'
                                                         }`}>
                                                         <h3 className="font-display text-base md:text-lg text-primary leading-tight">{l}</h3>
                                                         {layout === l && <div className="mt-2 w-6 h-1 bg-[#4A89C8] mx-auto" />}
-                                                    </button>
+                                                    </div>
                                                 ))}
                                             </div>
                                         </div>
@@ -396,10 +402,13 @@ export default function BespokeShowers() {
                                                 </div>
                                                 <div className="space-y-3">
                                                     {FINISHES.map(f => (
-                                                        <button key={f.name} type="button"
+                                                        <div key={f.name}
                                                             onClick={() => handleSelectFinish(f.name)}
-                                                            className={`w-full flex items-center gap-5 p-5 border rounded-sm transition-all duration-200 text-left cursor-pointer ${
-                                                                finish === f.name ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400'
+                                                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelectFinish(f.name); }}
+                                                            role="button"
+                                                            tabIndex={0}
+                                                            className={`w-full flex items-center gap-5 p-5 border rounded-sm transition-all duration-200 text-left cursor-pointer focus:outline-none ${
+                                                                finish === f.name ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400 focus:border-gray-400'
                                                             }`}>
                                                             <div className="w-10 h-10 rounded-full border border-gray-200 flex-shrink-0" style={{ backgroundColor: f.color }} />
                                                             <div className="flex-1 flex items-center">
@@ -415,7 +424,7 @@ export default function BespokeShowers() {
                                                                 </div>
                                                             </div>
                                                             {finish === f.name && <span className="w-5 h-5 rounded-full bg-[#4A89C8] text-white flex items-center justify-center text-[10px]">✓</span>}
-                                                        </button>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </div>
@@ -427,10 +436,13 @@ export default function BespokeShowers() {
                                                 </div>
                                                 <div className="space-y-3">
                                                     {MATERIALS.map(m => (
-                                                        <button key={m.name} type="button"
+                                                        <div key={m.name}
                                                             onClick={() => handleSelectMaterial(m.name)}
-                                                            className={`w-full flex items-center justify-between p-5 border rounded-sm transition-all duration-200 text-left cursor-pointer ${
-                                                                material === m.name ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400'
+                                                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelectMaterial(m.name); }}
+                                                            role="button"
+                                                            tabIndex={0}
+                                                            className={`w-full flex items-center justify-between p-5 border rounded-sm transition-all duration-200 text-left cursor-pointer focus:outline-none ${
+                                                                material === m.name ? 'border-[#4A89C8] bg-[#4A89C8]/5 shadow-md ring-1 ring-[#4A89C8]' : 'border-gray-200 hover:border-gray-400 focus:border-gray-400'
                                                             }`}>
                                                             <div className="flex-1 flex items-center">
                                                                 <span className="font-sans text-sm font-bold uppercase tracking-[0.15em] text-primary">{m.name}</span>
@@ -445,7 +457,7 @@ export default function BespokeShowers() {
                                                                 </div>
                                                             </div>
                                                             {material === m.name && <span className="w-5 h-5 rounded-full bg-[#4A89C8] text-white flex items-center justify-center text-[10px]">✓</span>}
-                                                        </button>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </div>

@@ -142,17 +142,17 @@ export default function Blogs() {
 const BLOGS_QUERY = `#graphql
   query Blogs(
     $country: CountryCode
-    $endCursor: String
+    $after: String
     $first: Int
     $language: LanguageCode
     $last: Int
-    $startCursor: String
+    $before: String
   ) @inContext(country: $country, language: $language) {
     blogs(
       first: $first,
       last: $last,
-      before: $startCursor,
-      after: $endCursor
+      before: $before,
+      after: $after
     ) {
       pageInfo {
         hasNextPage

@@ -122,8 +122,8 @@ const BLOGS_QUERY = `#graphql
     $blogHandle: String!
     $first: Int
     $last: Int
-    $startCursor: String
-    $endCursor: String
+    $before: String
+    $after: String
   ) @inContext(language: $language) {
     blog(handle: $blogHandle) {
       title
@@ -135,8 +135,8 @@ const BLOGS_QUERY = `#graphql
       articles(
         first: $first,
         last: $last,
-        before: $startCursor,
-        after: $endCursor
+        before: $before,
+        after: $after
       ) {
         nodes {
           ...ArticleItem
