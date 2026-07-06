@@ -38,6 +38,7 @@ export default async function handleRequest(
     ],
     scriptSrc: [
       "'self'",
+      'https://cdn.shopify.com',
       'https://www.googletagmanager.com',
       'https://www.googleadservices.com',
       'https://googleads.g.doubleclick.net',
