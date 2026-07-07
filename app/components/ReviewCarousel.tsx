@@ -32,8 +32,8 @@ export function ReviewCarousel() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center justify-center h-[350px] md:h-[280px]">
-      <div className="w-full relative h-full flex flex-col justify-center items-center">
+    <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center justify-center">
+      <div className="w-full relative min-h-[240px] flex flex-col justify-center items-center">
         {REVIEWS.map((review, idx) => (
           <div
             key={review.id}
@@ -41,7 +41,7 @@ export function ReviewCarousel() {
               idx === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            <div className="text-[#1C4E86] text-xl tracking-[0.3em] mb-10">★★★★★</div>
+            <div className="text-[#1C4E86] text-xl tracking-[0.3em] mb-7">★★★★★</div>
             <p className="font-display text-xl md:text-2xl lg:text-3xl text-primary font-light leading-relaxed text-center mb-8 px-4">
               "{review.text}"
             </p>
@@ -53,7 +53,7 @@ export function ReviewCarousel() {
       </div>
       
       {/* Navigation Dots */}
-      <div className="flex justify-center gap-3 mt-4">
+      <div className="flex justify-center gap-3 mt-2 mb-8">
         {REVIEWS.map((_, index) => (
           <button
             key={index}
