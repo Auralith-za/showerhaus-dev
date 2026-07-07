@@ -609,7 +609,7 @@ export default function FramelessShowersLanding() {
       {/* 9. SOCIAL PROOF */}
       <section className="w-full bg-[#F1F0ED] py-24 px-6 flex flex-col items-center justify-center">
         <div className="w-full max-w-[1180px] mx-auto">
-          <div className="text-center w-full max-w-[640px] mx-auto mb-14">
+          <div className="text-center w-full max-w-[640px] mx-auto mb-4">
             <div className="text-[12px] tracking-[0.3em] text-[#93A0B2] font-semibold mb-4 uppercase">
               Customer Stories
             </div>
