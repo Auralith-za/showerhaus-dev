@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { ReviewCarousel } from '~/components/ReviewCarousel';
 
 export function meta() {
   return [
@@ -15,7 +16,7 @@ export default function CustomMadeShowersLanding() {
   return (
     <div className="font-sans text-[#47505F] bg-[#FFFFFF] antialiased">
       {/* 1. HERO */}
-      <section className="relative p-0">
+      <section className="relative p-0 -mt-[1px] z-10">
         <div
           className="relative h-[680px] flex items-center justify-center text-center bg-cover bg-center"
           style={{
@@ -139,9 +140,6 @@ export default function CustomMadeShowersLanding() {
             alt="Technician measuring shower"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <span className="relative font-mono text-[11px] tracking-wider text-[#8A8474] bg-white/80 px-3 py-1.5 rounded uppercase">
-            Technician measuring site
-          </span>
         </div>
       </section>
 
@@ -353,29 +351,7 @@ export default function CustomMadeShowersLanding() {
 
       {/* 7. CUSTOMER STORIES */}
       <section className="w-full max-w-[1180px] mx-auto py-24 px-6 flex flex-col items-center justify-center text-center">
-        <div className="text-[#1C4E86] text-sm tracking-[0.4em] mb-8 text-center justify-center flex">★★★★★</div>
-        <p className="font-display text-xl md:text-2xl lg:text-3xl text-primary font-light leading-relaxed max-w-4xl mx-auto mb-10 text-center">
-          "I've used Shower Haus across three home renovations over 12 years — every time the service has been fantastic, from technical recommendations through measuring, manufacture and installation. A professional, efficient company, and fantastic value for superb quality."
-        </p>
-        <div className="text-[11px] tracking-[0.25em] text-primary font-bold text-center uppercase">
-          Ian Williams, Umhlanga
-        </div>
-        <div className="text-[9px] tracking-[0.2em] text-gray-400 mt-2 font-medium text-center uppercase">
-          Google Review
-        </div>
-        <div className="flex justify-center items-center gap-6 mt-12">
-          <span className="w-10 h-10 border border-gray-200 text-gray-400 flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer select-none text-xs">
-            &lt;
-          </span>
-          <div className="flex gap-2 items-center">
-            <span className="w-8 h-[2px] bg-primary"></span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-          </div>
-          <span className="w-10 h-10 border border-gray-200 text-gray-400 flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer select-none text-xs">
-            &gt;
-          </span>
-        </div>
+        <ReviewCarousel />
 
         {/* 4 item grid representing recent projects */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">

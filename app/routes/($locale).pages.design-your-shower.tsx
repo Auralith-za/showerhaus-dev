@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 import BespokeEmail from '~/components/BespokeEmail';const STEPS = ['Style', 'Configurations', 'Dimensions', 'Hardware', 'Details'];
 
 const STYLES = [
-    { name: 'Frameless', desc: 'Minimalist 8mm–12mm safety glass for a seamless architectural look.' },
+    { name: 'Frameless', desc: 'Minimalist 6-10mm safety glass for a seamless architectural look.' },
     { name: 'Semi-Frameless', desc: 'A blend of structure and transparency, offering great value.' },
     { name: 'Framed', desc: 'Classic, robust design with bold architectural profiles.' },
 ];
@@ -108,9 +108,9 @@ export default function BespokeShowers() {
     const [step, setStep] = useState(0);
     const [style, setStyle] = useState('');
     const [layout, setLayout] = useState('');
-    const [width, setWidth] = useState('900');
-    const [length, setLength] = useState('900');
-    const [height, setHeight] = useState('2000');
+    const [width, setWidth] = useState('');
+    const [length, setLength] = useState('');
+    const [height, setHeight] = useState('');
     const [finish, setFinish] = useState('');
     const [material, setMaterial] = useState('');
 

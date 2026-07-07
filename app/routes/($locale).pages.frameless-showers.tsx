@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { ReviewCarousel } from '~/components/ReviewCarousel';
 
 export function meta() {
   return [
@@ -47,7 +48,7 @@ export default function FramelessShowersLanding() {
   return (
     <div className="font-sans text-[#47505F] bg-[#FFFFFF] antialiased">
       {/* 1. HERO */}
-      <section className="relative p-0">
+      <section className="relative p-0 -mt-[1px] z-10">
         <div
           className="relative h-[680px] flex items-center bg-cover bg-center"
           style={{
@@ -617,27 +618,8 @@ export default function FramelessShowersLanding() {
             </h2>
             <div className="w-[70px] h-[1px] bg-[#C6CBCE] mx-auto"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
-            <div className="bg-white border border-[#E7E3DA] rounded-sm p-9 shadow-sm">
-              <div className="text-[#1C4E86] text-sm tracking-wider mb-4">★★★★★</div>
-              <p className="text-[15px] leading-relaxed mb-5 text-[#5C6572]">
-                "I asked Shower Haus for a frameless shower door. Within a day, someone came out to measure; I had a quote shortly after, and my glass was installed within a week. The team was highly professional and even wore shoe covers to keep the place clean. I'd highly recommend them."
-              </p>
-              <div className="text-[13px] text-[#17233D] font-bold tracking-wide">
-                — Verified Google review, Durban
-              </div>
-            </div>
-            <div className="bg-white border border-[#E7E3DA] rounded-sm p-9 shadow-sm">
-              <div className="text-[#1C4E86] text-sm tracking-wider mb-4">★★★★★</div>
-              <p className="text-[15px] leading-relaxed mb-5 text-[#5C6572]">
-                "I've used Shower Haus across three home renovations over the past 12 years. Every time the service has been fantastic — from technical recommendations through measuring, manufacture and installation. A professional, efficient company, and fantastic value for superb quality."
-              </p>
-              <div className="text-[13px] text-[#17233D] font-bold tracking-wide">
-                — Ian Williams, Umhlanga
-              </div>
-            </div>
-          </div>
-          <p className="text-center text-[15px] text-[#17233D] font-medium mt-8 tracking-wide">
+          <ReviewCarousel />
+          <p className="text-center text-[15px] text-[#17233D] font-medium mt-16 tracking-wide">
             <span className="text-[#1C4E86] tracking-wider mr-1">★★★★★</span> 4.3 on Google · Over 100+ reviews
           </p>
         </div>

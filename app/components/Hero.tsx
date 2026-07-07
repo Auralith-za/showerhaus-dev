@@ -8,8 +8,8 @@ const SLIDES = [
         subtitle: 'Custom-made shower enclosures designed to fit your space and installed properly from the start.',
         label: 'SHOWER GLASS SPECIALISTS',
         image: '/images/hero-1.png',
-        url: '/collections/showers',
-        buttonText: 'VIEW ENCLOSURES'
+        url: '/pages/custom-made-showers',
+        buttonText: 'MORE ABOUT CUSTOM-MADE'
     },
     {
         id: 'bespoke-shower-design',
@@ -104,10 +104,12 @@ export function Hero() {
                     <button
                         key={index}
                         onClick={() => setCurrentSlide(index)}
-                        className={`h-1 cursor-pointer transition-all duration-500 rounded-full ${index === currentSlide ? 'w-12 bg-white' : 'w-6 bg-white/40 hover:bg-white/60'
-                            }`}
+                        className="p-2 -m-2 group cursor-pointer"
                         aria-label={`Go to slide ${index + 1}`}
-                    />
+                    >
+                        <div className={`h-1.5 transition-all duration-500 rounded-full ${index === currentSlide ? 'w-12 bg-white' : 'w-6 bg-white/40 group-hover:bg-white/60'
+                            }`} />
+                    </button>
                 ))}
             </div>
         </section>
