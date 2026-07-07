@@ -33,7 +33,7 @@ export function ReviewCarousel() {
 
   return (
     <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center justify-center h-[350px] md:h-[280px]">
-      <div className="overflow-hidden w-full relative h-full flex flex-col justify-center items-center">
+      <div className="w-full relative h-full flex flex-col justify-center items-center">
         {REVIEWS.map((review, idx) => (
           <div
             key={review.id}
@@ -53,7 +53,7 @@ export function ReviewCarousel() {
       </div>
       
       {/* Navigation Dots */}
-      <div className="absolute -bottom-12 left-0 right-0 z-20 flex justify-center gap-3">
+      <div className="flex justify-center gap-3 mt-4">
         {REVIEWS.map((_, index) => (
           <button
             key={index}
