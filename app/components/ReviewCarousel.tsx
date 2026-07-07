@@ -41,7 +41,7 @@ export function ReviewCarousel() {
               idx === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            <div className="text-[#1C4E86] text-xl tracking-[0.3em] mb-6">★★★★★</div>
+            <div className="text-[#1C4E86] text-xl tracking-[0.3em] mb-10">★★★★★</div>
             <p className="font-display text-xl md:text-2xl lg:text-3xl text-primary font-light leading-relaxed text-center mb-8 px-4">
               "{review.text}"
             </p>
