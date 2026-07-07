@@ -354,7 +354,7 @@ export default function CustomMadeShowersLanding() {
         <ReviewCarousel />
 
         {/* 4 item grid representing recent projects */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 w-full">
           <div className="aspect-[4/5] bg-cover bg-center border border-[#E0DACE] flex items-end p-4 rounded-sm" style={{ backgroundImage: "url('/images/hero-2.png')" }}>
             {/* <span className="font-mono text-[10px] text-white bg-black/40 px-2 py-1 rounded">
               Umhlanga · frameless

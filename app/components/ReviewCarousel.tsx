@@ -32,7 +32,7 @@ export function ReviewCarousel() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[280px]">
+    <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center justify-center h-[350px] md:h-[280px]">
       <div className="overflow-hidden w-full relative h-full flex flex-col justify-center items-center">
         {REVIEWS.map((review, idx) => (
           <div
