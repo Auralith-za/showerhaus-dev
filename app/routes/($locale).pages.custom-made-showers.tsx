@@ -16,7 +16,7 @@ export default function CustomMadeShowersLanding() {
   return (
     <div className="font-sans text-[#47505F] bg-[#FFFFFF] antialiased">
       {/* 1. HERO */}
-      <section className="relative p-0 -mt-[1px] z-10">
+      <section className="relative !p-0 -mt-[1px] z-10">
         <div
           className="relative h-[680px] flex items-center justify-center text-center bg-cover bg-center"
           style={{
