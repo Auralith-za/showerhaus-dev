@@ -93,11 +93,18 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
 ];
 
 export const PRIMARY_MENU_ITEMS = [
+    { title: 'Shop', handle: 'all', to: '/collections/all' },
     { title: 'Custom-made Showers', handle: 'custom-made-showers', to: '/pages/custom-made-showers' },
     { title: 'Frameless Showers', handle: 'frameless-showers', to: '/pages/frameless-showers' },
-    { title: 'Shower Spares', handle: 'shower-spares', to: '/collections/shower-spares' },
-    { title: 'About Us', handle: 'about-us', to: '/pages/about-us' },
-    { title: 'Customer Stories', handle: 'customer-stories', to: '/pages/customer-stories' },
+    { 
+        title: 'About Us', 
+        handle: 'about-us',
+        to: '/pages/about-us',
+        items: [
+            { title: 'Customer Stories', handle: 'customer-stories', to: '/pages/customer-stories' },
+            { title: 'Blog', handle: 'journal', to: '/blogs' },
+        ]
+    },
     { title: 'Contact Us', handle: 'contact', to: '/contact' },
 ];
 
