@@ -52,26 +52,12 @@ export function Header({
       {/* Top Banner (White) */}
       <div className="hidden md:flex relative" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flex: 1 }}>
-          <div className="relative group flex items-center h-[30px] cursor-pointer">
-            <span className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Showers</span>
-            <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
-              <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[240px]">
-                <Link to="/pages/custom-made-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Custom-made Showers</Link>
-                <Link to="/pages/frameless-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Frameless Showers</Link>
-              </div>
-            </div>
-          </div>
-          <div className="relative group flex items-center h-[30px] cursor-pointer">
-            <Link to="/pages/about-us" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About us</Link>
-            <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
-              <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[220px]">
-                <Link to="/pages/customer-stories" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Customer Stories</Link>
-                <Link to="/blogs" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Blog</Link>
-              </div>
-            </div>
-          </div>
-
-          <Link to="/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact</Link>
+          <Link to="/pages/custom-made-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Custom-made Showers</Link>
+          <Link to="/pages/frameless-showers" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Frameless Showers</Link>
+          <Link to="/collections/shower-spares" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Shower Spares</Link>
+          <Link to="/pages/about-us" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>About Us</Link>
+          <Link to="/pages/customer-stories" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Customer Stories</Link>
+          <Link to="/contact" className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Contact Us</Link>
         </div>
 
         {/* Center: Phone Number */}
@@ -309,44 +295,17 @@ export function HeaderMenu({
           Home
         </NavLink>
         {/* Mobile Primary Links */}
-        {PRIMARY_MENU_ITEMS.map((item) => {
-          if (!item.items) {
-            return (
-              <div key={item.handle} className="flex flex-col">
-                <NavLink
-                  to={item.handle === 'all' ? '/collections/all' : `/pages/${item.handle}`}
-                  className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
-                  onClick={close}
-                >
-                  {item.title}
-                </NavLink>
-              </div>
-            );
-          }
-          return (
-            <MobileAccordionItem key={item.handle} title={item.title}>
-              <div className="pl-4 mt-2 flex flex-col space-y-3">
-                <NavLink
-                  to={`/pages/${item.handle}`}
-                  className="text-base font-sans font-medium text-gray-700 hover:text-primary transition-colors pb-1"
-                  onClick={close}
-                >
-                  {item.title} Overview
-                </NavLink>
-                {item.items.map((sub) => (
-                  <NavLink
-                    key={sub.handle}
-                    to={sub.handle === 'journal' ? '/blogs' : (sub.handle === 'projects' ? '/pages/projects' : `/pages/${sub.handle}`)}
-                    className="text-base font-sans text-gray-500 hover:text-primary"
-                    onClick={close}
-                  >
-                    {sub.title}
-                  </NavLink>
-                ))}
-              </div>
-            </MobileAccordionItem>
-          );
-        })}
+        {PRIMARY_MENU_ITEMS.map((item) => (
+          <div key={item.handle} className="flex flex-col">
+            <NavLink
+              to={item.to}
+              className="text-lg font-sans font-medium text-gray-900 hover:text-primary transition-colors border-b border-gray-50 pb-2 flex justify-between items-center"
+              onClick={close}
+            >
+              {item.title}
+            </NavLink>
+          </div>
+        ))}
 
         {/* Mega Menu Categories for Mobile */}
         <div className="pt-2">

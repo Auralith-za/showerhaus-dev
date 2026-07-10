@@ -1,5 +1,16 @@
 import { Link } from 'react-router';
 
+export function meta() {
+  return [
+    { title: 'About Us | Shower Haus Durban' },
+    {
+      name: 'description',
+      content:
+        'For over 20 years, Shower Haus has been Durban’s trusted specialist in custom shower enclosures, doors, and spares. Over 30,000 professional installations across KZN.',
+    },
+  ];
+}
+
 export async function loader() {
     return {};
 }

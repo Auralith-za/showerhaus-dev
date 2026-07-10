@@ -1,5 +1,16 @@
 import { useState } from 'react';
 
+export function meta() {
+  return [
+    { title: 'Customer Stories & Testimonials | Shower Haus' },
+    {
+      name: 'description',
+      content:
+        'Read what our clients say about our custom shower designs, professional installations, and exceptional service in Durban and KwaZulu-Natal.',
+    },
+  ];
+}
+
 export async function loader() {
     return {};
 }

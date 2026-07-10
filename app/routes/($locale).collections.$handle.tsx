@@ -10,7 +10,18 @@ import { useState } from 'react';
 import { CollectionFilters } from '~/components/CollectionFilters';
 
 export const meta: Route.MetaFunction = ({ data }: any) => {
-  return [{ title: `Shower Haus | ${data?.collection?.title ?? 'Collection'}` }];
+  const collectionTitle = data?.collection?.title ?? 'Collection';
+  const collectionDescription = 
+    data?.collection?.description ?? 
+    `Browse our high-quality range of ${collectionTitle.toLowerCase()} at Shower Haus. We supply and install premium shower doors, enclosures, and spares in Durban & KZN.`;
+    
+  return [
+    { title: `${collectionTitle} | Shower Haus Durban` },
+    {
+      name: 'description',
+      content: collectionDescription,
+    },
+  ];
 };
 
 export async function loader(args: Route.LoaderArgs) {

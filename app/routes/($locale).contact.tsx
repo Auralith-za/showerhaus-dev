@@ -6,7 +6,13 @@ import type { Route } from './+types/contact';
 import ContactEmail from '~/components/ContactEmail';
 
 export const meta: Route.MetaFunction = () => {
-    return [{ title: 'Contact Us | Shower Haus' }];
+    return [
+        { title: 'Contact Us | Shower Haus' },
+        {
+            name: 'description',
+            content: 'Get in touch with Shower Haus Durban. Contact us for professional home measurements, advice, pricing, and installation of premium custom shower enclosures.',
+        },
+    ];
 };
 
 export async function action({ request, context }: Route.ActionArgs) {

@@ -38,7 +38,7 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
         ],
     },
     {
-        title: 'Spares',
+        title: 'Shower Spares',
         handle: 'shower-spares',
         featuredImage: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
         featuredTitle: 'SPARES & ACCESSORIES',
@@ -93,30 +93,19 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
 ];
 
 export const PRIMARY_MENU_ITEMS = [
-    { title: 'Shop', handle: 'all' },
-    { title: 'Custom-made Showers', handle: 'custom-made-showers' },
-    { title: 'Frameless Showers', handle: 'frameless-showers' },
-    { 
-        title: 'About Us', 
-        handle: 'about-us',
-        items: [
-            // { title: 'Our Story', handle: 'our-story' },
-            // { title: 'Projects', handle: 'projects' },
-            { title: 'Customer Stories', handle: 'customer-stories' },
-            // { title: 'Accreditation', handle: 'accreditation' },
-            { title: 'Blog', handle: 'journal' },
-        ]
-    },
-    { title: 'Contact', handle: 'contact' },
+    { title: 'Custom-made Showers', handle: 'custom-made-showers', to: '/pages/custom-made-showers' },
+    { title: 'Frameless Showers', handle: 'frameless-showers', to: '/pages/frameless-showers' },
+    { title: 'Shower Spares', handle: 'shower-spares', to: '/collections/shower-spares' },
+    { title: 'About Us', handle: 'about-us', to: '/pages/about-us' },
+    { title: 'Customer Stories', handle: 'customer-stories', to: '/pages/customer-stories' },
+    { title: 'Contact Us', handle: 'contact', to: '/contact' },
 ];
 
 
 export const FOOTER_MENU = {
     about: [
-        // { title: 'Our Story', handle: 'our-story' },
-        // { title: 'Projects', handle: 'projects' },
+        { title: 'About Us', handle: 'about-us' },
         { title: 'Customer Stories', handle: 'customer-stories' },
-        // { title: 'Accreditation', handle: 'accreditation' },
     ],
     customerService: [
         { title: 'Contact Us', handle: 'contact' },
