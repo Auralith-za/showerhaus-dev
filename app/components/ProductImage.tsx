@@ -21,7 +21,7 @@ export function ProductImage({
   }, [image]);
 
   if (!activeImage) {
-    return <div className={`product-image bg-gray-50 aspect-[4/5] ${className || ''}`} />;
+    return <div className={`product-image bg-gray-50 aspect-square ${className || ''}`} />;
   }
 
   // Filter only images from media nodes

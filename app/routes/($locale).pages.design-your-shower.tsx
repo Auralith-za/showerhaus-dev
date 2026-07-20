@@ -62,7 +62,7 @@ export async function action({ request, context }: any) {
     const phone = formData.get('phone') as string;
     const notes = formData.get('notes') as string;
 
-    if (!firstName || !lastName || !email) {
+    if (!firstName || !lastName || !email || !phone) {
         return { error: 'Please fill out all required fields.' };
     }
 
@@ -110,7 +110,7 @@ export default function BespokeShowers() {
     const [layout, setLayout] = useState('');
     const [width, setWidth] = useState('');
     const [length, setLength] = useState('');
-    const [height, setHeight] = useState('');
+    const [height, setHeight] = useState('2000');
     const [finish, setFinish] = useState('');
     const [material, setMaterial] = useState('');
 
@@ -246,7 +246,7 @@ export default function BespokeShowers() {
                                     <div className="flex flex-col items-center justify-center space-y-3 w-full">
                                         <h2 className="font-display text-4xl text-primary text-center">Thank You!</h2>
                                         <p className="font-sans text-gray-500 max-w-md text-center leading-relaxed">
-                                            Your custom-made request has been successfully submitted. Our team will review your specifications and contact you within 24 hours to coordinate.
+                                            Your custom-made request has been successfully submitted. Our team will contact you within a few minutes (during office hours) to discuss your requirements.
                                         </p>
                                     </div>
                                     <div className="pt-6 border-t border-gray-100 w-full max-w-xs">
@@ -257,6 +257,9 @@ export default function BespokeShowers() {
                                                 setStep(0);
                                                 setStyle('');
                                                 setLayout('');
+                                                setWidth('');
+                                                setLength('');
+                                                setHeight('2000');
                                                 setFinish('');
                                                 setMaterial('');
                                                 setFirstName('');
@@ -478,7 +481,9 @@ export default function BespokeShowers() {
                                             )}
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-2">
-                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">First Name</label>
+                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                                                        First Name <span className="text-red-500">*</span>
+                                                    </label>
                                                     <input
                                                         type="text"
                                                         required
@@ -489,7 +494,9 @@ export default function BespokeShowers() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">Last Name</label>
+                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                                                        Last Name <span className="text-red-500">*</span>
+                                                    </label>
                                                     <input
                                                         type="text"
                                                         required
@@ -502,7 +509,9 @@ export default function BespokeShowers() {
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-2">
-                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">Email</label>
+                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                                                        Email <span className="text-red-500">*</span>
+                                                    </label>
                                                     <input
                                                         type="email"
                                                         required
@@ -513,7 +522,9 @@ export default function BespokeShowers() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">Phone Number</label>
+                                                    <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                                                        Phone Number <span className="text-red-500">*</span>
+                                                    </label>
                                                     <input
                                                         type="tel"
                                                         required
@@ -535,7 +546,7 @@ export default function BespokeShowers() {
                                                 />
                                             </div>
                                             <div className="bg-gray-50 border border-gray-100 p-5 text-[11px] font-sans text-gray-500 leading-relaxed">
-                                                Our team will contact you within 24 hours to arrange a site measurement before providing your final quote.
+                                                Our team will contact you within a few minutes (during office hours) to discuss your requirements.
                                             </div>
                                         </form>
                                     )}

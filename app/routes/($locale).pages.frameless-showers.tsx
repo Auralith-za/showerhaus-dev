@@ -171,9 +171,6 @@ export default function FramelessShowersLanding() {
             alt="Bright bathroom design with frameless shower"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <span className="relative font-mono text-[11px] tracking-wider text-[#8A8474] bg-white/80 px-3 py-1.5 rounded uppercase">
-            Bright frameless install
-          </span>
         </div>
       </section>
 

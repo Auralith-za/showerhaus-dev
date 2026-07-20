@@ -1,4 +1,5 @@
 import { Analytics, getShopAnalytics, useNonce } from '@shopify/hydrogen';
+import { useEffect } from 'react';
 import {
   Outlet,
   useRouteError,
@@ -9,6 +10,7 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
+  useLocation,
 } from 'react-router';
 import type { Route } from './+types/root';
 import favicon from '~/assets/favicon.svg';
@@ -210,8 +212,8 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         
-        {/* Google Ads Tracking */}
-        <script nonce={nonce} async src="https://www.googletagmanager.com/gtag/js?id=AW-17650233161"></script>
+        {/* Google Analytics & Ads Tracking */}
+        <script nonce={nonce} async src="https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797"></script>
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
@@ -219,6 +221,7 @@ export function Layout({ children }: { children?: React.ReactNode }) {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+              gtag('config', 'G-PF91SE1797');
               gtag('config', 'AW-17650233161');
             `,
           }}
@@ -238,6 +241,19 @@ export function Layout({ children }: { children?: React.ReactNode }) {
 
 export default function App() {
   const data = useRouteLoaderData<RootLoader>('root');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      const pagePath = location.pathname + location.search;
+      (window as any).gtag('config', 'G-PF91SE1797', {
+        page_path: pagePath,
+      });
+      (window as any).gtag('config', 'AW-17650233161', {
+        page_path: pagePath,
+      });
+    }
+  }, [location.pathname, location.search]);
 
   if (!data) {
     return <Outlet />;

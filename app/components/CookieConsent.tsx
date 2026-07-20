@@ -36,21 +36,23 @@ export function CookieConsent() {
   };
 
   const triggerTrackingScripts = () => {
-    // Google Ads Global Site Tag (gtag.js)
-    // Replace G-XXXXXXXXXX and AW-XXXXXXXXX with actual IDs
-    const gtagScript = document.createElement('script');
-    gtagScript.async = true;
-    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXX'; // Placeholder
-    document.head.appendChild(gtagScript);
+    // Google Analytics & Ads Tag (gtag.js)
+    if (!document.querySelector('script[src*="gtag/js"]')) {
+      const gtagScript = document.createElement('script');
+      gtagScript.async = true;
+      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797';
+      document.head.appendChild(gtagScript);
 
-    const gtagInit = document.createElement('script');
-    gtagInit.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-XXXXXXXXX'); // Placeholder Google Ads ID
-    `;
-    document.head.appendChild(gtagInit);
+      const gtagInit = document.createElement('script');
+      gtagInit.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PF91SE1797');
+        gtag('config', 'AW-17650233161');
+      `;
+      document.head.appendChild(gtagInit);
+    }
 
     // Meta (Facebook) Pixel Code
     const fbScript = document.createElement('script');

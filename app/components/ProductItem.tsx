@@ -27,11 +27,11 @@ export function ProductItem({
       prefetch="intent"
       to={variantUrl}
     >
-      <div className="relative overflow-hidden bg-gray-50 aspect-[4/5] mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+      <div className="relative overflow-hidden bg-gray-50 aspect-square mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
         {image && (
           <Image
             alt={image.altText || product.title}
-            aspectRatio="4/5"
+            aspectRatio="1/1"
             data={image}
             loading={loading}
             sizes="(min-width: 45em) 400px, 100vw"

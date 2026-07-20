@@ -16,7 +16,7 @@ export function TrustBar() {
                 <div className="flex flex-col items-center">
                     <div className="w-20 h-[1.5px] bg-primary/20 mb-8" />
                     <p className="font-sans text-base md:text-lg text-gray-500 font-light leading-relaxed max-w-2xl mx-auto">
-                        We take pride in technical excellence. That&apos;s why we are the preferred choice for architects, interior designers, and the most discerning home-owners in KZN.
+                        We take pride in technical excellence. That&apos;s why we are the preferred choice for architects, interior designers, contractors, and the most discerning home-owners in KZN.
                     </p>
                     <div className="w-20 h-[1.5px] bg-primary/20 mt-8" />
                 </div>

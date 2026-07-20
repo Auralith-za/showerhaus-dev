@@ -17,7 +17,14 @@ import { ProjectsSection } from '~/components/ProjectsSection';
 import { ServicesSection } from '~/components/ServicesSection';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: 'Shower Haus | Premium Showers' }];
+  return [
+    { title: 'Shower Haus | The Shower Specialists' },
+    {
+      name: 'description',
+      content:
+        'Premium custom-made and ready-to-install showers, expertly installed. Shop our comprehensive range of shower spares, online and in-store.',
+    },
+  ];
 };
 
 export async function loader(args: Route.LoaderArgs) {
