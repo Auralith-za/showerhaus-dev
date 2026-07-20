@@ -218,7 +218,7 @@ export function Layout({ children }: { children?: React.ReactNode }) {
           nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
-              window.dataLayer = window.dataLayer || [];
+              var dataLayer = window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-PF91SE1797');
