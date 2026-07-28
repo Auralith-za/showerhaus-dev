@@ -73,7 +73,7 @@ export function Footer() {
               {FOOTER_MENU.company.map((item) => (
                 <Link
                   key={item.handle}
-                  to={item.handle === 'contact' ? '/contact' : `/pages/${item.handle}`}
+                  to={item.handle === 'contact' ? '/contact' : item.handle === 'legal' ? '/legal' : `/pages/${item.handle}`}
                   className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200"
                 >
                   {item.title}

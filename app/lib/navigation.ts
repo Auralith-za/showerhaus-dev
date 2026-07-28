@@ -118,6 +118,7 @@ export const FOOTER_MENU = {
         { title: 'About Us', handle: 'about-us' },
         { title: 'Customer Stories', handle: 'customer-stories' },
         { title: 'Contact Us', handle: 'contact' },
+        { title: 'Legal', handle: 'legal' },
         { title: 'Newsletter', handle: 'newsletter' },
     ],
     categories: [

@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useLocation } from 'react-router';
+import { Outlet, NavLink, Link, useLocation } from 'react-router';
 import type { Route } from './+types/legal';
 
 export const meta: Route.MetaFunction = () => {
@@ -6,12 +6,12 @@ export const meta: Route.MetaFunction = () => {
 };
 
 const POLICIES = [
-  { name: 'Using Our Website', path: '/legal/using-our-website' },
-  { name: 'Terms and Conditions', path: '/legal/terms-and-conditions' },
-  { name: 'Privacy Policy', path: '/legal/privacy' },
-  { name: 'Cookies Policy', path: '/legal/cookies' },
-  { name: 'Refund and Returns', path: '/legal/refund-and-returns' },
-  { name: 'Shipping and Delivery', path: '/legal/shipping-and-delivery' },
+  { name: 'Using Our Website', path: '/legal/using-our-website', desc: 'Terms and rules governing the use of our website and services.' },
+  { name: 'Terms and Conditions', path: '/legal/terms-and-conditions', desc: 'Detailed terms for purchasing products and services from Shower Haus.' },
+  { name: 'Privacy Policy', path: '/legal/privacy', desc: 'How we collect, store, and protect your personal information.' },
+  { name: 'Cookies Policy', path: '/legal/cookies', desc: 'Information on how cookie technology is used on our site.' },
+  { name: 'Refund and Returns', path: '/legal/refund-and-returns', desc: 'Guidelines and conditions for returns, exchanges, and refunds.' },
+  { name: 'Shipping and Delivery', path: '/legal/shipping-and-delivery', desc: 'Details on delivery options, timeframes, and shipping costs.' },
 ];
 
 export default function LegalLayout() {
@@ -58,12 +58,30 @@ export default function LegalLayout() {
           {/* Content Area */}
           <main className="w-full md:w-3/4 bg-white p-8 md:p-12 shadow-sm rounded-md min-h-[500px]">
             {location.pathname === '/legal' || location.pathname === '/legal/' ? (
-              <div className="flex flex-col items-center justify-center h-full text-center opacity-70">
-                <svg className="w-16 h-16 text-gray-300 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3 className="font-display text-xl text-primary mb-2">Select a Policy</h3>
-                <p className="font-sans text-gray-500 text-sm">Please select a document from the menu to read our policies.</p>
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-display text-2xl text-primary font-bold mb-2">Legal & Policies Hub</h2>
+                  <p className="font-sans text-gray-500 text-sm">Please select a policy below or from the sidebar to view full details.</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                  {POLICIES.map((policy) => (
+                    <Link
+                      key={policy.path}
+                      to={policy.path}
+                      className="p-5 border border-gray-100 rounded-lg hover:border-primary/30 hover:shadow-md transition-all group bg-gray-50/50 hover:bg-white"
+                    >
+                      <h3 className="font-sans font-medium text-base text-primary group-hover:text-secondary mb-1 flex items-center justify-between">
+                        <span>{policy.name}</span>
+                        <svg className="w-4 h-4 text-gray-400 group-hover:text-secondary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </h3>
+                      <p className="font-sans text-xs text-gray-500 font-light leading-relaxed">
+                        {policy.desc}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
               </div>
             ) : (
               <Outlet />
