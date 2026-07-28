@@ -110,24 +110,20 @@ export const PRIMARY_MENU_ITEMS = [
 
 
 export const FOOTER_MENU = {
-    about: [
+    showers: [
+        { title: 'Custom Showers', handle: 'custom-made-showers' },
+        { title: 'Frameless Showers', handle: 'frameless-showers' },
+    ],
+    company: [
         { title: 'About Us', handle: 'about-us' },
         { title: 'Customer Stories', handle: 'customer-stories' },
-    ],
-    customerService: [
         { title: 'Contact Us', handle: 'contact' },
         { title: 'Newsletter', handle: 'newsletter' },
     ],
-    discoverMore: [
-        { title: 'Mailing List', handle: 'newsletter' },
-        { title: 'Journal', handle: 'blogs' },
-    ],
     categories: [
-        { title: 'Showers', handle: 'showers' },
         { title: 'Spares', handle: 'shower-spares' },
         { title: 'Consumables', handle: 'consumables' },
         { title: 'Shower Care', handle: 'shower-care' },
-
     ],
     bottom: [
         { title: 'Terms & Conditions', handle: 'terms-and-conditions' },
