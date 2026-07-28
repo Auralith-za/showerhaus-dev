@@ -116,8 +116,6 @@ export const FOOTER_MENU = {
     ],
     customerService: [
         { title: 'Contact Us', handle: 'contact' },
-        { title: 'Delivery & Collections', handle: 'delivery-collections' },
-        { title: 'Aftersales Care', handle: 'aftersales-care' },
         { title: 'Newsletter', handle: 'newsletter' },
     ],
     discoverMore: [
