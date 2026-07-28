@@ -118,7 +118,7 @@ export async function loader(args: Route.LoaderArgs) {
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN || env.PUBLIC_STORE_DOMAIN || 'showerhaus.co.za',
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: false,
       // localize the privacy banner
@@ -212,17 +212,15 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         
-        {/* Google Analytics & Ads Tracking */}
-        <script nonce={nonce} async src="https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797"></script>
+        {/* Google Analytics & Ads Tracking - must load on every page without nonce for tag detection */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797"></script>
         <script
-          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
-              var dataLayer = window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){window.dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-PF91SE1797');
-              gtag('config', 'AW-17650233161');
+              gtag('config', 'G-PF91SE1797', { anonymize_ip: false });
             `,
           }}
         />
@@ -259,11 +257,16 @@ export default function App() {
     return <Outlet />;
   }
 
+  const checkoutDomain = (data.consent?.checkoutDomain || data.publicStoreDomain || 'showerhaus.co.za');
+  const consentConfig = data.consent
+    ? { ...data.consent, checkoutDomain, hasUserConsent: true, withPrivacyBanner: false }
+    : { checkoutDomain, storefrontAccessToken: '', withPrivacyBanner: false, country: 'ZA', language: 'EN', hasUserConsent: true };
+
   return (
     <Analytics.Provider
       cart={data.cart}
       shop={data.shop}
-      consent={data.consent ? { ...data.consent, hasUserConsent: true } : { checkoutDomain: '', storefrontAccessToken: '', withPrivacyBanner: false, country: 'US', language: 'EN', hasUserConsent: true }}
+      consent={consentConfig}
     >
       <PageLayout {...data}>
         <Outlet />

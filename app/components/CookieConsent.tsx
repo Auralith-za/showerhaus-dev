@@ -36,23 +36,8 @@ export function CookieConsent() {
   };
 
   const triggerTrackingScripts = () => {
-    // Google Analytics & Ads Tag (gtag.js)
-    if (!document.querySelector('script[src*="gtag/js"]')) {
-      const gtagScript = document.createElement('script');
-      gtagScript.async = true;
-      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797';
-      document.head.appendChild(gtagScript);
-
-      const gtagInit = document.createElement('script');
-      gtagInit.innerHTML = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-PF91SE1797');
-        gtag('config', 'AW-17650233161');
-      `;
-      document.head.appendChild(gtagInit);
-    }
+    // GA is already loaded unconditionally in root.tsx <head>
+    // Only load optional/consent-gated pixels here
 
     // Meta (Facebook) Pixel Code
     const fbScript = document.createElement('script');
@@ -65,7 +50,7 @@ export function CookieConsent() {
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'YOUR_PIXEL_ID'); // Placeholder Pixel ID
+      fbq('init', 'YOUR_PIXEL_ID');
       fbq('track', 'PageView');
     `;
     document.head.appendChild(fbScript);

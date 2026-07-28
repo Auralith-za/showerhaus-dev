@@ -1,3 +1,4 @@
+import { Analytics } from '@shopify/hydrogen';
 import { Await, useLoaderData, Link } from 'react-router';
 import type { Route } from './+types/_index';
 import { Suspense } from 'react';
@@ -57,6 +58,8 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home bg-white">
+      <Analytics.CustomView type="page_view" customData={{ pageType: 'home' }} />
+      {/* Section 1: Hero / Banner Carousel */}
       {/* Section 1: Hero / Banner Carousel */}
       <Hero />
 
