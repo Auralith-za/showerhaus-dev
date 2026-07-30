@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
-import { Form, useActionData, useNavigation } from 'react-router';
+import { useState, useEffect } from 'react';
+import { Form, useActionData, useLoaderData, useNavigation } from 'react-router';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
 import type { Route } from './+types/contact';
 import ContactEmail from '~/components/ContactEmail';
+import { createTimestampToken, verifyFormSubmission } from '~/lib/antiSpam';
 
 export const meta: Route.MetaFunction = () => {
     return [
@@ -15,8 +16,24 @@ export const meta: Route.MetaFunction = () => {
     ];
 };
 
+export async function loader({ context }: Route.LoaderArgs) {
+    const sessionSecret = (context.env as any)?.SESSION_SECRET;
+    const formTimeToken = createTimestampToken(Date.now(), sessionSecret);
+    return { formTimeToken };
+}
+
 export async function action({ request, context }: Route.ActionArgs) {
     const formData = await request.formData();
+    const sessionSecret = (context.env as any)?.SESSION_SECRET;
+
+    // Verify form submission through anti-spam defense system
+    const spamCheck = verifyFormSubmission(formData, { secret: sessionSecret });
+    if (spamCheck.isSpam) {
+        // Log block reason on server and silently succeed to fool bot scripts
+        console.warn(`[AntiSpam] Blocked bot form submission. Reason: ${spamCheck.reason}`);
+        return { success: true };
+    }
+
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
@@ -25,13 +42,6 @@ export async function action({ request, context }: Route.ActionArgs) {
 
     if (!firstName || !lastName || !email || !message) {
         return { error: 'Please fill out all required fields.' };
-    }
-
-    const companyName = formData.get('companyName') as string;
-    // Honeypot check for bots
-    if (companyName) {
-        // Silently succeed for bots, but don't send the email
-        return { success: true };
     }
 
     const resend = new Resend((context.env as any).RESEND_API_KEY);
@@ -67,9 +77,15 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 export default function Contact() {
+    const loaderData = useLoaderData<typeof loader>();
     const actionData = useActionData<typeof action>();
     const navigation = useNavigation();
     const isSubmitting = navigation.state === 'submitting';
+    const [jsVerified, setJsVerified] = useState('');
+
+    useEffect(() => {
+        setJsVerified('sh_js_ok_' + Date.now());
+    }, []);
 
     useEffect(() => {
         if (actionData?.success && typeof window !== 'undefined') {
@@ -167,10 +183,26 @@ export default function Contact() {
                                     </div>
                                 )}
                                 
-                                {/* Honeypot field - hidden from real users */}
+                                {/* Anti-Spam Hidden Security Tokens */}
+                                <input type="hidden" name="form_time_token" value={loaderData?.formTimeToken || ''} />
+                                <input type="hidden" name="js_verified" value={jsVerified} />
+
+                                {/* Honeypot field 1: Company Name (hidden via display: none) */}
                                 <div style={{ display: 'none' }} aria-hidden="true">
                                     <label htmlFor="companyName">Company Name</label>
                                     <input type="text" name="companyName" id="companyName" tabIndex={-1} autoComplete="off" />
+                                </div>
+
+                                {/* Honeypot field 2: Website URL (hidden via off-screen positioning) */}
+                                <div style={{ position: 'absolute', opacity: 0, left: '-9999px', top: '-9999px', height: 0, width: 0, overflow: 'hidden', pointerEvents: 'none' }} aria-hidden="true">
+                                    <label htmlFor="website_url">Website URL</label>
+                                    <input type="text" name="website_url" id="website_url" tabIndex={-1} autoComplete="off" />
+                                </div>
+
+                                {/* Honeypot field 3: Confirm Email (hidden via zero-dimensions) */}
+                                <div style={{ opacity: 0, height: 0, width: 0, overflow: 'hidden', pointerEvents: 'none', position: 'absolute' }} aria-hidden="true">
+                                    <label htmlFor="confirm_email_address">Confirm Email Address</label>
+                                    <input type="email" name="confirm_email_address" id="confirm_email_address" tabIndex={-1} autoComplete="off" />
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

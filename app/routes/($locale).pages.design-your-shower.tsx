@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useActionData, useNavigation, useSubmit } from 'react-router';
+import { useActionData, useLoaderData, useNavigation, useSubmit } from 'react-router';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
-import BespokeEmail from '~/components/BespokeEmail';const STEPS = ['Style', 'Configurations', 'Dimensions', 'Hardware', 'Details'];
+import BespokeEmail from '~/components/BespokeEmail';
+import { createTimestampToken, verifyFormSubmission } from '~/lib/antiSpam';
+
+const STEPS = ['Style', 'Configurations', 'Dimensions', 'Hardware', 'Details'];
 
 const STYLES = [
     { name: 'Frameless', desc: 'Minimalist 6-10mm safety glass for a seamless architectural look.' },
@@ -47,8 +50,23 @@ const MATERIALS = [
     { name: 'Brass', desc: 'A superior metal alloy for harder-wearing longer-lasting hinges.' }
 ];
 
+export async function loader({ context }: any) {
+    const sessionSecret = (context.env as any)?.SESSION_SECRET;
+    const formTimeToken = createTimestampToken(Date.now(), sessionSecret);
+    return { formTimeToken };
+}
+
 export async function action({ request, context }: any) {
     const formData = await request.formData();
+    const sessionSecret = (context.env as any)?.SESSION_SECRET;
+
+    // Verify submission through anti-spam defense system
+    const spamCheck = verifyFormSubmission(formData, { secret: sessionSecret });
+    if (spamCheck.isSpam) {
+        console.warn(`[AntiSpam] Blocked custom shower inquiry spam. Reason: ${spamCheck.reason}`);
+        return { success: true };
+    }
+
     const style = formData.get('style') as string;
     const layout = formData.get('layout') as string;
     const width = formData.get('width') as string;
@@ -105,6 +123,7 @@ export async function action({ request, context }: any) {
 }
 
 export default function BespokeShowers() {
+    const loaderData = useLoaderData<typeof loader>();
     const [step, setStep] = useState(0);
     const [style, setStyle] = useState('');
     const [layout, setLayout] = useState('');
@@ -121,11 +140,16 @@ export default function BespokeShowers() {
     const [phone, setPhone] = useState('');
     const [notes, setNotes] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [jsVerified, setJsVerified] = useState('');
 
     const actionData = useActionData<typeof action>();
     const navigation = useNavigation();
     const submit = useSubmit();
     const isSubmitting = navigation.state === 'submitting';
+
+    useEffect(() => {
+        setJsVerified('sh_js_ok_' + Date.now());
+    }, []);
 
     useEffect(() => {
         if (actionData?.success) {
@@ -177,6 +201,8 @@ export default function BespokeShowers() {
         e.preventDefault();
         
         const formData = new FormData();
+        formData.append('form_time_token', loaderData?.formTimeToken || '');
+        formData.append('js_verified', jsVerified);
         formData.append('style', style);
         formData.append('layout', layout);
         formData.append('width', width);
