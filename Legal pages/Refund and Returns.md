@@ -24,7 +24,7 @@ Where this policy offers you anything, it is in addition to these rights.
 
 ### 3. If you change your mind
 
-If you bought a Standard Range product, spare, or accessory online and simply change your mind, you may cancel within **5 days of delivery** and return it for a refund. To qualify, the item must be:
+If you bought a Standard Range product, spare, or accessory online and simply change your mind, you may cancel within **30 days of delivery** and return it for a refund. To qualify, the item must be:
 
 - unused and in its original condition;
 - in its original, undamaged packaging; and
@@ -63,7 +63,7 @@ For faulty, damaged, or incorrect items, we arrange and pay for the return.
 
 ### 7. Refunds
 
-Once we receive the returned item and confirm it meets the conditions above, we will refund you to your original payment method through our payment gateway, Peach Payments. Refunds are processed within **7 to 14 business days** of approval. The time it then takes to reflect in your account depends on your bank.
+Once we receive the returned item and confirm it meets the conditions above, we will refund you to your original payment method through our payment gateway, Peach Payments. Refunds are processed within **5 business days** of approval. The time it then takes to reflect in your account depends on your bank.
 
 If a return does not meet the conditions in this policy, we will contact you before deciding how to proceed, and may return the item to you.
 
