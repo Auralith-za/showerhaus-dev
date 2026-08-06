@@ -24,7 +24,7 @@ Where this policy offers you anything, it is in addition to these rights.
 
 ### 3. If you change your mind
 
-If you bought a Standard Range product, spare, or accessory online and simply change your mind, you may cancel within **7 days of delivery** and return it for a refund. To qualify, the item must be:
+If you bought a Standard Range product, spare, or accessory online and simply change your mind, you may cancel within **5 days of delivery** and return it for a refund. To qualify, the item must be:
 
 - unused and in its original condition;
 - in its original, undamaged packaging; and
@@ -53,7 +53,7 @@ This section does not affect your right to return a faulty, defective, or incorr
 
 ### 6. How to return an item
 
-1. **Contact us first** at hello@showerhaus.co.za with your order number or proof of purchase, and let us know what you would like to return and why. Proof of purchase is required for any return.
+1. **Initiate your return:** Log into your account at [www.showerhaus.co.za/account](/account) to submit a return request, or email us at hello@showerhaus.co.za with your order number or proof of purchase. Proof of purchase is required for any return.
 2. **We will confirm** how to return the item and, for faulty or incorrect items, how the return is arranged.
 3. **Return the item** by one of these methods:
    - we collect it from you, at your cost for change-of-mind returns; or
