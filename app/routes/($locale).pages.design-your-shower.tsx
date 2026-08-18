@@ -533,29 +533,64 @@ export default function ShowerDesigner() {
 
             {/* Main Content Area */}
             <main className="py-8 md:py-10">
-                <div className="container mx-auto px-6 max-w-5xl">
+                <div className="container mx-auto px-6 max-w-5xl flex justify-center">
                     {submitted ? (
                         /* Thank You State */
-                        <div className="bg-white border border-slate-200/80 shadow-sm p-10 md:p-14 max-w-2xl mx-auto text-center rounded-xl">
-                            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xs">
-                                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <div 
+                            className="bg-white border border-slate-200/80 shadow-sm p-10 md:p-14 max-w-2xl w-full mx-auto text-center rounded-xl"
+                            style={{ margin: '0 auto', textAlign: 'center' }}
+                        >
+                            <div 
+                                className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xs"
+                                style={{ margin: '0 auto 24px auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ width: '28px', height: '28px' }}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h2 className="font-display text-2xl md:text-3xl text-[#14294F] font-bold mb-4 text-center">
+                            <h2 
+                                className="font-display text-2xl md:text-3xl text-[#14294F] font-bold mb-4 text-center"
+                                style={{ textAlign: 'center', marginBottom: '18px' }}
+                            >
                                 Request Received
                             </h2>
                             <p
-                                className="text-slate-600 max-w-lg mx-auto text-center text-balance mb-10 md:mb-12 text-sm md:text-base leading-relaxed"
-                                style={{ textWrap: 'balance' }}
+                                className="text-slate-600 max-w-lg mx-auto text-center text-balance text-sm md:text-base leading-relaxed"
+                                style={{ 
+                                    textAlign: 'center', 
+                                    marginLeft: 'auto', 
+                                    marginRight: 'auto', 
+                                    maxWidth: '480px', 
+                                    textWrap: 'balance', 
+                                    lineHeight: '1.75',
+                                    paddingLeft: '12px',
+                                    paddingRight: '12px'
+                                }}
                             >
                                 Thank you{firstName ? <> <span className="font-semibold text-slate-800">{firstName}</span></> : null}. Our shower sales team will contact you within the next 1-2 working hours to finalise your quote or site visit for your <span className="font-semibold text-slate-800">{activeShape.name}</span> shower.
                             </p>
 
-                            <div className="flex justify-center items-center">
+                            <div 
+                                className="flex justify-center items-center"
+                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' }}
+                            >
                                 <Link
                                     to="/"
                                     className="inline-flex items-center justify-center bg-[#14294F] text-white px-9 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#4A89C8] transition-colors rounded-lg shadow-sm cursor-pointer"
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        backgroundColor: '#14294F',
+                                        color: '#ffffff',
+                                        padding: '14px 36px',
+                                        fontSize: '11px',
+                                        fontWeight: 700,
+                                        letterSpacing: '0.2em',
+                                        textTransform: 'uppercase',
+                                        borderRadius: '8px',
+                                        textDecoration: 'none'
+                                    }}
                                 >
                                     Continue Browsing
                                 </Link>
