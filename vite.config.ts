@@ -1,24 +1,26 @@
-import {defineConfig} from 'vite';
+import {defineConfig, loadEnv} from 'vite';
 import {hydrogen} from '@shopify/hydrogen/vite';
 import {oxygen} from '@shopify/mini-oxygen/vite';
 import {reactRouter} from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig(({mode}) => ({
-  define:
-    mode === 'production'
-      ? {
-          'process.env.NODE_ENV': JSON.stringify('production'),
-        }
-      : {},
-  plugins: [
-    tailwindcss(),
-    hydrogen(),
-    oxygen(),
-    reactRouter(),
-    tsconfigPaths(),
-  ],
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    define:
+      mode === 'production'
+        ? {
+            'process.env.NODE_ENV': JSON.stringify('production'),
+          }
+        : {},
+    plugins: [
+      tailwindcss(),
+      hydrogen(),
+      oxygen({env}),
+      reactRouter(),
+      tsconfigPaths(),
+    ],
   resolve: {
     alias: {
       'react-dom/server': 'react-dom/server.browser',
@@ -47,4 +49,5 @@ export default defineConfig(({mode}) => ({
   server: {
     allowedHosts: ['.tryhydrogen.dev'],
   },
-}));
+};
+});

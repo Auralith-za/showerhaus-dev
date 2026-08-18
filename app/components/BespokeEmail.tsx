@@ -1,13 +1,15 @@
 import * as React from 'react';
 
 interface BespokeEmailProps {
-  style: string;
-  layout: string;
+  shape?: string;
+  type?: string;
+  style?: string;
+  layout?: string;
   width: string;
-  length: string;
+  length?: string;
   height: string;
   finish: string;
-  material: string;
+  material?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -17,6 +19,8 @@ interface BespokeEmailProps {
 }
 
 export const BespokeEmail = ({
+  shape,
+  type,
   style,
   layout,
   width,
@@ -32,6 +36,11 @@ export const BespokeEmail = ({
   baseUrl = 'https://www.showerhaus.co.za',
 }: BespokeEmailProps) => {
   const previewText = `New Custom-made Shower Request from ${firstName} ${lastName}`;
+  const selectedShape = shape || layout || 'Not selected';
+  const selectedType = type || style || 'Not selected';
+  const formattedDimensions = length
+    ? `${width}mm (W) x ${length}mm (L) x ${height}mm (H)`
+    : `${width}mm (W) x ${height}mm (H)`;
 
   return (
     <html lang="en">
@@ -66,11 +75,11 @@ export const BespokeEmail = ({
           <div style={section}>
             <h2 style={subheading}>Configuration Details</h2>
             <div style={detailsContainer}>
-              <p style={detailRow}><strong>Style:</strong> {style || 'Not selected'}</p>
-              <p style={detailRow}><strong>Layout/Configuration:</strong> {layout || 'Not selected'}</p>
-              <p style={detailRow}><strong>Dimensions:</strong> {width}mm (W) x {length}mm (L) x {height}mm (H)</p>
+              <p style={detailRow}><strong>Shape:</strong> {selectedShape}</p>
+              <p style={detailRow}><strong>Type / Enclosure Style:</strong> {selectedType}</p>
+              <p style={detailRow}><strong>Dimensions:</strong> {formattedDimensions}</p>
               <p style={detailRow}><strong>Hardware Finish:</strong> {finish || 'Not selected'}</p>
-              <p style={detailRow}><strong>Hardware Material:</strong> {material || 'Not selected'}</p>
+              {material && <p style={detailRow}><strong>Hardware Material:</strong> {material}</p>}
             </div>
           </div>
 
