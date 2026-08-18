@@ -542,17 +542,20 @@ export default function ShowerDesigner() {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h2 className="font-display text-2xl md:text-3xl text-[#14294F] font-bold mb-3">
+                            <h2 className="font-display text-2xl md:text-3xl text-[#14294F] font-bold mb-4 text-center">
                                 Request Received
                             </h2>
-                            <p className="text-slate-600 max-w-lg mx-auto mb-8 text-sm md:text-base leading-relaxed">
+                            <p
+                                className="text-slate-600 max-w-lg mx-auto text-center text-balance mb-10 md:mb-12 text-sm md:text-base leading-relaxed"
+                                style={{ textWrap: 'balance' }}
+                            >
                                 Thank you{firstName ? <> <span className="font-semibold text-slate-800">{firstName}</span></> : null}. Our shower sales team will contact you within the next 1-2 working hours to finalise your quote or site visit for your <span className="font-semibold text-slate-800">{activeShape.name}</span> shower.
                             </p>
 
-                            <div className="flex justify-center">
+                            <div className="flex justify-center items-center">
                                 <Link
                                     to="/"
-                                    className="inline-flex items-center justify-center bg-[#14294F] text-white px-8 py-3.5 text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#4A89C8] transition-colors rounded-lg shadow-sm cursor-pointer"
+                                    className="inline-flex items-center justify-center bg-[#14294F] text-white px-9 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#4A89C8] transition-colors rounded-lg shadow-sm cursor-pointer"
                                 >
                                     Continue Browsing
                                 </Link>
