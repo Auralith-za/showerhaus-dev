@@ -555,16 +555,17 @@ export default function ShowerDesigner() {
                                 Request Received
                             </h2>
                             <p
-                                className="text-slate-600 max-w-lg mx-auto text-center text-balance text-sm md:text-base leading-relaxed"
+                                className="text-slate-600 max-w-md mx-auto text-center text-balance text-sm md:text-base leading-relaxed"
                                 style={{ 
                                     textAlign: 'center', 
                                     marginLeft: 'auto', 
                                     marginRight: 'auto', 
-                                    maxWidth: '480px', 
+                                    maxWidth: '420px', 
                                     textWrap: 'balance', 
-                                    lineHeight: '1.75',
-                                    paddingLeft: '12px',
-                                    paddingRight: '12px'
+                                    lineHeight: '1.8',
+                                    paddingLeft: '16px',
+                                    paddingRight: '16px',
+                                    marginBottom: '48px'
                                 }}
                             >
                                 Thank you{firstName ? <> <span className="font-semibold text-slate-800">{firstName}</span></> : null}. Our shower sales team will contact you within the next 1-2 working hours to finalise your quote or site visit for your <span className="font-semibold text-slate-800">{activeShape.name}</span> shower.
@@ -572,7 +573,7 @@ export default function ShowerDesigner() {
 
                             <div 
                                 className="flex justify-center items-center"
-                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' }}
+                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '48px', paddingTop: '16px' }}
                             >
                                 <Link
                                     to="/"
