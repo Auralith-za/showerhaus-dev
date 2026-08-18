@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useActionData, useLoaderData, useNavigation, useSubmit } from 'react-router';
+import { Link, useActionData, useLoaderData, useNavigation, useSubmit } from 'react-router';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
 import BespokeEmail from '~/components/BespokeEmail';
@@ -537,32 +537,26 @@ export default function ShowerDesigner() {
                     {submitted ? (
                         /* Thank You State */
                         <div className="bg-white border border-slate-200/80 shadow-sm p-10 md:p-14 max-w-2xl mx-auto text-center rounded-xl">
-                            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-5 shadow-xs">
-                                ✓
+                            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xs">
+                                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
                             </div>
-                            <h2 className="font-display text-2xl md:text-3xl text-[#14294F] font-bold mb-2">
+                            <h2 className="font-display text-2xl md:text-3xl text-[#14294F] font-bold mb-3">
                                 Request Received
                             </h2>
-                            <p className="text-slate-500 max-w-md mx-auto mb-8 text-xs md:text-sm leading-relaxed">
-                                Thank you, <span className="font-semibold text-slate-800">{firstName}</span>. Our technical design team will prepare a tailored quotation for your <span className="font-semibold text-slate-800">{activeShape.name} ({selectedType})</span> within 24 hours.
+                            <p className="text-slate-600 max-w-lg mx-auto mb-8 text-sm md:text-base leading-relaxed">
+                                Thank you{firstName ? <> <span className="font-semibold text-slate-800">{firstName}</span></> : null}. Our shower sales team will contact you within the next 1-2 working hours to finalise your quote or site visit for your <span className="font-semibold text-slate-800">{activeShape.name}</span> shower.
                             </p>
 
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setSubmitted(false);
-                                    setCurrentStep(0);
-                                    setSelectedShapeId(null);
-                                    setFirstName('');
-                                    setLastName('');
-                                    setEmail('');
-                                    setPhone('');
-                                    setNotes('');
-                                }}
-                                className="bg-[#14294F] text-white px-8 py-3.5 text-[10px] font-bold tracking-[0.25em] uppercase hover:bg-[#4A89C8] transition-colors rounded-lg shadow-sm cursor-pointer"
-                            >
-                                Start New Configuration
-                            </button>
+                            <div className="flex justify-center">
+                                <Link
+                                    to="/"
+                                    className="inline-flex items-center justify-center bg-[#14294F] text-white px-8 py-3.5 text-xs font-bold tracking-[0.2em] uppercase hover:bg-[#4A89C8] transition-colors rounded-lg shadow-sm cursor-pointer"
+                                >
+                                    Continue Browsing
+                                </Link>
+                            </div>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
