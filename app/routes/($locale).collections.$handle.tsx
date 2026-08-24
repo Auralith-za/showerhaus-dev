@@ -43,7 +43,7 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
 
   const { storefront } = context;
   const variables = getPaginationVariables(request, {
-    pageBy: 12,
+    pageBy: 48,
   });
 
   const url = new URL(request.url);
@@ -62,7 +62,7 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
   }
 
   const sort = url.searchParams.get('sort') || 'Featured';
-  let sortKey = 'RELEVANCE';
+  let sortKey: string | undefined = undefined;
   let reverse = false;
 
   switch (sort) {
@@ -106,6 +106,22 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
     throw new Response(null, { status: 404 });
   }
 
+  if (collection.products?.nodes && collection.products.nodes.length > 0) {
+    if (sort === 'Price: Low to High') {
+      collection.products.nodes = [...collection.products.nodes].sort((a: any, b: any) => {
+        const pA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');
+        const pB = parseFloat(b.priceRange?.minVariantPrice?.amount || '0');
+        return pA - pB;
+      });
+    } else if (sort === 'Price: High to Low') {
+      collection.products.nodes = [...collection.products.nodes].sort((a: any, b: any) => {
+        const pA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');
+        const pB = parseFloat(b.priceRange?.minVariantPrice?.amount || '0');
+        return pB - pA;
+      });
+    }
+  }
+
   redirectIfHandleIsLocalized(request, { handle, data: collection });
 
   return {
@@ -119,9 +135,9 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 }
 
 export default function Collection() {
-  const { collection } = useLoaderData<typeof loader>();
+  const { collection, sort } = useLoaderData<typeof loader>();
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState('Featured');
+  const [sortBy, setSortBy] = useState(sort || 'Featured');
 
   const categories = MEGA_MENU_ITEMS;
 

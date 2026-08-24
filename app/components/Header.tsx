@@ -112,14 +112,15 @@ export function Header({
               (item.handle === 'shower-spares' && (col.handle === 'spares' || col.handle === 'shower-spares'))
             );
             const isCollectionActive = isSpares ? (products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
-            const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
+            const isShowers = item.handle === 'showers';
+            const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : (isShowers ? '/collections/showers' : '/collections/all'));
             
             return (
               <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
                 <NavLink
                   to={path}
                   onClick={(e) => {
-                    if (!isCollectionActive) {
+                    if (!isCollectionActive && !isShowers) {
                       e.preventDefault();
                       alert('We are currently migrating this collection to our new website. Please check back soon!');
                     }
@@ -142,7 +143,11 @@ export function Header({
                               const tStr = (t as string).toLowerCase();
                               return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures';
                             });
-                            const displayTypes = filteredTypes.length > 0 ? filteredTypes : ['Shower Seals', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                            const preferredOrder = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                            const defaultTypes = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                            let displayTypes = filteredTypes.length > 0 
+                              ? Array.from(new Set([...preferredOrder.filter(p => filteredTypes.includes(p)), ...filteredTypes])) 
+                              : defaultTypes;
 
                             return (
                               <div style={{ minWidth: '200px', marginBottom: '16px' }}>
@@ -388,7 +393,17 @@ export function HeaderMenu({
                 <MobileAccordionItem key={item.handle} title={item.title}>
                   <div className="pl-4 border-l border-gray-100 flex flex-col space-y-2">
                     {isSpares ? (() => {
-                      const displayTypes = ['Shower Seals'];
+                      const sparesProducts = shopifyCol?.products?.nodes || products || [];
+                      const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
+                      const filteredTypes = uniqueTypes.filter(t => {
+                        const tStr = (t as string).toLowerCase();
+                        return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures';
+                      });
+                      const preferredOrder = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                      const defaultTypes = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
+                      let displayTypes = filteredTypes.length > 0 
+                        ? Array.from(new Set([...preferredOrder.filter(p => filteredTypes.includes(p)), ...filteredTypes])) 
+                        : defaultTypes;
                       return (
                         <div className="flex flex-col space-y-3 mt-2">
                           <span className="text-sm font-sans text-gray-400 pl-2">

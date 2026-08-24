@@ -27,17 +27,19 @@ export async function loader(args: Route.LoaderArgs) {
 async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   const { storefront } = context;
   const variables = getPaginationVariables(request, {
-    pageBy: 12,
+    pageBy: 48,
   });
 
   const url = new URL(request.url);
   let queryParts: string[] = [];
 
+  const selectedProductTypes: string[] = [];
   const filtersParam = url.searchParams.getAll('filter');
   filtersParam.forEach(f => {
     try {
       const parsed = JSON.parse(f);
       if (parsed.productType) {
+        selectedProductTypes.push(parsed.productType);
         queryParts.push(`product_type:"${parsed.productType}"`);
       }
     } catch (e) {
@@ -48,6 +50,7 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   // Backwards compatibility for old links in browser cache
   const oldProductTypeFilter = url.searchParams.get('filter.p.product_type');
   if (oldProductTypeFilter) {
+    selectedProductTypes.push(oldProductTypeFilter);
     queryParts.push(`product_type:"${oldProductTypeFilter}"`);
   }
 
@@ -57,7 +60,7 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   }
 
   const sort = url.searchParams.get('sort') || 'Featured';
-  let sortKey = 'RELEVANCE';
+  let sortKey: string | undefined = undefined;
   let reverse = false;
 
   switch (sort) {
@@ -70,7 +73,7 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
       reverse = true;
       break;
     case 'Newest':
-      sortKey = 'CREATED';
+      sortKey = 'CREATED_AT';
       reverse = true;
       break;
     default:
@@ -96,8 +99,41 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
     variables: queryVariables,
   });
 
+  const products = data.products || { nodes: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: '', endCursor: '' } };
+
+  if (products.nodes && products.nodes.length > 0) {
+    if (selectedProductTypes.length > 0) {
+      const filtered = products.nodes.filter((p: any) => {
+        const pType = (p.productType || p.category?.name || '').toLowerCase();
+        return selectedProductTypes.some(st => {
+          const stLower = st.toLowerCase();
+          return pType.includes(stLower) || stLower.includes(pType) || 
+                 (stLower.includes('wheel') && pType.includes('wheel')) ||
+                 (stLower.includes('pivot') && pType.includes('pivot'));
+        });
+      });
+      if (filtered.length > 0) {
+        products.nodes = filtered;
+      }
+    }
+
+    if (sort === 'Price: Low to High') {
+      products.nodes = [...products.nodes].sort((a: any, b: any) => {
+        const pA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');
+        const pB = parseFloat(b.priceRange?.minVariantPrice?.amount || '0');
+        return pA - pB;
+      });
+    } else if (sort === 'Price: High to Low') {
+      products.nodes = [...products.nodes].sort((a: any, b: any) => {
+        const pA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');
+        const pB = parseFloat(b.priceRange?.minVariantPrice?.amount || '0');
+        return pB - pA;
+      });
+    }
+  }
+
   return {
-    products: data.products || { nodes: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: '', endCursor: '' } },
+    products,
     collections: data.collections?.nodes || [],
     sort
   };
@@ -108,18 +144,16 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 }
 
 const placeholderImages: Record<string, string> = {
-  'showers': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
   'shower-spares': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
-  'spares': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
+  'showers': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
   'consumables': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/fjKXavfZcnZSsxLzuWvKQ8.jpg',
   'shower-care': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
-  'decorative': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/hidraulico-decor-2-2.jpg',
 };
 
-export default function Collection() {
-  const { products, collections } = useLoaderData<typeof loader>();
+export default function ShopAll() {
+  const { products, collections, sort } = useLoaderData<typeof loader>();
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState('Featured');
+  const [sortBy, setSortBy] = useState(sort || 'Featured');
 
   const categories = collections.filter(
     (cat) => cat.handle !== 'all' && cat.handle !== 'frontpage'
@@ -134,8 +168,9 @@ export default function Collection() {
             {categories.map((cat) => {
               const imageUrl = cat.image?.url || placeholderImages[cat.handle] || 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp';
               const isSpares = cat.handle === 'shower-spares' || cat.handle === 'spares';
+              const isShowers = cat.handle === 'showers';
 
-              if (!isSpares) {
+              if (!isSpares && !isShowers) {
                 return (
                   <div
                     key={cat.handle}

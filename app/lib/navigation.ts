@@ -47,10 +47,11 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
                 title: 'All Spares',
                 handle: 'shower-spares',
                 items: [
+                    { title: 'Shower Seals', handle: 'shower-seals' },
+                    { title: 'Wheels & Brackets', handle: 'wheels-brackets' },
+                    { title: 'Pivot Blocks', handle: 'pivot-blocks' },
                     { title: 'Handles & Towel Rails', handle: 'handles-towel-rails' },
                     { title: 'Hinges and Clamps', handle: 'hinges-and-clamps' },
-                    { title: 'Shower Seals and Cill Plate', handle: 'shower-seals-and-cill-plate' },
-                    { title: 'Shower Wheels & Brackets', handle: 'brackets-wheels' },
                     { title: 'Profiles & Channels', handle: 'profiles-channels' },
                     { title: 'Accessories & Other', handle: 'accessories-other' },
                 ],
