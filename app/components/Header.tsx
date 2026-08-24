@@ -208,12 +208,12 @@ export function Header({
                           ));
                         })()}
                       </div>
-                      <div className="w-[350px] flex-shrink-0">
-                        <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[4/3] bg-gray-50 flex items-center justify-center p-4' : 'aspect-square'}`}>
+                      <div className="w-[320px] flex-shrink-0">
+                        <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[3/4] bg-gray-50' : 'aspect-square'}`}>
                           <img 
-                            src={isSpares ? "/spares-menu.png" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
+                            src={isSpares ? "/spares-menu.jpg" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
                             alt={shopifyCol?.title || item.title} 
-                            className={`w-full h-full block transition-transform duration-700 group-hover/image:scale-110 ${isSpares ? 'object-contain' : 'object-cover'}`} 
+                            className="w-full h-full block transition-transform duration-700 group-hover/image:scale-110 object-cover" 
                           />
                           {!isSpares && (
                             <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
