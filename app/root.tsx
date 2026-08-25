@@ -13,7 +13,6 @@ import {
   useLocation,
 } from 'react-router';
 import type { Route } from './+types/root';
-import favicon from '~/assets/favicon.svg';
 import { FOOTER_QUERY, HEADER_QUERY } from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
@@ -87,6 +86,8 @@ export function links() {
       href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Questrial:wght@400&display=swap',
     },
     { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+    { rel: 'shortcut icon', href: '/favicon.ico' },
+    { rel: 'apple-touch-icon', href: '/favicon.png' },
   ];
 }
 
@@ -244,11 +245,24 @@ export default function App() {
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
       const pagePath = location.pathname + location.search;
+      const pageUrl = window.location.href;
+
+      // Update tag configs
       (window as any).gtag('config', 'G-PF91SE1797', {
         page_path: pagePath,
+        page_location: pageUrl,
       });
       (window as any).gtag('config', 'AW-17650233161', {
         page_path: pagePath,
+        page_location: pageUrl,
+      });
+
+      // Dispatch explicit page_view event for GA4 SPA transitions
+      (window as any).gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: pageUrl,
+        page_path: pagePath,
+        send_to: 'G-PF91SE1797',
       });
     }
   }, [location.pathname, location.search]);
