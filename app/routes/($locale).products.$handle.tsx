@@ -126,12 +126,12 @@ export default function Product() {
   const rawQuantityAvailable = (selectedVariant as any)?.quantityAvailable;
 
   const maxQuantity =
-    typeof rawQuantityAvailable === 'number' && rawQuantityAvailable > 0
-      ? rawQuantityAvailable
+    typeof rawQuantityAvailable === 'number'
+      ? Math.max(0, rawQuantityAvailable)
       : null;
 
   const effectiveQuantity =
-    maxQuantity !== null ? Math.min(quantity, maxQuantity) : quantity;
+    maxQuantity !== null ? Math.min(quantity, maxQuantity) : Math.min(quantity, 99);
 
   // Find the mock product to get the collection handle for related items
 
