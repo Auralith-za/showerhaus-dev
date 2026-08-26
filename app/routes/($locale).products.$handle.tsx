@@ -123,18 +123,15 @@ export default function Product() {
   const { title, descriptionHtml } = product;
   const [quantity, setQuantity] = useState(1);
 
-  const isSellWhenOutOfStock =
-    selectedVariant?.inventoryPolicy === 'CONTINUE' ||
-    selectedVariant?.quantityAvailable == null;
+  const rawQuantityAvailable = (selectedVariant as any)?.quantityAvailable;
 
-  const maxQuantity = isSellWhenOutOfStock
-    ? null
-    : Math.max(0, selectedVariant?.quantityAvailable ?? 0);
+  const maxQuantity =
+    typeof rawQuantityAvailable === 'number' && rawQuantityAvailable > 0
+      ? rawQuantityAvailable
+      : null;
 
   const effectiveQuantity =
-    maxQuantity !== null && maxQuantity > 0
-      ? Math.min(quantity, maxQuantity)
-      : quantity;
+    maxQuantity !== null ? Math.min(quantity, maxQuantity) : quantity;
 
   // Find the mock product to get the collection handle for related items
 
@@ -375,9 +372,6 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       amount
       currencyCode
     }
-    quantityAvailable
-    currentlyNotInStock
-    inventoryPolicy
   }
 ` as const;
 
