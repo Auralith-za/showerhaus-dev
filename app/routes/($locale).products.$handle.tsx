@@ -129,10 +129,13 @@ export default function Product() {
 
   const rawQuantityAvailable = (currentVariant as any)?.quantityAvailable;
 
+  // Fallback max quantity if Storefront API token doesn't expose quantityAvailable
+  const FALLBACK_MAX_QUANTITY = 18;
+
   const maxQuantity =
     typeof rawQuantityAvailable === 'number'
       ? Math.max(0, rawQuantityAvailable)
-      : null;
+      : FALLBACK_MAX_QUANTITY;
 
   useEffect(() => {
     if (maxQuantity !== null && quantity > maxQuantity) {
@@ -140,8 +143,7 @@ export default function Product() {
     }
   }, [selectedVariant?.id, maxQuantity]);
 
-  const effectiveQuantity =
-    maxQuantity !== null ? Math.min(quantity, maxQuantity) : quantity;
+  const effectiveQuantity = Math.min(quantity, maxQuantity);
 
   // Find the mock product to get the collection handle for related items
 
