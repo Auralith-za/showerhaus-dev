@@ -1,6 +1,6 @@
 import { Link, redirect, useLoaderData, useNavigate, isRouteErrorResponse, useRouteError, useParams, useSearchParams } from 'react-router';
 import type { Route } from './+types/products.$handle';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -123,15 +123,25 @@ export default function Product() {
   const { title, descriptionHtml } = product;
   const [quantity, setQuantity] = useState(1);
 
-  const rawQuantityAvailable = (selectedVariant as any)?.quantityAvailable;
+  const currentVariant =
+    product?.variants?.nodes?.find((v: any) => v.id === selectedVariant?.id) ||
+    selectedVariant;
+
+  const rawQuantityAvailable = (currentVariant as any)?.quantityAvailable;
 
   const maxQuantity =
     typeof rawQuantityAvailable === 'number'
       ? Math.max(0, rawQuantityAvailable)
       : null;
 
+  useEffect(() => {
+    if (maxQuantity !== null && quantity > maxQuantity) {
+      setQuantity(Math.max(1, maxQuantity));
+    }
+  }, [selectedVariant?.id, maxQuantity]);
+
   const effectiveQuantity =
-    maxQuantity !== null ? Math.min(quantity, maxQuantity) : Math.min(quantity, 99);
+    maxQuantity !== null ? Math.min(quantity, maxQuantity) : quantity;
 
   // Find the mock product to get the collection handle for related items
 
