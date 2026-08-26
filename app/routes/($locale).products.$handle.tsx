@@ -138,10 +138,11 @@ export default function Product() {
 
   const rawQuantityAvailable = (currentVariant as any)?.quantityAvailable;
 
+  // Use live quantityAvailable if returned by Storefront API; otherwise default order cap of 10
   const maxQuantity =
     typeof rawQuantityAvailable === 'number'
       ? Math.max(0, rawQuantityAvailable)
-      : null;
+      : 10;
 
   useEffect(() => {
     if (maxQuantity !== null && maxQuantity > 0 && quantity > maxQuantity) {
@@ -149,10 +150,7 @@ export default function Product() {
     }
   }, [selectedVariant?.id, maxQuantity]);
 
-  const effectiveQuantity =
-    maxQuantity !== null && maxQuantity > 0
-      ? Math.min(quantity, maxQuantity)
-      : quantity;
+  const effectiveQuantity = Math.min(quantity, maxQuantity);
 
   // Find the mock product to get the collection handle for related items
 
