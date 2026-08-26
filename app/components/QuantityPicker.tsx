@@ -48,9 +48,8 @@ export function QuantityPicker({
     if (parsed < min) {
       parsed = min;
     }
-    const cap = max !== null && max !== undefined ? max : 6;
-    if (parsed > cap) {
-      parsed = cap;
+    if (max !== null && max !== undefined && parsed > max) {
+      parsed = max;
     }
     onChange(parsed);
   };
