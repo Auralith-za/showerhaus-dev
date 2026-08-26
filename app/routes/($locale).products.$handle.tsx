@@ -372,6 +372,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       amount
       currencyCode
     }
+    quantityAvailable
   }
 ` as const;
 

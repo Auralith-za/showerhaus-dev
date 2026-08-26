@@ -120,7 +120,11 @@ export function CartLineItem({
 
 function CartLineQuantity({ line }: { line: CartLine }) {
   if (!line || typeof line?.quantity === 'undefined') return null;
-  const { id: lineId, quantity, isOptimistic } = line;
+  const { id: lineId, quantity, isOptimistic, merchandise } = line;
+  const rawMax = (merchandise as any)?.quantityAvailable;
+  const maxQty = typeof rawMax === 'number' && rawMax > 0 ? rawMax : null;
+  const isMaxReached = maxQty !== null && quantity >= maxQty;
+
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
@@ -132,7 +136,7 @@ function CartLineQuantity({ line }: { line: CartLine }) {
           name="decrease-quantity"
           value={prevQuantity}
           disabled={!!isOptimistic || quantity <= 1}
-          className="w-6 h-6 border border-[#ccc] flex items-center justify-center text-[#666] hover:border-[#333] hover:text-[#333] transition-colors bg-transparent"
+          className="w-6 h-6 border border-[#ccc] flex items-center justify-center text-[#666] hover:border-[#333] hover:text-[#333] transition-colors bg-transparent disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <span className="text-xl font-light leading-none relative -top-[1px]">-</span>
         </button>
@@ -144,8 +148,8 @@ function CartLineQuantity({ line }: { line: CartLine }) {
           aria-label="Increase quantity"
           name="increase-quantity"
           value={nextQuantity}
-          disabled={!!isOptimistic}
-          className="w-6 h-6 border border-[#ccc] flex items-center justify-center text-[#666] hover:border-[#333] hover:text-[#333] transition-colors bg-transparent"
+          disabled={!!isOptimistic || isMaxReached}
+          className="w-6 h-6 border border-[#ccc] flex items-center justify-center text-[#666] hover:border-[#333] hover:text-[#333] transition-colors bg-transparent disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <span className="text-xl font-light leading-none relative -top-[1px]">+</span>
         </button>

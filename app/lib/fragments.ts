@@ -52,6 +52,7 @@ export const CART_QUERY_FRAGMENT = `#graphql
           name
           value
         }
+        quantityAvailable
       }
     }
   }
