@@ -17,6 +17,7 @@ import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { InspirationSection } from '~/components/InspirationSection';
+import { QuantityPicker } from '~/components/QuantityPicker';
 
 
 export const meta: Route.MetaFunction = ({ data }: any) => {
@@ -122,6 +123,19 @@ export default function Product() {
   const { title, descriptionHtml } = product;
   const [quantity, setQuantity] = useState(1);
 
+  const isSellWhenOutOfStock =
+    selectedVariant?.inventoryPolicy === 'CONTINUE' ||
+    selectedVariant?.quantityAvailable == null;
+
+  const maxQuantity = isSellWhenOutOfStock
+    ? null
+    : Math.max(0, selectedVariant?.quantityAvailable ?? 0);
+
+  const effectiveQuantity =
+    maxQuantity !== null && maxQuantity > 0
+      ? Math.min(quantity, maxQuantity)
+      : quantity;
+
   // Find the mock product to get the collection handle for related items
 
 
@@ -225,41 +239,51 @@ export default function Product() {
               })}
 
               {/* Add to Cart Line */}
-              <div className="flex items-center gap-8 mt-6 pt-6 border-t border-gray-50">
-                  <span className="text-sm text-gray-700 w-24">Qty:</span>
-                  <select 
-                      value={quantity}
-                      onChange={(e) => setQuantity(Number(e.target.value))}
-                      className="w-20 p-2.5 text-sm border border-gray-200 focus:border-gray-900 focus:ring-0 outline-none bg-white"
-                  >
-                      {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}</option>)}
-                  </select>
+              <div className="flex flex-col gap-2 mt-6 pt-6 border-t border-gray-50">
+                <div className="flex items-center gap-6">
+                  <span className="text-sm text-gray-700 w-24 flex-shrink-0">Qty:</span>
+                  <QuantityPicker
+                    value={effectiveQuantity}
+                    onChange={(val) => setQuantity(val)}
+                    min={1}
+                    max={maxQuantity}
+                    disabled={!selectedVariant || !selectedVariant.availableForSale || maxQuantity === 0}
+                  />
 
                   <div className="flex-1 max-w-[240px]">
-                      <AddToCartButton
-                          disabled={!selectedVariant || !selectedVariant.availableForSale}
-                          onClick={() => {
-                              try {
-                                  open('cart');
-                              } catch(e) {}
-                              window.location.hash = 'cart-added'; 
-                          }}
-                          lines={
-                              selectedVariant
-                              ? [
-                                  {
-                                      merchandiseId: selectedVariant.id,
-                                      quantity: quantity,
-                                      selectedVariant: selectedVariant,
-                                  },
-                              ]
-                              : []
-                          }
-                          className="w-full bg-primary text-white py-3.5 text-xs tracking-widest uppercase hover:bg-secondary transition-colors font-bold shadow-sm"
-                      >
-                          {selectedVariant?.availableForSale ? 'ADD TO BASKET' : 'SOLD OUT'}
-                      </AddToCartButton>
+                    <AddToCartButton
+                      disabled={!selectedVariant || !selectedVariant.availableForSale || maxQuantity === 0}
+                      onClick={() => {
+                        try {
+                          open('cart');
+                        } catch (e) {}
+                        window.location.hash = 'cart-added';
+                      }}
+                      lines={
+                        selectedVariant
+                          ? [
+                              {
+                                merchandiseId: selectedVariant.id,
+                                quantity: effectiveQuantity,
+                                selectedVariant: selectedVariant,
+                              },
+                            ]
+                          : []
+                      }
+                      className="w-full bg-primary text-white py-3.5 text-xs tracking-widest uppercase hover:bg-secondary transition-colors font-bold shadow-sm"
+                    >
+                      {selectedVariant?.availableForSale && maxQuantity !== 0 ? 'ADD TO BASKET' : 'SOLD OUT'}
+                    </AddToCartButton>
                   </div>
+                </div>
+
+                {maxQuantity !== null && maxQuantity > 0 && (
+                  <div className="pl-30">
+                    <span className="text-xs text-amber-700 font-medium">
+                      Only {maxQuantity} in stock
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -351,6 +375,9 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       amount
       currencyCode
     }
+    quantityAvailable
+    currentlyNotInStock
+    inventoryPolicy
   }
 ` as const;
 
