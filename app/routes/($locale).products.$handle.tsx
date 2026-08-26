@@ -124,26 +124,35 @@ export default function Product() {
   const [quantity, setQuantity] = useState(1);
 
   const currentVariant =
-    product?.variants?.nodes?.find((v: any) => v.id === selectedVariant?.id) ||
-    selectedVariant;
+    product?.variants?.nodes?.find((v: any) => {
+      if (v.id === selectedVariant?.id) return true;
+      if (v.selectedOptions && selectedVariant?.selectedOptions) {
+        return v.selectedOptions.every((opt: any) =>
+          selectedVariant.selectedOptions.some(
+            (selOpt: any) => selOpt.name === opt.name && selOpt.value === opt.value
+          )
+        );
+      }
+      return false;
+    }) || selectedVariant;
 
   const rawQuantityAvailable = (currentVariant as any)?.quantityAvailable;
-
-  // Fallback max quantity if Storefront API token doesn't expose quantityAvailable
-  const FALLBACK_MAX_QUANTITY = 18;
 
   const maxQuantity =
     typeof rawQuantityAvailable === 'number'
       ? Math.max(0, rawQuantityAvailable)
-      : FALLBACK_MAX_QUANTITY;
+      : null;
 
   useEffect(() => {
-    if (maxQuantity !== null && quantity > maxQuantity) {
-      setQuantity(Math.max(1, maxQuantity));
+    if (maxQuantity !== null && maxQuantity > 0 && quantity > maxQuantity) {
+      setQuantity(maxQuantity);
     }
   }, [selectedVariant?.id, maxQuantity]);
 
-  const effectiveQuantity = Math.min(quantity, maxQuantity);
+  const effectiveQuantity =
+    maxQuantity !== null && maxQuantity > 0
+      ? Math.min(quantity, maxQuantity)
+      : quantity;
 
   // Find the mock product to get the collection handle for related items
 
