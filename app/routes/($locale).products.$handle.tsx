@@ -302,14 +302,6 @@ export default function Product() {
                     </AddToCartButton>
                   </div>
                 </div>
-
-                {maxQuantity !== null && maxQuantity > 0 && (
-                  <div className="pl-30">
-                    <span className="text-xs text-amber-700 font-medium">
-                      Only {maxQuantity} in stock
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
 
