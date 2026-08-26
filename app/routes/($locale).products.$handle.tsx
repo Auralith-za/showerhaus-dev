@@ -137,12 +137,19 @@ export default function Product() {
     }) || selectedVariant;
 
   const rawQuantityAvailable = (currentVariant as any)?.quantityAvailable;
+  const isCurrentlyNotInStock = (currentVariant as any)?.currentlyNotInStock;
+  const isAvailableForSale = currentVariant?.availableForSale;
 
-  // Use live quantityAvailable if returned by Storefront API; otherwise default order cap of 10
+  // If item is out of stock (quantity <= 0 or currentlyNotInStock) BUT availableForSale is true,
+  // "Sell when out of stock" is ON -> Allow unlimited ordering (maxQuantity = null).
+  const isSellWhenOutOfStockOn =
+    (isCurrentlyNotInStock || (typeof rawQuantityAvailable === 'number' && rawQuantityAvailable <= 0)) &&
+    isAvailableForSale;
+
   const maxQuantity =
-    typeof rawQuantityAvailable === 'number'
-      ? Math.max(0, rawQuantityAvailable)
-      : 10;
+    isSellWhenOutOfStockOn || rawQuantityAvailable == null
+      ? null
+      : Math.max(0, rawQuantityAvailable);
 
   useEffect(() => {
     if (maxQuantity !== null && maxQuantity > 0 && quantity > maxQuantity) {
@@ -150,7 +157,10 @@ export default function Product() {
     }
   }, [selectedVariant?.id, maxQuantity]);
 
-  const effectiveQuantity = Math.min(quantity, maxQuantity);
+  const effectiveQuantity =
+    maxQuantity !== null && maxQuantity > 0
+      ? Math.min(quantity, maxQuantity)
+      : quantity;
 
   // Find the mock product to get the collection handle for related items
 
@@ -392,6 +402,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       currencyCode
     }
     quantityAvailable
+    currentlyNotInStock
   }
 ` as const;
 
