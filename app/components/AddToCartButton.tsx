@@ -16,6 +16,31 @@ export function AddToCartButton({
   onClick?: () => void;
   className?: string;
 }) {
+  const handleAddToCart = () => {
+    if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      try {
+        const line = lines[0];
+        const selectedVariant = (line as any)?.selectedVariant;
+        const price = selectedVariant?.price?.amount ? parseFloat(selectedVariant.price.amount) : undefined;
+        const currency = selectedVariant?.price?.currencyCode || 'ZAR';
+        const title = selectedVariant?.product?.title || selectedVariant?.title || 'Product';
+
+        (window as any).fbq('track', 'AddToCart', {
+          content_ids: selectedVariant?.id ? [selectedVariant.id] : [],
+          content_name: title,
+          content_type: 'product',
+          value: price,
+          currency: currency,
+        });
+      } catch (err) {
+        console.error('Meta Pixel AddToCart error:', err);
+      }
+    }
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
@@ -27,7 +52,7 @@ export function AddToCartButton({
           />
           <button
             type="submit"
-            onClick={onClick}
+            onClick={handleAddToCart}
             disabled={disabled ?? fetcher.state !== 'idle'}
             className={className || "w-full bg-primary text-white font-display uppercase tracking-widest text-sm py-4 hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"}
           >

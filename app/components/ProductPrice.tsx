@@ -8,12 +8,18 @@ export function ProductPrice({
   price?: MoneyV2;
   compareAtPrice?: MoneyV2 | null;
 }) {
+  const isOnSale =
+    compareAtPrice &&
+    price &&
+    parseFloat(compareAtPrice.amount) > 0 &&
+    parseFloat(compareAtPrice.amount) !== parseFloat(price.amount);
+
   return (
     <div className="product-price">
-      {compareAtPrice ? (
-        <div className="product-price-on-sale">
+      {isOnSale ? (
+        <div className="product-price-on-sale flex items-center gap-2 flex-wrap">
           {price ? <Money data={price} /> : null}
-          <s>
+          <s className="text-gray-400 line-through font-normal text-[0.85em] opacity-75">
             <Money data={compareAtPrice} />
           </s>
         </div>
@@ -25,3 +31,4 @@ export function ProductPrice({
     </div>
   );
 }
+

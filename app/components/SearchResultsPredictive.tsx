@@ -1,6 +1,7 @@
 import { Link, useFetcher, type Fetcher } from 'react-router';
-import { Image, Money } from '@shopify/hydrogen';
+import { Image } from '@shopify/hydrogen';
 import React, { useRef, useEffect } from 'react';
+import { ProductPrice } from '~/components/ProductPrice';
 import {
   getEmptyPredictiveSearchResult,
   urlWithTrackingParams,
@@ -229,6 +230,7 @@ function SearchResultsPredictiveProducts({
           });
 
           const price = product?.selectedOrFirstAvailableVariant?.price;
+          const compareAtPrice = product?.selectedOrFirstAvailableVariant?.compareAtPrice;
           const image = product?.selectedOrFirstAvailableVariant?.image;
           return (
             <li className="predictive-search-result-item" key={product.id}>
@@ -250,7 +252,9 @@ function SearchResultsPredictiveProducts({
                 )}
                 <div className="flex flex-col justify-center">
                   <p className="font-display text-primary group-hover:text-secondary transition-colors">{product.title}</p>
-                  <small className="font-sans text-xs text-gray-500 mt-1">{price && <Money data={price} />}</small>
+                  <div className="font-sans text-xs text-gray-500 mt-1">
+                    <ProductPrice price={price} compareAtPrice={compareAtPrice} />
+                  </div>
                 </div>
               </Link>
             </li>

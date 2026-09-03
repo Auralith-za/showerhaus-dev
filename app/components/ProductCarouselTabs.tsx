@@ -1,6 +1,8 @@
 import { Link, Await } from 'react-router';
 import { useState, Suspense } from 'react';
-import { Image, Money } from '@shopify/hydrogen';
+import { Image } from '@shopify/hydrogen';
+import { ProductPrice } from '~/components/ProductPrice';
+
 interface ProductCarouselTabsProps {
   currentProduct: any;
   relatedProducts?: any;
@@ -68,8 +70,11 @@ export function ProductCarouselTabs({ currentProduct, relatedProducts }: Product
                           <h3 className="font-sans text-[11px] text-gray-900 font-medium tracking-tight leading-tight group-hover/item:text-secondary transition-colors">
                             {product.title}
                           </h3>
-                          <div className="font-sans text-[10px] text-gray-500 font-light flex items-center gap-1 uppercase tracking-wider">
-                            From <span className="font-bold text-gray-900">{product.priceRange?.minVariantPrice?.currencyCode} {product.priceRange?.minVariantPrice?.amount}</span>
+                          <div className="font-sans text-[11px] text-gray-500 font-light">
+                            <ProductPrice
+                              price={product.priceRange?.minVariantPrice}
+                              compareAtPrice={product.compareAtPriceRange?.minVariantPrice}
+                            />
                           </div>
                         </div>
                       </Link>

@@ -1,11 +1,13 @@
 import { Link } from 'react-router';
-import { Image, Money } from '@shopify/hydrogen';
+import { Image } from '@shopify/hydrogen';
 import type {
   ProductItemFragment,
   CollectionItemFragment,
   RecommendedProductFragment,
 } from 'storefrontapi.generated';
 import { useVariantUrl } from '~/lib/variants';
+import { ProductPrice } from '~/components/ProductPrice';
+import { getProductBadges } from '~/lib/badges';
 
 export function ProductItem({
   product,
@@ -19,6 +21,8 @@ export function ProductItem({
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
+  const compareAtPrice = (product as any).compareAtPriceRange?.minVariantPrice;
+  const badges = getProductBadges(product);
 
   return (
     <Link
@@ -28,6 +32,18 @@ export function ProductItem({
       to={variantUrl}
     >
       <div className="relative overflow-hidden bg-gray-50 aspect-square mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+        {badges.length > 0 && (
+          <div className="absolute top-2 left-2 z-10 flex flex-col gap-1 items-start pointer-events-none">
+            {badges.map((badge) => (
+              <span
+                key={badge}
+                className="bg-red-600 text-white font-sans text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 shadow-sm rounded-xs"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
         {image && (
           <Image
             alt={image.altText || product.title}
@@ -46,7 +62,10 @@ export function ProductItem({
           {product.title}
         </h4>
         <div className="font-sans text-sm text-gray-500 font-light">
-          <Money data={product.priceRange.minVariantPrice} />
+          <ProductPrice
+            price={product.priceRange.minVariantPrice}
+            compareAtPrice={compareAtPrice}
+          />
         </div>
       </div>
     </Link>

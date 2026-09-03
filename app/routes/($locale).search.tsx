@@ -129,6 +129,7 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     id
     publishedAt
     title
+    tags
     trackingParameters
     vendor
     selectedOrFirstAvailableVariant(
@@ -366,6 +367,10 @@ const PREDICTIVE_SEARCH_PRODUCT_FRAGMENT = `#graphql
         height
       }
       price {
+        amount
+        currencyCode
+      }
+      compareAtPrice {
         amount
         currencyCode
       }

@@ -18,15 +18,18 @@ import { useAside } from '~/components/Aside';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { InspirationSection } from '~/components/InspirationSection';
 import { QuantityPicker } from '~/components/QuantityPicker';
+import { getProductBadges } from '~/lib/badges';
 
 
 export const meta: Route.MetaFunction = ({ data }: any) => {
+  const origin = 'https://www.showerhaus.co.za';
+  const handle = data?.product?.handle;
+  const canonicalUrl = handle ? `${origin}/products/${handle}` : origin;
+
   return [
     { title: `Shower Haus | ${data?.product?.title ?? 'Product'}` },
-    {
-      rel: 'canonical',
-      href: `/products/${data?.product?.handle}`,
-    },
+    { name: 'description', content: data?.product?.description ?? '' },
+    { tagName: 'link', rel: 'canonical', href: canonicalUrl },
   ];
 };
 
@@ -157,6 +160,22 @@ export default function Product() {
     }
   }, [selectedVariant?.id, maxQuantity]);
 
+  useEffect(() => {
+    if (product && typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      try {
+        (window as any).fbq('track', 'ViewContent', {
+          content_name: product.title,
+          content_category: (product as any).productType || 'Showers',
+          content_ids: [selectedVariant?.id || product.id],
+          value: selectedVariant?.price?.amount ? parseFloat(selectedVariant.price.amount) : 0,
+          currency: selectedVariant?.price?.currencyCode || 'ZAR',
+        });
+      } catch (err) {
+        console.error('Meta Pixel ViewContent error:', err);
+      }
+    }
+  }, [product?.id]);
+
   const effectiveQuantity =
     maxQuantity !== null && maxQuantity > 0
       ? Math.min(quantity, maxQuantity)
@@ -194,12 +213,32 @@ export default function Product() {
 
           {/* Product Info Column */}
           <div className="product-main flex flex-col justify-center">
+            {(() => {
+              const pdpBadges = getProductBadges({
+                ...product,
+                compareAtPrice: selectedVariant?.compareAtPrice || currentVariant?.compareAtPrice,
+                price: selectedVariant?.price || currentVariant?.price,
+              });
+              if (pdpBadges.length === 0) return null;
+              return (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {pdpBadges.map((badge) => (
+                    <span
+                      key={badge}
+                      className="bg-red-600 text-white font-sans text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-xs shadow-xs"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              );
+            })()}
             <h1 className="font-display text-4xl lg:text-5xl text-primary mb-4 leading-tight">{title}</h1>
 
             <div className="font-sans text-xl text-gray-500 font-light mb-8">
               <ProductPrice
-                price={selectedVariant?.price}
-                compareAtPrice={selectedVariant?.compareAtPrice}
+                price={selectedVariant?.price || currentVariant?.price || product?.priceRange?.minVariantPrice}
+                compareAtPrice={selectedVariant?.compareAtPrice || currentVariant?.compareAtPrice || product?.compareAtPriceRange?.minVariantPrice}
               />
             </div>
 
@@ -404,10 +443,31 @@ const PRODUCT_FRAGMENT = `#graphql
     title
     vendor
     handle
+    tags
     descriptionHtml
     description
     encodedVariantExistence
     encodedVariantAvailability
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    compareAtPriceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+    }
     options {
       name
       optionValues {
@@ -477,7 +537,14 @@ const RECOMMENDATIONS_QUERY = `#graphql
     id
     title
     handle
+    tags
     priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    compareAtPriceRange {
       minVariantPrice {
         amount
         currencyCode

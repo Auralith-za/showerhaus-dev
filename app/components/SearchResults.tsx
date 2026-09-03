@@ -1,5 +1,6 @@
 import {Link} from 'react-router';
-import {Image, Money, Pagination} from '@shopify/hydrogen';
+import {Image, Pagination} from '@shopify/hydrogen';
+import {ProductPrice} from '~/components/ProductPrice';
 import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
 
 type SearchItems = RegularSearchReturn['result']['items'];
@@ -109,6 +110,7 @@ function SearchResultsProducts({
             });
 
             const price = product?.selectedOrFirstAvailableVariant?.price;
+            const compareAtPrice = product?.selectedOrFirstAvailableVariant?.compareAtPrice;
             const image = product?.selectedOrFirstAvailableVariant?.image;
 
             return (
@@ -121,7 +123,9 @@ function SearchResultsProducts({
                   )}
                   <div className="flex-1">
                     <p className="font-display text-lg text-primary group-hover:text-secondary transition-colors mb-2">{product.title}</p>
-                    <span className="font-sans text-sm font-medium text-gray-500 block">{price && <Money data={price} />}</span>
+                    <div className="font-sans text-sm font-medium text-gray-500">
+                      <ProductPrice price={price} compareAtPrice={compareAtPrice} />
+                    </div>
                   </div>
                 </Link>
               </div>

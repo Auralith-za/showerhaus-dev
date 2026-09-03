@@ -420,6 +420,10 @@ export default function ShowerDesigner() {
                 if (typeof gtag === 'function') {
                     gtag('event', 'conversion', { send_to: 'AW-17650233161/jVP2CMfLpckcEMnepOBB' });
                 }
+                const fbq = (window as any).fbq;
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead', { content_name: 'Custom Shower Request' });
+                }
             }
         }
     }, [actionData]);

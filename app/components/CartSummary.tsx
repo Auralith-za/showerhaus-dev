@@ -80,11 +80,20 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
 function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; layout?: CartLayout }) {
   if (!checkoutUrl) return null;
 
+  const handleCheckoutClick = () => {
+    if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      try {
+        (window as any).fbq('track', 'InitiateCheckout');
+      } catch (e) {}
+    }
+  };
+
   if (layout === 'page') {
       return (
           <a
             href={checkoutUrl}
             target="_self"
+            onClick={handleCheckoutClick}
             className="block w-full bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase text-center py-5 hover:bg-secondary transition-colors"
           >
             Secure Checkout
@@ -96,6 +105,7 @@ function CartCheckoutActions({ checkoutUrl, layout }: { checkoutUrl?: string; la
     <a
       href={checkoutUrl}
       target="_self"
+      onClick={handleCheckoutClick}
       className="flex-1 bg-primary !text-white text-[10px] font-bold tracking-[0.2em] uppercase py-5 flex items-center justify-center hover:bg-secondary transition-colors"
     >
       Checkout

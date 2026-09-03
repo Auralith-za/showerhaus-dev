@@ -1,4 +1,4 @@
-import { Analytics, getShopAnalytics, useNonce } from '@shopify/hydrogen';
+import { Analytics, getShopAnalytics, useNonce, useAnalytics } from '@shopify/hydrogen';
 import { useEffect } from 'react';
 import {
   Outlet,
@@ -213,18 +213,49 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         
-        {/* Google Analytics & Ads Tracking - must load on every page without nonce for tag detection */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797"></script>
+        {/* Google Analytics & Ads Tracking - nonce required for Hydrogen CSP compliance */}
+        <script async nonce={nonce} src="https://www.googletagmanager.com/gtag/js?id=AW-17650233161"></script>
+        <script async nonce={nonce} src="https://www.googletagmanager.com/gtag/js?id=G-PF91SE1797"></script>
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
-              function gtag(){window.dataLayer.push(arguments);}
+              function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-PF91SE1797', { anonymize_ip: false });
+              gtag('config', 'AW-17650233161');
             `,
           }}
         />
+
+        {/* Meta Pixel Code */}
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '1701792694446502');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=1701792694446502&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
 
         <Meta />
         <Links />
@@ -238,32 +269,62 @@ export function Layout({ children }: { children?: React.ReactNode }) {
   );
 }
 
+function GoogleAnalyticsSubscriber() {
+  const { subscribe } = useAnalytics();
+
+  useEffect(() => {
+    // Forward product added to cart to Google Analytics & Ads
+    const unsubAddToCart = subscribe('product_added_to_cart', (event: any) => {
+      if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'add_to_cart', {
+          send_to: ['G-PF91SE1797', 'AW-17650233161'],
+          value: event?.cart?.cost?.totalAmount?.amount ? parseFloat(event.cart.cost.totalAmount.amount) : undefined,
+          currency: event?.cart?.cost?.totalAmount?.currencyCode || 'ZAR',
+        });
+      }
+    });
+
+    return () => {
+      unsubAddToCart();
+    };
+  }, [subscribe]);
+
+  return null;
+}
+
 export default function App() {
   const data = useRouteLoaderData<RootLoader>('root');
   const location = useLocation();
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+    if (typeof window !== 'undefined') {
       const pagePath = location.pathname + location.search;
       const pageUrl = window.location.href;
 
-      // Update tag configs
-      (window as any).gtag('config', 'G-PF91SE1797', {
-        page_path: pagePath,
-        page_location: pageUrl,
-      });
-      (window as any).gtag('config', 'AW-17650233161', {
-        page_path: pagePath,
-        page_location: pageUrl,
-      });
+      if (typeof (window as any).gtag === 'function') {
+        // Update tag configs
+        (window as any).gtag('config', 'G-PF91SE1797', {
+          page_path: pagePath,
+          page_location: pageUrl,
+        });
+        (window as any).gtag('config', 'AW-17650233161', {
+          page_path: pagePath,
+          page_location: pageUrl,
+        });
 
-      // Dispatch explicit page_view event for GA4 SPA transitions
-      (window as any).gtag('event', 'page_view', {
-        page_title: document.title,
-        page_location: pageUrl,
-        page_path: pagePath,
-        send_to: 'G-PF91SE1797',
-      });
+        // Dispatch explicit page_view event for GA4 SPA transitions
+        (window as any).gtag('event', 'page_view', {
+          page_title: document.title,
+          page_location: pageUrl,
+          page_path: pagePath,
+          send_to: 'G-PF91SE1797',
+        });
+      }
+
+      // Dispatch explicit PageView event for Meta Pixel SPA transitions
+      if (typeof (window as any).fbq === 'function') {
+        (window as any).fbq('track', 'PageView');
+      }
     }
   }, [location.pathname, location.search]);
 
@@ -282,6 +343,7 @@ export default function App() {
       shop={data.shop}
       consent={consentConfig}
     >
+      <GoogleAnalyticsSubscriber />
       <PageLayout {...data}>
         <Outlet />
         <CookieConsent />

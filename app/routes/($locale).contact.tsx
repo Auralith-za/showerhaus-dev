@@ -94,6 +94,10 @@ export default function Contact() {
                 // Tracking contact form submission
                 gtag('event', 'conversion', { 'send_to': 'AW-17650233161/tzzICISdpckcEMnepOBB' });
             }
+            const fbq = (window as any).fbq;
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', { content_name: 'Contact Form' });
+            }
         }
     }, [actionData]);
 
