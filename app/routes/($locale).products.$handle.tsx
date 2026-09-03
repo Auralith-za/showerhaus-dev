@@ -163,10 +163,15 @@ export default function Product() {
   useEffect(() => {
     if (product && typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
       try {
+        const variantId = selectedVariant?.id ? String(selectedVariant.id).split('/').pop() : undefined;
+        const productId = product?.id ? String(product.id).split('/').pop() : undefined;
+        const contentIds = [variantId, productId, selectedVariant?.id, product?.id].filter(Boolean) as string[];
+
         (window as any).fbq('track', 'ViewContent', {
           content_name: product.title,
           content_category: (product as any).productType || 'Showers',
-          content_ids: [selectedVariant?.id || product.id],
+          content_ids: contentIds,
+          content_type: 'product',
           value: selectedVariant?.price?.amount ? parseFloat(selectedVariant.price.amount) : 0,
           currency: selectedVariant?.price?.currencyCode || 'ZAR',
         });
@@ -174,7 +179,7 @@ export default function Product() {
         console.error('Meta Pixel ViewContent error:', err);
       }
     }
-  }, [product?.id]);
+  }, [product?.id, selectedVariant?.id]);
 
   const effectiveQuantity =
     maxQuantity !== null && maxQuantity > 0

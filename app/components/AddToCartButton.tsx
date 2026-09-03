@@ -25,8 +25,11 @@ export function AddToCartButton({
         const currency = selectedVariant?.price?.currencyCode || 'ZAR';
         const title = selectedVariant?.product?.title || selectedVariant?.title || 'Product';
 
+        const numericVariantId = selectedVariant?.id ? String(selectedVariant.id).split('/').pop() : undefined;
+        const contentIds = [numericVariantId, selectedVariant?.id].filter(Boolean) as string[];
+
         (window as any).fbq('track', 'AddToCart', {
-          content_ids: selectedVariant?.id ? [selectedVariant.id] : [],
+          content_ids: contentIds,
           content_name: title,
           content_type: 'product',
           value: price,
