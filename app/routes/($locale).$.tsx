@@ -52,6 +52,25 @@ export async function loader({ request }: Route.LoaderArgs) {
     return redirect(`${localePrefix}${targetPath}`, 301);
   }
 
+  // Intercept Shopify order status, singular order paths, /o/* shortened links, and checkout URLs
+  const ordersIndex = segments.findIndex(
+    (seg) =>
+      seg.toLowerCase() === 'orders' ||
+      seg.toLowerCase() === 'order' ||
+      seg.toLowerCase() === 'o',
+  );
+  if (ordersIndex !== -1) {
+    const orderId = segments[ordersIndex + 1];
+    if (orderId) {
+      return redirect(`${localePrefix}/account/orders/${encodeURIComponent(orderId)}`, 302);
+    }
+    return redirect(`${localePrefix}/account/orders`, 302);
+  }
+
+  if (segments.some((seg) => seg.toLowerCase() === 'checkouts')) {
+    return redirect(`${localePrefix}/account/orders`, 302);
+  }
+
   // Throw 404 if no redirect matches
   throw new Response(`${pathname} not found`, {
     status: 404,

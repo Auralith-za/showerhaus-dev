@@ -12,8 +12,16 @@ export function shouldRevalidate() {
   return true;
 }
 
-export async function loader({ context }: Route.LoaderArgs) {
-  const { customerAccount, storefront } = context;
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const { customerAccount, storefront, session } = context;
+
+  if (!(await customerAccount.isLoggedIn())) {
+    const url = new URL(request.url);
+    if (url.pathname.includes('/account/orders/')) {
+      session.set('return_to', url.pathname + url.search);
+    }
+  }
+
   await customerAccount.handleAuthStatus();
   
   const { data, errors } = await customerAccount.query(CUSTOMER_DETAILS_QUERY, {

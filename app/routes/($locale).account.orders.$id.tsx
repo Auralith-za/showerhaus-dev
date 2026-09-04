@@ -6,10 +6,38 @@ import type {
   OrderQuery,
 } from 'customer-accountapi.generated';
 import { CUSTOMER_ORDER_QUERY } from '~/graphql/customer-account/CustomerOrderQuery';
+import { CUSTOMER_ORDERS_QUERY } from '~/graphql/customer-account/CustomerOrdersQuery';
 
 export const meta: Route.MetaFunction = ({ data }) => {
-  return [{ title: `Order ${data?.order?.name}` }];
+  return [{ title: `Order ${data?.order?.name ?? ''}` }];
 };
+
+function resolveCandidateGids(idParam: string): string[] {
+  const candidates: string[] = [];
+
+  // 1. Try base64 decoding
+  try {
+    const decoded = atob(idParam);
+    if (decoded.startsWith('gid://shopify/Order/')) {
+      candidates.push(decoded);
+    }
+  } catch {
+    // Not base64
+  }
+
+  // 2. Direct GID string
+  if (idParam.startsWith('gid://shopify/Order/')) {
+    candidates.push(idParam);
+  }
+
+  // 3. Raw numeric ID (e.g. 5812395123)
+  const cleanId = idParam.replace(/^#/, '');
+  if (/^\d+$/.test(cleanId)) {
+    candidates.push(`gid://shopify/Order/${cleanId}`);
+  }
+
+  return candidates;
+}
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const { customerAccount } = context;
@@ -17,20 +45,71 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     return redirect('/account/orders');
   }
 
-  const orderId = atob(params.id);
-  const { data, errors }: { data: OrderQuery; errors?: Array<{ message: string }> } =
-    await customerAccount.query(CUSTOMER_ORDER_QUERY, {
-      variables: {
-        orderId,
-        language: customerAccount.i18n.language,
-      },
-    });
+  const rawParam = params.id.trim();
+  const candidateGids = resolveCandidateGids(rawParam);
+  let orderData: OrderQuery['order'] | null = null;
 
-  if (errors?.length || !data?.order) {
-    throw new Error('Order not found');
+  // Attempt direct query using candidate GIDs
+  for (const orderId of candidateGids) {
+    try {
+      const { data, errors }: { data: OrderQuery; errors?: Array<{ message: string }> } =
+        await customerAccount.query(CUSTOMER_ORDER_QUERY, {
+          variables: {
+            orderId,
+            language: customerAccount.i18n.language,
+          },
+        });
+      if (!errors?.length && data?.order) {
+        orderData = data.order;
+        break;
+      }
+    } catch {
+      // Continue to next candidate
+    }
   }
 
-  const { order } = data;
+  // Fallback: If not found by candidate GIDs, search recent customer orders by name/number
+  if (!orderData) {
+    try {
+      const cleanParam = rawParam.replace(/^#/, '');
+      const searchRes = await customerAccount.query(CUSTOMER_ORDERS_QUERY, {
+        variables: {
+          first: 50,
+          query: `name:${cleanParam} OR name:#${cleanParam}`,
+          language: customerAccount.i18n.language,
+        },
+      });
+
+      const matchedNode = searchRes.data?.customer?.orders?.nodes?.find(
+        (node: any) =>
+          node.number?.toString() === cleanParam ||
+          node.name?.replace(/^#/, '') === cleanParam ||
+          node.id?.endsWith(`/${cleanParam}`) ||
+          node.id === rawParam
+      );
+
+      if (matchedNode?.id) {
+        const { data } = await customerAccount.query(CUSTOMER_ORDER_QUERY, {
+          variables: {
+            orderId: matchedNode.id,
+            language: customerAccount.i18n.language,
+          },
+        });
+        if (data?.order) {
+          orderData = data.order;
+        }
+      }
+    } catch {
+      // Ignore fallback query failure
+    }
+  }
+
+  // If order is still not found, redirect gracefully to account orders list instead of crashing with 404
+  if (!orderData) {
+    return redirect('/account/orders');
+  }
+
+  const order = orderData;
 
   // Extract line items directly from nodes array
   const lineItems = order.lineItems.nodes;
