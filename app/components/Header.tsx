@@ -555,7 +555,7 @@ function HeaderMenuMobileToggle() {
   const { open } = useAside();
   return (
     <button
-      className="md:hidden p-2 -ml-2 text-gray-800"
+      className="md:hidden p-2 -ml-2 text-gray-800 cursor-pointer"
       onClick={() => open('mobile')}
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -570,7 +570,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const { open } = useAside();
   return (
-    <button className="reset hover:opacity-80 transition-opacity" style={{ color: '#14294f' }} onClick={() => open('search')}>
+    <button className="reset hover:opacity-80 transition-opacity cursor-pointer" style={{ color: '#14294f' }} onClick={() => open('search')}>
       <IconSearch />
     </button>
   );

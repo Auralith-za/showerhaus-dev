@@ -45,6 +45,7 @@ button.reset {
   border: 0;
   background: inherit;
   font-size: inherit;
+  cursor: pointer;
 }
 
 button.reset>* {
@@ -56,9 +57,12 @@ button.reset:not(:has(> *)) {
   line-height: 1.5rem;
 }
 
+button.reset:hover {
+  cursor: pointer;
+}
+
 button.reset:hover:not(:has(> *)) {
   text-decoration: underline;
-  cursor: pointer;
 }
 
 /* Header styles */
