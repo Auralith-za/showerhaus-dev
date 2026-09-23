@@ -14,6 +14,7 @@ interface BespokeEmailProps {
   lastName: string;
   email: string;
   phone: string;
+  citySuburb?: string;
   notes: string;
   baseUrl?: string;
 }
@@ -32,6 +33,7 @@ export const BespokeEmail = ({
   lastName,
   email,
   phone,
+  citySuburb,
   notes,
   baseUrl = 'https://www.showerhaus.co.za',
 }: BespokeEmailProps) => {
@@ -69,6 +71,7 @@ export const BespokeEmail = ({
               <p style={detailRow}><strong>Name:</strong> {firstName} {lastName}</p>
               <p style={detailRow}><strong>Email:</strong> <a href={`mailto:${email}`} style={link}>{email}</a></p>
               <p style={detailRow}><strong>Phone:</strong> {phone || 'Not provided'}</p>
+              <p style={detailRow}><strong>City and Suburb:</strong> {citySuburb || 'Not provided'}</p>
             </div>
           </div>
 

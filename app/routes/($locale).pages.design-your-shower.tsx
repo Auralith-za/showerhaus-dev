@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
 import BespokeEmail from '~/components/BespokeEmail';
 import { createTimestampToken, verifyFormSubmission } from '~/lib/antiSpam';
+import { syncLeadToKinabase } from '~/lib/kinabase.server';
 
 // --- DATA STRUCTURES BASED ON LOGIC MATRIX ---
 
@@ -295,6 +296,7 @@ export async function action({ request, context }: any) {
     const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
     const phone = formData.get('phone') as string;
+    const citySuburb = (formData.get('citySuburb') as string) || '';
     const notes = formData.get('notes') as string;
 
     if (!firstName || !lastName || !email || !phone) {
@@ -302,41 +304,70 @@ export async function action({ request, context }: any) {
     }
 
     const resendApiKey = (context.env as any)?.RESEND_API_KEY;
-    if (!resendApiKey) {
-        console.warn('RESEND_API_KEY not configured. Simulating successful quote submission.');
-        return { success: true };
-    }
-
-    const resend = new Resend(resendApiKey);
 
     try {
-        const html = renderToStaticMarkup(
-            <BespokeEmail
-                shape={shape}
-                type={type}
-                width={width}
-                length={length}
-                height={height}
-                finish={finish}
-                firstName={firstName}
-                lastName={lastName}
-                email={email}
-                phone={phone}
-                notes={notes}
-            />
-        );
+        if (resendApiKey) {
+            const resend = new Resend(resendApiKey);
+            const html = renderToStaticMarkup(
+                <BespokeEmail
+                    shape={shape}
+                    type={type}
+                    width={width}
+                    length={length}
+                    height={height}
+                    finish={finish}
+                    firstName={firstName}
+                    lastName={lastName}
+                    email={email}
+                    phone={phone}
+                    citySuburb={citySuburb}
+                    notes={notes}
+                />
+            );
 
-        const data = await resend.emails.send({
-            from: 'Shower Haus Website <hello@showerhaus.co.za>',
-            to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
-            subject: `New Custom Shower Request - ${firstName} ${lastName} (${shape})`,
-            replyTo: email,
-            html,
-        });
+            const data = await resend.emails.send({
+                from: 'Shower Haus Website <hello@showerhaus.co.za>',
+                to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
+                subject: `New Custom Shower Request - ${firstName} ${lastName} (${shape})`,
+                replyTo: email,
+                html,
+            });
 
-        if (data.error) {
-            return { error: data.error.message };
+            if (data.error) {
+                return { error: data.error.message };
+            }
+        } else {
+            console.warn('RESEND_API_KEY not configured. Simulating successful quote email submission.');
         }
+
+        // Synchronize lead to Kinabase CRM (Customer & Enquiry)
+        const formattedDimensions = length
+            ? `${width}mm (W) x ${length}mm (L) x ${height}mm (H)`
+            : `${width}mm (W) x ${height}mm (H)`;
+
+        const descriptionHtml = `
+            <p><strong>Custom Shower Design Request</strong></p>
+            <ul>
+                <li><strong>Shower Shape:</strong> ${shape || 'Not selected'}</li>
+                <li><strong>Enclosure Style:</strong> ${type || 'Not selected'}</li>
+                <li><strong>Dimensions:</strong> ${formattedDimensions}</li>
+                <li><strong>Hardware Finish:</strong> ${finish || 'Not selected'}</li>
+                <li><strong>City &amp; Suburb:</strong> ${citySuburb || 'Not specified'}</li>
+                <li><strong>Site Notes / Special Requirements:</strong> ${notes ? notes.replace(/\n/g, '<br/>') : 'None'}</li>
+            </ul>
+        `.trim();
+
+        await syncLeadToKinabase(context.env, {
+            customer: {
+                firstName,
+                lastName,
+                email,
+                phone,
+            },
+            citySuburb,
+            descriptionHtml,
+            channel: 'Website',
+        });
 
         return { success: true };
     } catch (error: any) {
@@ -373,6 +404,7 @@ export default function ShowerDesigner() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [citySuburb, setCitySuburb] = useState('');
     const [notes, setNotes] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [jsVerified, setJsVerified] = useState('');
@@ -445,6 +477,7 @@ export default function ShowerDesigner() {
         formData.append('lastName', lastName);
         formData.append('email', email);
         formData.append('phone', phone);
+        formData.append('citySuburb', citySuburb);
         formData.append('notes', notes);
 
         submit(formData, { method: 'post' });
@@ -1092,6 +1125,20 @@ export default function ShowerDesigner() {
                                                         placeholder="082 123 4567"
                                                     />
                                                 </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                                                    City and Suburb *
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={citySuburb}
+                                                    onChange={(e) => setCitySuburb(e.target.value)}
+                                                    className="w-full border border-slate-200 p-2.5 rounded-lg text-xs text-slate-800 focus:border-[#4A89C8] focus:outline-none bg-slate-50/50"
+                                                    placeholder="e.g. Durban, Morningside"
+                                                />
                                             </div>
 
                                             <div>

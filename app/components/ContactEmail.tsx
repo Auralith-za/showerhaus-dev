@@ -5,6 +5,7 @@ interface ContactEmailProps {
   lastName: string;
   email: string;
   phone?: string;
+  citySuburb?: string;
   message: string;
   baseUrl?: string;
 }
@@ -14,6 +15,7 @@ export const ContactEmail = ({
   lastName = 'Doe',
   email = 'john@example.com',
   phone = '082 123 4567',
+  citySuburb,
   message = 'I would like a quote for a frameless shower.',
   baseUrl = 'https://www.showerhaus.co.za',
 }: ContactEmailProps) => {
@@ -49,6 +51,9 @@ export const ContactEmail = ({
             </p>
             <p style={detailRow}>
               <strong>Phone:</strong> {phone || 'Not provided'}
+            </p>
+            <p style={detailRow}>
+              <strong>City and Suburb:</strong> {citySuburb || 'Not provided'}
             </p>
           </div>
 

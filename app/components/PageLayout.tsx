@@ -78,6 +78,7 @@ function SearchAside() {
           {({ fetchResults, goToSearch, inputRef }) => (
             <div className="flex items-center border-b border-gray-200 focus-within:border-primary transition-colors pb-2">
               <input
+                autoFocus
                 name="q"
                 onChange={fetchResults}
                 onFocus={fetchResults}

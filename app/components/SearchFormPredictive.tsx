@@ -64,6 +64,28 @@ export function SearchFormPredictive({
     inputRef?.current?.setAttribute('type', 'search');
   }, []);
 
+  // Auto-focus search input when the search drawer is opened
+  useEffect(() => {
+    if (aside.type === 'search') {
+      const focusInput = () => {
+        if (inputRef.current && document.activeElement !== inputRef.current) {
+          inputRef.current.focus();
+        }
+      };
+
+      focusInput();
+      const timer1 = setTimeout(focusInput, 50);
+      const timer2 = setTimeout(focusInput, 150);
+      const timer3 = setTimeout(focusInput, 300);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearTimeout(timer3);
+      };
+    }
+  }, [aside.type]);
+
   if (typeof children !== 'function') {
     return null;
   }

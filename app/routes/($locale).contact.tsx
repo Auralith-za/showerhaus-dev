@@ -5,6 +5,7 @@ import { Resend } from 'resend';
 import type { Route } from './+types/contact';
 import ContactEmail from '~/components/ContactEmail';
 import { createTimestampToken, verifyFormSubmission } from '~/lib/antiSpam';
+import { syncLeadToKinabase } from '~/lib/kinabase.server';
 
 export const meta: Route.MetaFunction = () => {
     return [
@@ -38,37 +39,64 @@ export async function action({ request, context }: Route.ActionArgs) {
     const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
     const phone = formData.get('phone') as string;
+    const citySuburb = (formData.get('citySuburb') as string) || '';
     const message = formData.get('message') as string;
 
     if (!firstName || !lastName || !email || !message) {
         return { error: 'Please fill out all required fields.' };
     }
 
-    const resend = new Resend((context.env as any).RESEND_API_KEY);
+    const resendApiKey = (context.env as any)?.RESEND_API_KEY;
 
     try {
-        // Generate the HTML email
-        const html = renderToStaticMarkup(
-            <ContactEmail
-                firstName={firstName}
-                lastName={lastName}
-                email={email}
-                phone={phone}
-                message={message}
-            />
-        );
+        if (resendApiKey) {
+            const resend = new Resend(resendApiKey);
+            // Generate the HTML email
+            const html = renderToStaticMarkup(
+                <ContactEmail
+                    firstName={firstName}
+                    lastName={lastName}
+                    email={email}
+                    phone={phone}
+                    citySuburb={citySuburb}
+                    message={message}
+                />
+            );
 
-        const data = await resend.emails.send({
-            from: 'Shower Haus Website <hello@showerhaus.co.za>',
-            to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
-            subject: `New Enquiry from ${firstName} ${lastName}`,
-            replyTo: email,
-            html,
-        });
+            const data = await resend.emails.send({
+                from: 'Shower Haus Website <hello@showerhaus.co.za>',
+                to: ['hello@showerhaus.co.za', 'curtleroux7785@gmail.com'],
+                subject: `New Enquiry from ${firstName} ${lastName}`,
+                replyTo: email,
+                html,
+            });
 
-        if (data.error) {
-            return { error: data.error.message };
+            if (data.error) {
+                return { error: data.error.message };
+            }
+        } else {
+            console.warn('RESEND_API_KEY not configured. Simulating successful contact email submission.');
         }
+
+        // Synchronize lead to Kinabase CRM (Customer & Enquiry)
+        const descriptionHtml = `
+            <p><strong>Website Contact Form Enquiry</strong></p>
+            <p><strong>City &amp; Suburb:</strong> ${citySuburb || 'Not specified'}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message ? message.replace(/\n/g, '<br/>') : ''}</p>
+        `.trim();
+
+        await syncLeadToKinabase(context.env, {
+            customer: {
+                firstName,
+                lastName,
+                email,
+                phone,
+            },
+            citySuburb,
+            descriptionHtml,
+            channel: 'Website',
+        });
 
         return { success: true };
     } catch (error: any) {
@@ -228,6 +256,11 @@ export default function Contact() {
                                 <div className="space-y-2 group">
                                     <label htmlFor="phone" className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 group-focus-within:text-secondary transition-colors">Contact Number (Optional)</label>
                                     <input type="tel" name="phone" id="phone" className="w-full border-b border-gray-200 py-3 focus:border-secondary focus:ring-0 outline-none transition-all font-sans text-primary bg-transparent" />
+                                </div>
+
+                                <div className="space-y-2 group">
+                                    <label htmlFor="citySuburb" className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 group-focus-within:text-secondary transition-colors">City and Suburb</label>
+                                    <input type="text" name="citySuburb" id="citySuburb" required placeholder="e.g. Durban, Morningside" className="w-full border-b border-gray-200 py-3 focus:border-secondary focus:ring-0 outline-none transition-all font-sans text-primary bg-transparent" />
                                 </div>
 
                                 <div className="space-y-2 group">

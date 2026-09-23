@@ -52,6 +52,30 @@ export function Aside({
     return () => abortController.abort();
   }, [close, expanded]);
 
+  useEffect(() => {
+    if (expanded && type === 'search') {
+      const focusInput = () => {
+        const input = document.querySelector<HTMLInputElement>(
+          'aside input[name="q"], .predictive-search input'
+        );
+        if (input && document.activeElement !== input) {
+          input.focus();
+        }
+      };
+
+      focusInput();
+      const timer1 = setTimeout(focusInput, 50);
+      const timer2 = setTimeout(focusInput, 150);
+      const timer3 = setTimeout(focusInput, 300);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearTimeout(timer3);
+      };
+    }
+  }, [expanded, type]);
+
   return (
     <div
       aria-modal
