@@ -192,19 +192,6 @@ export default function Product() {
   return (
     <div className="product-page bg-white">
       <div className="container mx-auto px-6 py-12">
-        {/* New Site Shop Beta Banner */}
-        <div className="bg-[#f0f7ff] border border-blue-100 p-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 rounded-sm">
-          <div className="flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#4A89C8] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="font-sans text-xs text-primary font-medium leading-relaxed">
-              Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-              <Link to={`/webmaster-feedback?ref=${encodeURIComponent('/products/' + product.handle)}`} className="underline hover:text-secondary transition-colors font-semibold" style={{ color: '#4a89c8' }}>click here to provide feedback</Link>.
-            </p>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
 
           {/* Product Image Column */}

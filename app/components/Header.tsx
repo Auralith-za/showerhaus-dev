@@ -45,10 +45,6 @@ export function Header({
   
   return (
     <>
-      <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
-        Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-        <Link to="/webmaster-feedback" className="underline hover:opacity-80 transition-opacity font-semibold" style={{ color: '#82b7ed' }}>click here to provide feedback</Link>.
-      </div>
       {/* Top Banner (White) */}
       <div className="hidden md:flex relative" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flex: 1 }}>
