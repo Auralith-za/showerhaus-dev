@@ -60,6 +60,37 @@ export async function getKinabaseToken(env?: any): Promise<string> {
 }
 
 /**
+ * Normalizes a phone number for Kinabase by removing the leading zero.
+ * South African numbers entered as e.g. "0846508388" or "+270846508388"
+ * are converted to "846508388" so Kinabase's "+27" prefix renders as "+27 846508388"
+ * rather than "+27 0846508388".
+ */
+export function formatKinabasePhoneNumber(phone?: string | null): string | undefined {
+  if (!phone) return undefined;
+  const trimmed = phone.trim();
+  if (!trimmed) return undefined;
+
+  // Preserve foreign international numbers if entered with a non-+27 country code
+  if (trimmed.startsWith('+') && !trimmed.startsWith('+27')) {
+    return trimmed;
+  }
+
+  // Strip formatting characters to extract digits
+  const digits = trimmed.replace(/\D/g, '');
+  if (!digits) return undefined;
+
+  // If number starts with South African country code (27), strip it and any following zero
+  if (digits.startsWith('27') && digits.length >= 10) {
+    const nationalNumber = digits.slice(2).replace(/^0+/, '');
+    return nationalNumber || undefined;
+  }
+
+  // Remove leading zeros (e.g. "0846508388" -> "846508388")
+  const nationalNumber = digits.replace(/^0+/, '');
+  return nationalNumber || undefined;
+}
+
+/**
  * Finds an existing customer in Kinabase by email, or creates a new Customer record.
  */
 export async function findOrCreateCustomer(
@@ -98,6 +129,8 @@ export async function findOrCreateCustomer(
   }
 
   // 2. Create customer if not found
+  const formattedPhone = formatKinabasePhoneNumber(details.phone);
+
   const createRes = await fetch(`${KINABASE_BASE_URL}/collections/customers`, {
     method: 'POST',
     headers,
@@ -108,7 +141,7 @@ export async function findOrCreateCustomer(
           lastName: details.lastName.trim(),
         },
         email: details.email.trim(),
-        contactNumber: details.phone ? details.phone.trim() : undefined,
+        contactNumber: formattedPhone,
       },
     }),
   });
