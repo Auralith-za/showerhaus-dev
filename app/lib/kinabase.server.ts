@@ -187,6 +187,7 @@ export async function createKinabaseEnquiry(
       description: options.descriptionHtml,
       city: options.citySuburb?.trim() || '',
       channel: options.channel || 'Website',
+      timeOfEnquiry: new Date().toISOString(),
       time: new Date().toISOString(),
     },
   };
