@@ -31,7 +31,7 @@ export default function FramelessShowersLanding() {
     { id: 4, location: 'Durban N · over-bath', category: 'over-bath', image: '/images/about-us-hero.png' },
     { id: 5, location: 'Kloof · walk-in', category: 'walk-in', image: '/images/about-us-narrative.png' },
     { id: 6, location: 'Westville · corner', category: 'corner', image: '/images/engage-home.png' },
-    { id: 7, location: 'Umhlanga · pentagonal', category: 'curved', image: '/images/engage-online.png' },
+    { id: 7, location: 'Umhlanga · pentagonal', category: 'curved', image: '/images/pentagonal-curved-shower.png' },
     { id: 8, location: 'La Lucia · alcove', category: 'alcove', image: '/images/engage-showroom.jpeg' },
     { id: 9, location: 'Gillitts · walk-in', category: 'walk-in', image: '/images/free-consultation.jpg' },
     { id: 10, location: 'Ballito · corner', category: 'corner', image: '/images/contact-us.jpg' },

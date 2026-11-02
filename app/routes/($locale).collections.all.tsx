@@ -146,7 +146,6 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 const placeholderImages: Record<string, string> = {
   'shower-spares': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
   'showers': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
-  'consumables': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/fjKXavfZcnZSsxLzuWvKQ8.jpg',
   'shower-care': 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
 };
 
@@ -163,19 +162,6 @@ export default function ShopAll() {
     <div className="shop-all-page bg-white min-h-screen">
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        {/* New Site Shop Beta Banner */}
-        <div className="bg-[#f0f7ff] border border-blue-100 p-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 rounded-sm">
-          <div className="flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#4A89C8] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="font-sans text-xs text-primary font-medium leading-relaxed">
-              Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-              <Link to="/webmaster-feedback?ref=%2Fcollections%2Fall" className="underline hover:text-secondary transition-colors font-semibold" style={{ color: '#4a89c8' }}>click here to provide feedback</Link>.
-            </p>
-          </div>
-        </div>
-
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-8">

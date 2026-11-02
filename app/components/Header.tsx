@@ -45,10 +45,6 @@ export function Header({
   
   return (
     <>
-      <div className="bg-primary text-white text-center py-2 px-4 font-sans text-[10px] tracking-widest uppercase relative z-50">
-        Our new site is currently in beta. Please be patient. If you experience any issues,{' '}
-        <Link to="/webmaster-feedback" className="underline hover:opacity-80 transition-opacity font-semibold" style={{ color: '#82b7ed' }}>click here to provide feedback</Link>.
-      </div>
       {/* Top Banner (White) */}
       <div className="hidden md:flex relative" style={{ background: '#fff', color: '#111', fontSize: '12px', padding: '12px 48px', justifyContent: 'space-between', alignItems: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', borderBottom: '1px solid #f3f4f6' }}>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flex: 1 }}>
@@ -248,7 +244,7 @@ export function Header({
                     </div>
                   </div>
                 ) : (
-                  /* Coming Soon Dropdown for Consumables, Shower Care, Decorative */
+                  /* Coming Soon Dropdown for Shower Care, Decorative */
                   <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
                     <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '400px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center', textAlign: 'center' }}>
                       <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Architectural Collections</span>

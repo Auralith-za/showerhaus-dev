@@ -69,7 +69,7 @@ export function ServicesSection() {
                     {/* Channel 3 */}
                     <div className="relative overflow-hidden aspect-[3/4] group cursor-pointer shadow-2xl">
                         <img
-                            src="/images/engage-online.png"
+                            src="/images/shower-spares-online.png"
                             alt="Online"
                             className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
                         />
