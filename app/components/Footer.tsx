@@ -54,10 +54,10 @@ export function Footer() {
           <div className="space-y-8">
             <h4 className="font-display text-[10px] tracking-[0.3em] uppercase font-bold text-primary border-b border-gray-100 pb-4">Showers</h4>
             <div className="flex flex-col gap-4 font-sans text-gray-500 text-sm font-light">
-              {FOOTER_MENU.showers.map((item) => (
+              {FOOTER_MENU.showers.map((item: any) => (
                 <Link
                   key={item.handle}
-                  to={`/pages/${item.handle}`}
+                  to={item.to || `/pages/${item.handle}`}
                   className="hover:text-primary transition-colors hover:translate-x-1 transform transition-transform duration-200"
                 >
                   {item.title}

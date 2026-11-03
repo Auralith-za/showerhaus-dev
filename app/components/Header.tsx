@@ -54,6 +54,7 @@ export function Header({
               <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[240px]">
                 <Link to="/pages/custom-made-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Custom-made Showers</Link>
                 <Link to="/pages/frameless-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Frameless Showers</Link>
+                {/* Hidden until ready: <Link to="/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Showers</Link> */}
               </div>
             </div>
           </div>
@@ -240,6 +241,11 @@ export function Header({
                         <Link to="/pages/frameless-showers" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
                           Frameless Showers
                         </Link>
+                        {/* Hidden until ready:
+                        <Link to="/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
+                          Showers
+                        </Link>
+                        */}
                       </div>
                     </div>
                   </div>
@@ -370,6 +376,11 @@ export function HeaderMenu({
                       <NavLink to="/pages/frameless-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
                         Frameless Showers
                       </NavLink>
+                      {/* Hidden until ready:
+                      <NavLink to="/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
+                        Showers
+                      </NavLink>
+                      */}
                     </div>
                   </MobileAccordionItem>
                 );

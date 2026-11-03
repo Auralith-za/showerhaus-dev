@@ -103,6 +103,9 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
   });
 
   if (!collection) {
+    if (handle === 'showers') {
+      throw redirect(`/collections/all?filter=${encodeURIComponent(JSON.stringify({ productType: 'Showers' }))}`);
+    }
     throw new Response(null, { status: 404 });
   }
 

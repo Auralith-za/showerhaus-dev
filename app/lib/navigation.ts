@@ -81,6 +81,7 @@ export const PRIMARY_MENU_ITEMS = [
     { title: 'Shop', handle: 'all', to: '/collections/all' },
     { title: 'Custom-made Showers', handle: 'custom-made-showers', to: '/pages/custom-made-showers' },
     { title: 'Frameless Showers', handle: 'frameless-showers', to: '/pages/frameless-showers' },
+    // { title: 'Showers', handle: 'showers', to: '/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D' },
     { 
         title: 'About Us', 
         handle: 'about-us',
@@ -96,8 +97,9 @@ export const PRIMARY_MENU_ITEMS = [
 
 export const FOOTER_MENU = {
     showers: [
-        { title: 'Custom Showers', handle: 'custom-made-showers' },
-        { title: 'Frameless Showers', handle: 'frameless-showers' },
+        { title: 'Custom Showers', handle: 'custom-made-showers', to: '/pages/custom-made-showers' },
+        { title: 'Frameless Showers', handle: 'frameless-showers', to: '/pages/frameless-showers' },
+        // { title: 'Showers', handle: 'showers', to: '/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D' },
     ],
     company: [
         { title: 'About Us', handle: 'about-us' },

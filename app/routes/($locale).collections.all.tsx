@@ -109,7 +109,8 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
           const stLower = st.toLowerCase();
           return pType.includes(stLower) || stLower.includes(pType) || 
                  (stLower.includes('wheel') && pType.includes('wheel')) ||
-                 (stLower.includes('pivot') && pType.includes('pivot'));
+                 (stLower.includes('pivot') && pType.includes('pivot')) ||
+                 (stLower === 'showers' && (pType === 'showers' || pType.includes('shower door') || pType.includes('shower enclosure')));
         });
       });
       if (filtered.length > 0) {
