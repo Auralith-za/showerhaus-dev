@@ -244,7 +244,7 @@ export function Header({
                     </div>
                   </div>
                 ) : (
-                  /* Coming Soon Dropdown for Consumables, Shower Care, Decorative */
+                  /* Coming Soon Dropdown for Shower Care, Decorative */
                   <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
                     <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '400px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center', textAlign: 'center' }}>
                       <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a39081' }}>Architectural Collections</span>
@@ -551,7 +551,7 @@ function HeaderMenuMobileToggle() {
   const { open } = useAside();
   return (
     <button
-      className="md:hidden p-2 -ml-2 text-gray-800"
+      className="md:hidden p-2 -ml-2 text-gray-800 cursor-pointer"
       onClick={() => open('mobile')}
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -566,7 +566,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const { open } = useAside();
   return (
-    <button className="reset hover:opacity-80 transition-opacity" style={{ color: '#14294f' }} onClick={() => open('search')}>
+    <button className="reset hover:opacity-80 transition-opacity cursor-pointer" style={{ color: '#14294f' }} onClick={() => open('search')}>
       <IconSearch />
     </button>
   );

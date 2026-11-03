@@ -60,7 +60,7 @@ export default function SearchPage() {
                     />
                     <button 
                       type="submit"
-                      className="absolute right-0 top-0 bottom-0 bg-primary text-white px-8 font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-colors"
+                      className="absolute right-0 top-0 bottom-0 bg-primary text-white px-8 font-sans text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-colors cursor-pointer"
                     >
                       Search
                     </button>

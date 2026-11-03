@@ -59,22 +59,6 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
         ],
     },
     {
-        title: 'Consumables',
-        handle: 'consumables',
-        featuredImage: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/fjKXavfZcnZSsxLzuWvKQ8.jpg',
-        featuredTitle: 'PREMIUM SEALANTS',
-        categories: [
-            {
-                title: 'Sealing Products',
-                handle: 'consumables',
-                items: [
-                    { title: 'Seals', handle: 'seals' },
-                    { title: 'Silicone', handle: 'silicone' },
-                ],
-            }
-        ]
-    },
-    {
         title: 'Shower Care',
         handle: 'shower-care',
         featuredImage: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp',
@@ -124,7 +108,6 @@ export const FOOTER_MENU = {
     ],
     categories: [
         { title: 'Spares', handle: 'shower-spares' },
-        { title: 'Consumables', handle: 'consumables' },
         { title: 'Shower Care', handle: 'shower-care' },
     ],
     bottom: [
