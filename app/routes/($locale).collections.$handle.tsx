@@ -52,6 +52,23 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
     try { return JSON.parse(f); } catch (e) { return null; }
   }).filter(Boolean);
 
+  const selectedProductTypes: string[] = [];
+  filtersParam.forEach(f => {
+    try {
+      const parsed = JSON.parse(f);
+      if (parsed.productType) {
+        selectedProductTypes.push(parsed.productType);
+      }
+    } catch (e) {
+      // ignore invalid JSON
+    }
+  });
+
+  const oldProductTypeFilter = url.searchParams.get('filter.p.product_type');
+  if (oldProductTypeFilter) {
+    selectedProductTypes.push(oldProductTypeFilter);
+  }
+
   const minPrice = url.searchParams.get('minPrice');
   const maxPrice = url.searchParams.get('maxPrice');
   if (minPrice || maxPrice) {
@@ -110,6 +127,21 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
   }
 
   if (collection.products?.nodes && collection.products.nodes.length > 0) {
+    if (selectedProductTypes.length > 0) {
+      const filtered = collection.products.nodes.filter((p: any) => {
+        const pType = (p.productType || p.category?.name || '').toLowerCase();
+        return selectedProductTypes.some(st => {
+          const stLower = st.toLowerCase();
+          return pType.includes(stLower) || stLower.includes(pType) || 
+                 (stLower.includes('wheel') && pType.includes('wheel')) ||
+                 (stLower.includes('pivot') && pType.includes('pivot'));
+        });
+      });
+      if (filtered.length > 0) {
+        collection.products.nodes = filtered;
+      }
+    }
+
     if (sort === 'Price: Low to High') {
       collection.products.nodes = [...collection.products.nodes].sort((a: any, b: any) => {
         const pA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');

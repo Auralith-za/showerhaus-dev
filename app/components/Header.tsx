@@ -108,9 +108,11 @@ export function Header({
               col.handle === item.handle || 
               (item.handle === 'shower-spares' && (col.handle === 'spares' || col.handle === 'shower-spares'))
             );
-            const isCollectionActive = isSpares ? (products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
+            const isCollectionActive = isSpares ? ((shopifyCol && shopifyCol.products?.nodes?.length > 0) || products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
             const isShowers = item.handle === 'showers';
-            const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : (isShowers ? '/collections/showers' : '/collections/all'));
+            const path = isShowers 
+              ? '/collections/showers' 
+              : (shopifyCol ? `/collections/${shopifyCol.handle}` : (isSpares ? '/collections/shower-spares' : '/collections/all'));
             
             return (
               <div key={item.handle} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }} className="group">
@@ -138,7 +140,7 @@ export function Header({
                             const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
                             const filteredTypes = uniqueTypes.filter(t => {
                               const tStr = (t as string).toLowerCase();
-                              return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures';
+                              return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures' && tStr !== 'showers';
                             });
                             const preferredOrder = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
                             const defaultTypes = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
@@ -148,16 +150,17 @@ export function Header({
 
                             return (
                               <div style={{ minWidth: '200px', marginBottom: '16px' }}>
-                                <span
-                                  className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 mb-3 block"
+                                <Link
+                                  to="/collections/shower-spares"
+                                  className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-primary border-b border-gray-100 pb-3 mb-3 hover:text-secondary transition-colors block no-underline"
                                 >
-                                  Spares
-                                </span>
+                                  All Spares
+                                </Link>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                   {displayTypes.map((type) => {
                                     const typeStr = type as string;
                                     const filterObj = { productType: typeStr };
-                                    const filterPath = `/collections/all?filter=${encodeURIComponent(JSON.stringify(filterObj))}`;
+                                    const filterPath = `/collections/shower-spares?filter=${encodeURIComponent(JSON.stringify(filterObj))}`;
                                     return (
                                       <Link
                                         key={typeStr}
@@ -206,23 +209,25 @@ export function Header({
                         })()}
                       </div>
                       <div className="w-[320px] flex-shrink-0">
-                        <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[3/4] bg-gray-50' : 'aspect-square'}`}>
-                          <img 
-                            src={isSpares ? "/spares-menu.jpg" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
-                            alt={shopifyCol?.title || item.title} 
-                            className="w-full h-full block transition-transform duration-700 group-hover/image:scale-110 object-cover" 
-                          />
-                          {!isSpares && (
-                            <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
-                              <span className="text-white font-sans text-[9px] font-bold tracking-[0.2em] uppercase mb-1 opacity-80">
-                                Store
-                              </span>
-                              <h3 className="text-white font-sans text-lg font-bold uppercase tracking-tight leading-tight m-0">
-                                {shopifyCol?.title || item.title}
-                              </h3>
-                            </div>
-                          )}
-                        </div>
+                        <Link to={path} className="block group/link">
+                          <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[3/4] bg-gray-50' : 'aspect-square'}`}>
+                            <img 
+                              src={isSpares ? "/spares-menu.jpg" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
+                              alt={shopifyCol?.title || item.title} 
+                              className="w-full h-full block transition-transform duration-700 group-hover/image:scale-110 object-cover" 
+                            />
+                            {!isSpares && (
+                              <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
+                                <span className="text-white font-sans text-[9px] font-bold tracking-[0.2em] uppercase mb-1 opacity-80">
+                                  Store
+                                </span>
+                                <h3 className="text-white font-sans text-lg font-bold uppercase tracking-tight leading-tight m-0">
+                                  {shopifyCol?.title || item.title}
+                                </h3>
+                              </div>
+                            )}
+                          </div>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -361,8 +366,10 @@ export function HeaderMenu({
                 col.handle === item.handle || 
                 (item.handle === 'shower-spares' && (col.handle === 'spares' || col.handle === 'shower-spares'))
               );
-              const isCollectionActive = isSpares ? (products && products.length > 0) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
-              const path = isSpares ? '/collections/all' : (shopifyCol ? `/collections/${shopifyCol.handle}` : '/collections/all');
+              const isCollectionActive = isSpares ? ((shopifyCol && shopifyCol.products?.nodes?.length > 0) || (products && products.length > 0)) : (shopifyCol && shopifyCol.products?.nodes?.length > 0);
+              const path = item.handle === 'showers' 
+                ? '/collections/showers' 
+                : (shopifyCol ? `/collections/${shopifyCol.handle}` : (isSpares ? '/collections/shower-spares' : '/collections/all'));
               
               if (item.handle === 'showers') {
                 return (
@@ -400,7 +407,7 @@ export function HeaderMenu({
                       const uniqueTypes = Array.from(new Set(sparesProducts.map(p => p.productType || p.category?.name).filter(Boolean)));
                       const filteredTypes = uniqueTypes.filter(t => {
                         const tStr = (t as string).toLowerCase();
-                        return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures';
+                        return tStr !== 'parts' && tStr !== 'spares' && tStr !== 'shower parts' && tStr !== 'shower doors & enclosures' && tStr !== 'showers';
                       });
                       const preferredOrder = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
                       const defaultTypes = ['Shower Seals', 'Wheels & Brackets', 'Pivot Blocks', 'Channels', 'Hinges & Clamps', 'Handles & Towel Rails', 'Profiles & Channels'];
@@ -409,16 +416,20 @@ export function HeaderMenu({
                         : defaultTypes;
                       return (
                         <div className="flex flex-col space-y-3 mt-2">
-                          <span className="text-sm font-sans text-gray-400 pl-2">
-                            Spares
-                          </span>
+                          <NavLink
+                            to="/collections/shower-spares"
+                            className="text-base font-sans font-medium text-primary hover:text-secondary pl-4"
+                            onClick={close}
+                          >
+                            All Spares
+                          </NavLink>
                           {displayTypes.map(type => {
                             const typeStr = type as string;
                             const filterObj = { productType: typeStr };
                             return (
                               <NavLink
                                 key={typeStr}
-                                to={`/collections/all?filter=${encodeURIComponent(JSON.stringify(filterObj))}`}
+                                to={`/collections/shower-spares?filter=${encodeURIComponent(JSON.stringify(filterObj))}`}
                                 className="text-base font-sans text-gray-500 hover:text-primary pl-4"
                                 onClick={close}
                               >
