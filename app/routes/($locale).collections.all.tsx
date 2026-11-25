@@ -230,18 +230,39 @@ export default function ShopAll() {
       <div className="container mx-auto px-6 py-12">
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-8">
-            {/* 
-            <button
-              onClick={() => setActiveFilter(activeFilter === 'filter' ? null : 'filter')}
-              className="flex items-center gap-2 font-sans text-[10px] font-bold tracking-widest uppercase text-primary hover:text-gray-500 transition-colors"
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              to="/collections/black-friday"
+              className="font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-xs text-red-600 hover:bg-red-50 transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 4h18M6 12h12m-9 8h6" />
-              </svg>
-              Filters
-            </button>
-            */}
+              Black Friday
+            </Link>
+            <Link
+              to="/collections/showers"
+              className={`font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-xs transition-colors ${
+                isShowersView
+                  ? 'bg-primary text-white'
+                  : 'text-gray-500 hover:text-primary'
+              }`}
+            >
+              Showers
+            </Link>
+            <Link
+              to="/collections/shower-spares"
+              className="font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-xs text-gray-500 hover:text-primary transition-colors"
+            >
+              Shower Spares
+            </Link>
+            <Link
+              to="/collections/all"
+              className={`font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-xs transition-colors ${
+                !isShowersView
+                  ? 'bg-primary text-white'
+                  : 'text-gray-500 hover:text-primary'
+              }`}
+            >
+              All Products
+            </Link>
           </div>
 
           <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">

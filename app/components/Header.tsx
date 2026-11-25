@@ -130,8 +130,8 @@ export function Header({
                   {item.title}
                 </NavLink>
 
-                {/* Mega Menu Dropdown */}
-                {isCollectionActive ? (
+                {/* Mega Menu Dropdown (Excluded for Black Friday which is a direct link only) */}
+                {item.handle === 'black-friday' ? null : isCollectionActive ? (
                   <div className={`absolute top-full pt-4 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 ${index >= array.length - 2 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`} style={{ zIndex: 100 }}>
                     <div style={{ background: '#fff', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #f3f4f6', minWidth: '600px', padding: '40px', display: 'flex', gap: '48px', flexDirection: 'row' }}>
                       <div style={{ flex: 1, textAlign: 'left', display: 'flex', flexWrap: 'wrap', gap: '32px' }}>
@@ -372,6 +372,10 @@ export function HeaderMenu({
                 ? '/collections/showers' 
                 : (shopifyCol ? `/collections/${shopifyCol.handle}` : (isSpares ? '/collections/shower-spares' : '/collections/all'));
               
+              if (item.handle === 'black-friday') {
+                return null;
+              }
+
               if (item.handle === 'showers') {
                 return (
                   <MobileAccordionItem key={item.handle} title={item.title}>
