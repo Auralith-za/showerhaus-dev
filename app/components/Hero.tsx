@@ -19,7 +19,7 @@ const SLIDES: HeroSlide[] = [
         title: 'Shower glass, marked down. Now from R1 200',
         subtitle: 'Black Friday / While stocks last — Pivot doors, shower screens and bath screens.',
         label: 'BLACK FRIDAY SALE',
-        image: '/images/black-friday-desktop.png',
+        image: '/images/black-friday-desktop-v2.png',
         mobileImage: '/images/black-friday-mobile.png',
         url: '/collections/black-friday',
         buttonText: 'SHOP THE SALE',
