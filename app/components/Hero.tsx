@@ -18,7 +18,7 @@ const SLIDES: HeroSlide[] = [
         title: 'Shower glass, marked down.',
         subtitle: 'PIVOT DOORS, SHOWER SCREENS AND BATH SCREENS. SUPPLY ONLY.',
         label: 'BLACK FRIDAY   /   WHILE STOCKS LAST',
-        image: '/images/black-friday-hero.jpg',
+        image: '/images/black-friday-showers-hires.jpg',
         url: '/collections/black-friday',
         buttonText: 'SHOP THE SALE',
         isBlackFridayBanner: true,
@@ -67,7 +67,7 @@ export function Hero() {
 
     return (
         <section
-            className={`relative flex flex-col items-center justify-center h-[600px] md:h-[800px] w-full overflow-hidden transition-colors duration-700 ${
+            className={`relative flex flex-col items-center justify-center h-[600px] md:h-[800px] w-full overflow-hidden transition-colors duration-700 !p-0 ${
                 activeSlide.isBlackFridayBanner
                     ? 'bg-white border-b border-gray-100'
                     : 'bg-black'
@@ -83,67 +83,87 @@ export function Hero() {
                             key={slide.id}
                             to={slide.url}
                             aria-label="Black Friday Sale — Shower glass, marked down. Now from R1 200. Shop the sale"
-                            className={`absolute inset-0 z-10 flex items-center bg-white transition-opacity duration-1000 ease-in-out cursor-pointer hover:no-underline ${
+                            style={{ textDecoration: 'none', willChange: 'opacity' }}
+                            className={`absolute inset-0 z-10 flex items-center justify-center bg-white transition-opacity duration-1000 ease-in-out cursor-pointer !no-underline hover:!no-underline ${
                                 isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                             }`}
-                            style={{ willChange: 'opacity' }}
                         >
-                            <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] w-full py-10 md:py-0">
-                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
-                                    {/* Left Column: Razor-sharp native vector typography & logo */}
-                                    <div className="lg:col-span-5 flex flex-col items-start text-left">
-                                        <img
-                                            src="/logo.png"
-                                            alt="Shower Haus"
-                                            className="h-10 md:h-12 w-auto object-contain mb-6 md:mb-8"
-                                        />
-                                        <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.28em] uppercase text-[#0c4a85] mb-4 block">
+                            <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24 pb-10 md:pb-12">
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-10 items-center">
+                                    {/* Left Column: Exact banner typography & spacing (no logo, no hover underline) */}
+                                    <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
+                                        <span
+                                            style={{
+                                                textDecoration: 'none',
+                                                letterSpacing: '0.25em',
+                                                color: '#0c4a85',
+                                            }}
+                                            className="font-sans text-[10px] sm:text-[12px] md:text-[14px] font-bold uppercase mb-3 md:mb-5 block !no-underline"
+                                        >
                                             BLACK FRIDAY &nbsp;/&nbsp; WHILE STOCKS LAST
                                         </span>
-                                        <h1 className="font-sans text-4xl sm:text-5xl md:text-[3.5rem] xl:text-[4rem] font-extrabold text-[#0c4a85] tracking-tight leading-[1.05] mb-5">
+
+                                        <div
+                                            role="heading"
+                                            aria-level={1}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: '#0c4a85',
+                                                lineHeight: 1.06,
+                                                letterSpacing: '-0.02em',
+                                                margin: 0,
+                                            }}
+                                            className="font-sans text-[2.2rem] sm:text-[3rem] md:text-[3.6rem] xl:text-[4.25rem] font-extrabold mb-3 md:mb-6 !no-underline"
+                                        >
                                             Shower glass,
                                             <br />
                                             marked down.
-                                        </h1>
-                                        <p className="font-sans text-xl md:text-2xl font-extrabold tracking-wide uppercase text-[#0c4a85] mb-2">
+                                        </div>
+
+                                        <div
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: '#0c4a85',
+                                                letterSpacing: '0.03em',
+                                            }}
+                                            className="font-sans text-[1.25rem] sm:text-[1.5rem] md:text-[1.85rem] font-extrabold uppercase mb-1.5 md:mb-2 !no-underline"
+                                        >
                                             NOW FROM R1 200
-                                        </p>
-                                        <p className="font-sans text-[9.5px] md:text-[10.5px] font-medium tracking-[0.22em] uppercase text-gray-500 mb-7 md:mb-9">
+                                        </div>
+
+                                        <div
+                                            style={{
+                                                textDecoration: 'none',
+                                                letterSpacing: '0.2em',
+                                                color: '#4b5563',
+                                            }}
+                                            className="font-sans text-[8.5px] sm:text-[9.5px] md:text-[10.5px] font-medium uppercase mb-5 md:mb-8 !no-underline"
+                                        >
                                             PIVOT DOORS, SHOWER SCREENS AND BATH SCREENS. SUPPLY ONLY.
-                                        </p>
-                                        <span className="inline-block bg-[#0c4a85] hover:bg-[#14294f] text-white font-sans text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase px-8 py-4 transition-colors shadow-sm">
+                                        </div>
+
+                                        <span
+                                            style={{
+                                                textDecoration: 'none',
+                                                backgroundColor: '#0c4a85',
+                                                color: '#ffffff',
+                                                letterSpacing: '0.24em',
+                                            }}
+                                            className="inline-block font-sans text-[10px] sm:text-[11px] md:text-[12px] font-bold uppercase px-7 sm:px-9 py-3.5 sm:py-4 transition-opacity hover:opacity-90 !no-underline"
+                                        >
                                             SHOP THE SALE
                                         </span>
                                     </div>
 
-                                    {/* Right Column: High-Resolution 2000x2000px Shopify CDN Product Renders */}
-                                    <div className="lg:col-span-7 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 items-end justify-items-center">
-                                        <div className="w-full flex items-end justify-center">
-                                            <img
-                                                src="https://cdn.shopify.com/s/files/1/0961/8528/6960/files/sf-pivot-door_compressed.jpg?v=1795436374&width=1000"
-                                                alt="Semi-frameless Pivot Shower Door"
-                                                loading="eager"
-                                                fetchPriority="high"
-                                                className="w-full max-h-[220px] sm:max-h-[320px] md:max-h-[440px] lg:max-h-[500px] object-contain"
-                                            />
-                                        </div>
-                                        <div className="w-full flex items-end justify-center">
-                                            <img
-                                                src="https://cdn.shopify.com/s/files/1/0961/8528/6960/files/sf-pivot-door-and-return_square_compressed.jpg?v=1793867033&width=1000"
-                                                alt="Semi-frameless Pivot Shower Door with Return Panel"
-                                                loading="eager"
-                                                fetchPriority="high"
-                                                className="w-full max-h-[230px] sm:max-h-[340px] md:max-h-[460px] lg:max-h-[520px] object-contain"
-                                            />
-                                        </div>
-                                        <div className="w-full flex items-end justify-center">
-                                            <img
-                                                src="https://cdn.shopify.com/s/files/1/0961/8528/6960/files/sf-bathscreen-whitescreen_square_compressed.jpg?v=1794305502&width=900"
-                                                alt="Semi-frameless Single Bath Screen"
-                                                loading="eager"
-                                                className="w-full max-h-[160px] sm:max-h-[240px] md:max-h-[320px] lg:max-h-[360px] object-contain"
-                                            />
-                                        </div>
+                                    {/* Right Column: High-Resolution 1520x1020 composite matching exact original spacing */}
+                                    <div className="lg:col-span-7 flex items-center justify-center">
+                                        <img
+                                            src="/images/black-friday-showers-hires.jpg"
+                                            alt="Black Friday Sale — Semi-frameless Pivot Door, Pivot Door with Return Panel, and Single Bath Screen"
+                                            loading="eager"
+                                            fetchPriority="high"
+                                            className="w-full max-w-[460px] sm:max-w-[560px] lg:max-w-none max-h-[220px] sm:max-h-[280px] md:max-h-[420px] lg:max-h-[540px] object-contain"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +229,7 @@ export function Hero() {
             )}
 
             {/* Navigation Dots */}
-            <div className="absolute bottom-12 left-0 right-0 z-20 flex justify-center gap-4">
+            <div className="absolute bottom-6 md:bottom-12 left-0 right-0 z-20 flex justify-center gap-4">
                 {SLIDES.map((_, index) => {
                     const isSelected = index === currentSlide;
                     const dotColorClass = activeSlide.isBlackFridayBanner
