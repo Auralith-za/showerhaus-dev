@@ -20,6 +20,12 @@ import { InspirationSection } from '~/components/InspirationSection';
 import { QuantityPicker } from '~/components/QuantityPicker';
 import { getProductBadges } from '~/lib/badges';
 import {
+  getImageOptionAssociation,
+  findGalleryImageForOptions,
+  findExactVariant,
+  type ImageLike,
+} from '~/lib/variantGallerySync';
+import {
   SITE_URL,
   SITE_NAME,
   PRODUCT_SEO_ENHANCEMENTS,
@@ -314,49 +320,153 @@ export default function Product() {
   // ... (existing state and logic)
   const [searchParams] = useSearchParams();
 
-  // Use Shopify's resolved variant from the loader directly
-  const matchedVariant = product.selectedOrFirstAvailableVariant;
+  // Build initial option map from Shopify's resolved variant (or first variant)
+  const buildInitialOptionsMap = (prod: any): Record<string, string> => {
+    const map: Record<string, string> = {};
+    const baseVariant =
+      prod?.selectedOrFirstAvailableVariant || prod?.variants?.nodes?.[0];
+    for (const opt of baseVariant?.selectedOptions || []) {
+      if (opt?.name && opt?.value && opt.name !== 'Title') {
+        map[opt.name] = opt.value;
+      }
+    }
+    return map;
+  };
 
-  const selectedVariant = useOptimisticVariant(
-    matchedVariant,
-    getAdjacentAndFirstAvailableVariants(product),
+  const [selectedOptionsMap, setSelectedOptionsMap] = useState<
+    Record<string, string>
+  >(() => buildInitialOptionsMap(product));
+
+  const [activeGalleryImage, setActiveGalleryImage] =
+    useState<ImageLike | null>(
+      () => product?.selectedOrFirstAvailableVariant?.image || null,
+    );
+
+  // Reset when navigating to a different product
+  useEffect(() => {
+    const initMap = buildInitialOptionsMap(product);
+    setSelectedOptionsMap(initMap);
+    setActiveGalleryImage(
+      product?.selectedOrFirstAvailableVariant?.image || null,
+    );
+  }, [product?.id]);
+
+  const allVariants: any[] = product?.variants?.nodes || [];
+  const hasRealOptions = (product?.options || []).some(
+    (o: any) =>
+      !(
+        o.name === 'Title' &&
+        o.optionValues?.length === 1 &&
+        o.optionValues[0]?.name === 'Default Title'
+      ),
   );
-  useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
+
+  const exactMatchedVariant = hasRealOptions
+    ? findExactVariant(allVariants, selectedOptionsMap)
+    : product?.selectedOrFirstAvailableVariant || allVariants[0] || null;
+
+  const isInvalidCombination = hasRealOptions && exactMatchedVariant === null;
+  const selectedVariant = exactMatchedVariant;
+  const currentVariant = exactMatchedVariant;
+
+  // Fallback variant for price/badge display when an invalid combination is selected
+  const displayFallbackVariant =
+    selectedVariant ||
+    product?.selectedOrFirstAvailableVariant ||
+    allVariants[0] ||
+    null;
+
   const productOptions = getProductOptions({
     ...product,
-    selectedOrFirstAvailableVariant: selectedVariant,
+    selectedOrFirstAvailableVariant:
+      selectedVariant || product.selectedOrFirstAvailableVariant,
   });
+
+  const syncUrlWithOptions = (nextOptionsMap: Record<string, string>) => {
+    const params = new URLSearchParams();
+    for (const [k, v] of Object.entries(nextOptionsMap)) {
+      if (k && v && k !== 'Title') {
+        params.set(k, v);
+      }
+    }
+    const queryStr = params.toString();
+    if (queryStr) {
+      navigate(`?${queryStr}`, { replace: true, preventScrollReset: true });
+    }
+  };
+
+  const handleSelectOption = (optionName: string, optionValue: string) => {
+    const nextOptionsMap = {
+      ...selectedOptionsMap,
+      [optionName]: optionValue,
+    };
+    setSelectedOptionsMap(nextOptionsMap);
+
+    const targetImg = findGalleryImageForOptions(
+      product,
+      nextOptionsMap,
+      optionName,
+    );
+    if (targetImg) {
+      setActiveGalleryImage(targetImg);
+    }
+
+    syncUrlWithOptions(nextOptionsMap);
+  };
+
+  const handleGalleryImageSelect = (clickedImg: ImageLike) => {
+    setActiveGalleryImage(clickedImg);
+
+    const associatedOptions = getImageOptionAssociation(clickedImg, product);
+    // Shared images (lifestyle scenes, diagrams, dimensions) return null and do not alter selection
+    if (!associatedOptions) {
+      return;
+    }
+
+    let didChange = false;
+    const nextOptionsMap = { ...selectedOptionsMap };
+    for (const [optName, optVal] of Object.entries(associatedOptions)) {
+      // Match option name case-insensitively to product's canonical option name
+      const canonicalOpt = (product?.options || []).find(
+        (o: any) => o.name.toLowerCase() === optName.toLowerCase(),
+      );
+      const keyName = canonicalOpt ? canonicalOpt.name : optName;
+      if (nextOptionsMap[keyName] !== optVal) {
+        nextOptionsMap[keyName] = optVal;
+        didChange = true;
+      }
+    }
+
+    if (didChange) {
+      setSelectedOptionsMap(nextOptionsMap);
+      syncUrlWithOptions(nextOptionsMap);
+    }
+  };
 
   const { title, descriptionHtml } = product;
   const [quantity, setQuantity] = useState(1);
 
-  const currentVariant =
-    product?.variants?.nodes?.find((v: any) => {
-      if (v.id === selectedVariant?.id) return true;
-      if (v.selectedOptions && selectedVariant?.selectedOptions) {
-        return v.selectedOptions.every((opt: any) =>
-          selectedVariant.selectedOptions.some(
-            (selOpt: any) => selOpt.name === opt.name && selOpt.value === opt.value
-          )
-        );
-      }
-      return false;
-    }) || selectedVariant;
-
   const rawQuantityAvailable = (currentVariant as any)?.quantityAvailable;
   const isCurrentlyNotInStock = (currentVariant as any)?.currentlyNotInStock;
-  const isAvailableForSale = currentVariant?.availableForSale;
+  const isAvailableForSale = Boolean(currentVariant?.availableForSale);
 
   // If item is out of stock (quantity <= 0 or currentlyNotInStock) BUT availableForSale is true,
   // "Sell when out of stock" is ON -> Allow unlimited ordering (maxQuantity = null).
   const isSellWhenOutOfStockOn =
-    (isCurrentlyNotInStock || (typeof rawQuantityAvailable === 'number' && rawQuantityAvailable <= 0)) &&
+    (isCurrentlyNotInStock ||
+      (typeof rawQuantityAvailable === 'number' && rawQuantityAvailable <= 0)) &&
     isAvailableForSale;
 
-  const maxQuantity =
-    isSellWhenOutOfStockOn || rawQuantityAvailable == null
+  const maxQuantity = !currentVariant
+    ? 0
+    : isSellWhenOutOfStockOn || rawQuantityAvailable == null
       ? null
       : Math.max(0, rawQuantityAvailable);
+
+  const isVariantAvailable =
+    Boolean(selectedVariant) &&
+    Boolean(selectedVariant.availableForSale) &&
+    maxQuantity !== 0;
 
   useEffect(() => {
     if (maxQuantity !== null && maxQuantity > 0 && quantity > maxQuantity) {
@@ -438,8 +548,9 @@ export default function Product() {
           {/* Product Image Column */}
           <div className="product-image h-fit md:sticky md:top-24">
             <ProductImage
-              image={selectedVariant?.image}
+              image={activeGalleryImage || displayFallbackVariant?.image}
               media={product?.media?.nodes}
+              onImageSelect={handleGalleryImageSelect}
               className="w-full h-full rounded-sm"
             />
           </div>
@@ -449,8 +560,11 @@ export default function Product() {
             {(() => {
               const pdpBadges = getProductBadges({
                 ...product,
-                compareAtPrice: selectedVariant?.compareAtPrice || currentVariant?.compareAtPrice,
-                price: selectedVariant?.price || currentVariant?.price,
+                compareAtPrice:
+                  selectedVariant?.compareAtPrice ||
+                  displayFallbackVariant?.compareAtPrice,
+                price:
+                  selectedVariant?.price || displayFallbackVariant?.price,
               });
               if (pdpBadges.length === 0) return null;
               return (
@@ -470,8 +584,16 @@ export default function Product() {
 
             <div className="font-sans text-xl text-gray-500 font-light mb-8">
               <ProductPrice
-                price={selectedVariant?.price || currentVariant?.price || product?.priceRange?.minVariantPrice}
-                compareAtPrice={selectedVariant?.compareAtPrice || currentVariant?.compareAtPrice || product?.compareAtPriceRange?.minVariantPrice}
+                price={
+                  selectedVariant?.price ||
+                  displayFallbackVariant?.price ||
+                  product?.priceRange?.minVariantPrice
+                }
+                compareAtPrice={
+                  selectedVariant?.compareAtPrice ||
+                  displayFallbackVariant?.compareAtPrice ||
+                  product?.compareAtPriceRange?.minVariantPrice
+                }
               />
             </div>
 
@@ -557,7 +679,31 @@ export default function Product() {
                       optNameLower === 'finish' ||
                       optNameLower === 'color' ||
                       optNameLower === 'colour';
-                    const selectedOptionValue = option.optionValues.find((v) => v.selected);
+                    const activeValueName =
+                      selectedOptionsMap[option.name] ||
+                      option.optionValues.find((v) => v.selected)?.name ||
+                      '';
+
+                    // Check if a given option value exists & is available with the other currently selected options
+                    const getOptionValueStatus = (valName: string) => {
+                      const candidateMap = {
+                        ...selectedOptionsMap,
+                        [option.name]: valName,
+                      };
+                      const exactVar = findExactVariant(allVariants, candidateMap);
+                      const existsInProduct = allVariants.some((v) =>
+                        (v.selectedOptions || []).some(
+                          (so: any) =>
+                            so.name.toLowerCase() === optNameLower &&
+                            so.value.toLowerCase() === valName.toLowerCase(),
+                        ),
+                      );
+                      return {
+                        existsInProduct,
+                        combinationExists: Boolean(exactVar),
+                        available: Boolean(exactVar?.availableForSale),
+                      };
+                    };
 
                     return (
                       <div key={option.name} className="flex items-center gap-8">
@@ -567,9 +713,12 @@ export default function Product() {
                           <div className="flex items-center gap-3 flex-wrap">
                             <div className="flex gap-2">
                               {option.optionValues
-                                .filter((val) => val.exists)
+                                .filter((val) => getOptionValueStatus(val.name).existsInProduct)
                                 .map((val) => {
                                   const valKey = val.name.trim().toLowerCase();
+                                  const isSelected =
+                                    activeValueName.toLowerCase() === valKey;
+                                  const status = getOptionValueStatus(val.name);
                                   const metaSwatch = metaobjectSwatchMap[valKey];
                                   const swatchImage =
                                     metaSwatch?.imageUrl ||
@@ -581,18 +730,26 @@ export default function Product() {
                                     '#cccccc';
 
                                   return (
-                                    <Link
+                                    <button
                                       key={val.name}
-                                      to={`?${val.variantUriQuery}`}
-                                      replace
-                                      preventScrollReset
-                                      title={val.name}
+                                      type="button"
+                                      onClick={() =>
+                                        handleSelectOption(option.name, val.name)
+                                      }
+                                      title={
+                                        status.combinationExists
+                                          ? status.available
+                                            ? val.name
+                                            : `${val.name} (Sold Out)`
+                                          : `${val.name} (Select a valid size/option)`
+                                      }
                                       aria-label={`${option.name}: ${val.name}`}
-                                      className={`w-8 h-8 rounded-full border-2 focus:outline-none transition-all ${
-                                        val.selected
+                                      aria-pressed={isSelected}
+                                      className={`w-8 h-8 rounded-full border-2 focus:outline-none transition-all cursor-pointer ${
+                                        isSelected
                                           ? 'border-gray-900 scale-105 shadow-sm'
                                           : 'border-transparent hover:border-gray-300'
-                                      } ${!val.available ? 'opacity-50' : ''}`}
+                                      } ${!status.available ? 'opacity-60' : ''}`}
                                       style={{ padding: '2px' }}
                                     >
                                       <div
@@ -606,45 +763,71 @@ export default function Product() {
                                             : { backgroundColor: swatchColor }
                                         }
                                       />
-                                    </Link>
+                                    </button>
                                   );
                                 })}
                             </div>
-                            {selectedOptionValue?.name && (
-                              <span className="font-sans text-xs text-gray-500 font-medium">
-                                {selectedOptionValue.name}
+                            {activeValueName && (
+                              <span className="font-sans text-xs text-gray-600 font-medium">
+                                {activeValueName}
                               </span>
                             )}
                           </div>
                         ) : (
                           <select
-                            value={selectedOptionValue?.name || ''}
+                            value={activeValueName}
                             onChange={(e) => {
-                              const selectedVal = option.optionValues.find(
-                                (v) => v.name === e.target.value,
-                              );
-                              if (selectedVal && selectedVal.variantUriQuery !== undefined) {
-                                navigate(`?${selectedVal.variantUriQuery}`, {
-                                  replace: true,
-                                  preventScrollReset: true,
-                                });
-                              }
+                              handleSelectOption(option.name, e.target.value);
                             }}
                             className="flex-1 max-w-[280px] p-2.5 text-sm border border-gray-200 bg-gray-50/50 focus:border-gray-900 focus:ring-0 outline-none"
                           >
                             {option.optionValues
-                              .filter((val) => val.exists)
-                              .map((val) => (
-                                <option key={val.name} value={val.name}>
-                                  {val.name} {val.available ? '' : '(Sold Out)'}
-                                </option>
-                              ))}
+                              .filter((val) => getOptionValueStatus(val.name).existsInProduct)
+                              .map((val) => {
+                                const status = getOptionValueStatus(val.name);
+                                return (
+                                  <option key={val.name} value={val.name}>
+                                    {val.name}{' '}
+                                    {!status.combinationExists
+                                      ? '(Unavailable in selected finish)'
+                                      : !status.available
+                                        ? '(Sold Out)'
+                                        : ''}
+                                  </option>
+                                );
+                              })}
                           </select>
                         )}
                       </div>
                     );
                   });
               })()}
+
+              {/* Invalid Combination or Unavailable Variant Prompt */}
+              {isInvalidCombination && (
+                <div
+                  role="alert"
+                  className="bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 text-xs font-sans rounded-sm"
+                >
+                  The selected combination (
+                  <strong>
+                    {Object.values(selectedOptionsMap).filter(Boolean).join(' / ')}
+                  </strong>
+                  ) is not available. Please select a valid option combination above.
+                </div>
+              )}
+              {!isInvalidCombination && selectedVariant && !isVariantAvailable && (
+                <div
+                  role="status"
+                  className="bg-gray-100 border border-gray-200 text-gray-700 px-4 py-3 text-xs font-sans rounded-sm"
+                >
+                  <strong>
+                    {Object.values(selectedOptionsMap).filter(Boolean).join(' / ') ||
+                      selectedVariant.title}
+                  </strong>{' '}
+                  is currently out of stock and unavailable for purchase.
+                </div>
+              )}
 
               {/* Add to Cart Line */}
               <div className="flex flex-col gap-2 mt-6 pt-6 border-t border-gray-50">
@@ -655,12 +838,12 @@ export default function Product() {
                     onChange={(val) => setQuantity(val)}
                     min={1}
                     max={maxQuantity}
-                    disabled={!selectedVariant || !selectedVariant.availableForSale || maxQuantity === 0}
+                    disabled={isInvalidCombination || !isVariantAvailable}
                   />
 
                   <div className="flex-1 max-w-[240px]">
                     <AddToCartButton
-                      disabled={!selectedVariant || !selectedVariant.availableForSale || maxQuantity === 0}
+                      disabled={isInvalidCombination || !isVariantAvailable}
                       onClick={() => {
                         try {
                           open('cart');
@@ -668,7 +851,7 @@ export default function Product() {
                         window.location.hash = 'cart-added';
                       }}
                       lines={
-                        selectedVariant
+                        selectedVariant && isVariantAvailable
                           ? [
                               {
                                 merchandiseId: selectedVariant.id,
@@ -678,9 +861,13 @@ export default function Product() {
                             ]
                           : []
                       }
-                      className="w-full bg-primary text-white py-3.5 text-xs tracking-widest uppercase hover:bg-secondary transition-colors font-bold shadow-sm"
+                      className="w-full bg-primary text-white py-3.5 text-xs tracking-widest uppercase hover:bg-secondary transition-colors font-bold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {selectedVariant?.availableForSale && maxQuantity !== 0 ? 'ADD TO BASKET' : 'SOLD OUT'}
+                      {isInvalidCombination
+                        ? 'SELECT VALID OPTIONS'
+                        : isVariantAvailable
+                          ? 'ADD TO BASKET'
+                          : 'SOLD OUT'}
                     </AddToCartButton>
                   </div>
                 </div>
@@ -734,10 +921,24 @@ export default function Product() {
             {/* Trust/Delivery Badges */}
             <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-gray-100">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gray-50 rounded-full text-secondary">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                <div
+                  className={`p-2 bg-gray-50 rounded-full ${
+                    isVariantAvailable ? 'text-secondary' : 'text-red-500'
+                  }`}
+                >
+                  {isVariantAvailable ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  )}
                 </div>
-                <span className="text-xs font-sans text-gray-500 uppercase tracking-wider">In Stock</span>
+                <span className="text-xs font-sans text-gray-500 uppercase tracking-wider">
+                  {isInvalidCombination
+                    ? 'Select Valid Combination'
+                    : isVariantAvailable
+                      ? 'In Stock'
+                      : 'Out of Stock'}
+                </span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-gray-50 rounded-full text-secondary">
@@ -830,10 +1031,15 @@ export default function Product() {
             {
               id: product.id,
               title: product.title,
-              price: selectedVariant?.price.amount || '0',
+              price:
+                selectedVariant?.price?.amount ||
+                displayFallbackVariant?.price?.amount ||
+                '0',
               vendor: product.vendor,
-              variantId: selectedVariant?.id || '',
-              variantTitle: selectedVariant?.title || '',
+              variantId:
+                selectedVariant?.id || displayFallbackVariant?.id || '',
+              variantTitle:
+                selectedVariant?.title || displayFallbackVariant?.title || '',
               quantity: 1,
             },
           ],

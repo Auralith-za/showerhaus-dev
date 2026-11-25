@@ -228,52 +228,6 @@ export default function ShopAll() {
     <div className="shop-all-page bg-white min-h-screen">
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        {/* SEO Header */}
-        <div className="text-center mb-12">
-          <span className="block font-sans text-[10px] font-bold tracking-[0.3em] uppercase text-secondary mb-3">
-            Shower Haus Online Store · Nationwide South African Delivery
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl text-primary mb-4">
-            {isShowersView
-              ? 'Standard & Semi-Frameless Showers'
-              : 'Showers, Enclosures & Shower Spares'}
-          </h1>
-          <p className="font-sans text-gray-500 max-w-3xl mx-auto font-light leading-relaxed text-sm md:text-base">
-            {isShowersView
-              ? 'Ready-to-install 6mm SABS toughened safety glass shower enclosures, pivot doors, sliding doors, walk-in screens, and bath screens — in stock at our Springfield, Durban warehouse for nationwide delivery.'
-              : 'Shop our complete online range of ready-to-install semi-frameless shower enclosures, doors, walk-in screens, bath screens, and replacement shower spares.'}
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 mt-6">
-            <Link
-              to="/collections/showers"
-              className={`font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border transition-colors ${
-                isShowersView
-                  ? 'bg-primary text-white border-primary'
-                  : 'border-gray-200 text-primary hover:border-primary'
-              }`}
-            >
-              Standard Showers
-            </Link>
-            <Link
-              to="/collections/shower-spares"
-              className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
-            >
-              Shower Spares
-            </Link>
-            <Link
-              to="/pages/frameless-showers"
-              className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
-            >
-              Custom Frameless Showers
-            </Link>
-            <Link
-              to="/pages/custom-made-showers"
-              className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
-            >
-              Custom-Made Showers
-            </Link>
-          </div>
-        </div>
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-8">

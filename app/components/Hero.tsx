@@ -9,19 +9,19 @@ interface HeroSlide {
     image: string;
     url: string;
     buttonText: string;
-    isGraphicBanner?: boolean;
+    isBlackFridayBanner?: boolean;
 }
 
 const SLIDES: HeroSlide[] = [
     {
         id: 'black-friday-sale',
-        title: 'Shower glass, marked down. Now from R1 200',
-        subtitle: 'Black Friday / While stocks last — Pivot doors, shower screens and bath screens.',
-        label: 'BLACK FRIDAY SALE',
+        title: 'Shower glass, marked down.',
+        subtitle: 'PIVOT DOORS, SHOWER SCREENS AND BATH SCREENS. SUPPLY ONLY.',
+        label: 'BLACK FRIDAY   /   WHILE STOCKS LAST',
         image: '/images/black-friday-hero.jpg',
         url: '/collections/black-friday',
         buttonText: 'SHOP THE SALE',
-        isGraphicBanner: true,
+        isBlackFridayBanner: true,
     },
     {
         id: 'tahuna-terrace',
@@ -67,34 +67,86 @@ export function Hero() {
 
     return (
         <section
-            className={`relative flex flex-col items-center justify-center w-full overflow-hidden transition-colors duration-700 ${
-                activeSlide.isGraphicBanner
-                    ? 'bg-white h-[260px] sm:h-[420px] md:h-[600px] lg:h-[720px] border-b border-gray-100'
-                    : 'bg-black h-[600px] md:h-[800px]'
+            className={`relative flex flex-col items-center justify-center h-[600px] md:h-[800px] w-full overflow-hidden transition-colors duration-700 ${
+                activeSlide.isBlackFridayBanner
+                    ? 'bg-white border-b border-gray-100'
+                    : 'bg-black'
             }`}
         >
-            {/* Carousel Images */}
+            {/* Carousel Slides */}
             {SLIDES.map((slide, index) => {
                 const isActive = index === currentSlide;
 
-                if (slide.isGraphicBanner) {
+                if (slide.isBlackFridayBanner) {
                     return (
                         <Link
                             key={slide.id}
                             to={slide.url}
-                            aria-label={`${slide.label}: ${slide.title} — ${slide.buttonText}`}
-                            className={`absolute inset-0 z-10 flex items-center justify-center bg-white transition-opacity duration-1000 ease-in-out cursor-pointer ${
+                            aria-label="Black Friday Sale — Shower glass, marked down. Now from R1 200. Shop the sale"
+                            className={`absolute inset-0 z-10 flex items-center bg-white transition-opacity duration-1000 ease-in-out cursor-pointer hover:no-underline ${
                                 isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                             }`}
                             style={{ willChange: 'opacity' }}
                         >
-                            <img
-                                src={slide.image}
-                                alt={`${slide.label} — ${slide.title}`}
-                                loading={index === 0 ? 'eager' : 'lazy'}
-                                fetchPriority={index === 0 ? 'high' : 'auto'}
-                                className="w-full h-full object-contain object-center max-w-[1600px] mx-auto px-2 sm:px-6"
-                            />
+                            <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] w-full py-10 md:py-0">
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+                                    {/* Left Column: Razor-sharp native vector typography & logo */}
+                                    <div className="lg:col-span-5 flex flex-col items-start text-left">
+                                        <img
+                                            src="/logo.png"
+                                            alt="Shower Haus"
+                                            className="h-10 md:h-12 w-auto object-contain mb-6 md:mb-8"
+                                        />
+                                        <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.28em] uppercase text-[#0c4a85] mb-4 block">
+                                            BLACK FRIDAY &nbsp;/&nbsp; WHILE STOCKS LAST
+                                        </span>
+                                        <h1 className="font-sans text-4xl sm:text-5xl md:text-[3.5rem] xl:text-[4rem] font-extrabold text-[#0c4a85] tracking-tight leading-[1.05] mb-5">
+                                            Shower glass,
+                                            <br />
+                                            marked down.
+                                        </h1>
+                                        <p className="font-sans text-xl md:text-2xl font-extrabold tracking-wide uppercase text-[#0c4a85] mb-2">
+                                            NOW FROM R1 200
+                                        </p>
+                                        <p className="font-sans text-[9.5px] md:text-[10.5px] font-medium tracking-[0.22em] uppercase text-gray-500 mb-7 md:mb-9">
+                                            PIVOT DOORS, SHOWER SCREENS AND BATH SCREENS. SUPPLY ONLY.
+                                        </p>
+                                        <span className="inline-block bg-[#0c4a85] hover:bg-[#14294f] text-white font-sans text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase px-8 py-4 transition-colors shadow-sm">
+                                            SHOP THE SALE
+                                        </span>
+                                    </div>
+
+                                    {/* Right Column: High-Resolution 2000x2000px Shopify CDN Product Renders */}
+                                    <div className="lg:col-span-7 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 items-end justify-items-center">
+                                        <div className="w-full flex items-end justify-center">
+                                            <img
+                                                src="https://cdn.shopify.com/s/files/1/0961/8528/6960/files/sf-pivot-door_compressed.jpg?v=1795436374&width=1000"
+                                                alt="Semi-frameless Pivot Shower Door"
+                                                loading="eager"
+                                                fetchPriority="high"
+                                                className="w-full max-h-[220px] sm:max-h-[320px] md:max-h-[440px] lg:max-h-[500px] object-contain"
+                                            />
+                                        </div>
+                                        <div className="w-full flex items-end justify-center">
+                                            <img
+                                                src="https://cdn.shopify.com/s/files/1/0961/8528/6960/files/sf-pivot-door-and-return_square_compressed.jpg?v=1793867033&width=1000"
+                                                alt="Semi-frameless Pivot Shower Door with Return Panel"
+                                                loading="eager"
+                                                fetchPriority="high"
+                                                className="w-full max-h-[230px] sm:max-h-[340px] md:max-h-[460px] lg:max-h-[520px] object-contain"
+                                            />
+                                        </div>
+                                        <div className="w-full flex items-end justify-center">
+                                            <img
+                                                src="https://cdn.shopify.com/s/files/1/0961/8528/6960/files/sf-bathscreen-whitescreen_square_compressed.jpg?v=1794305502&width=900"
+                                                alt="Semi-frameless Single Bath Screen"
+                                                loading="eager"
+                                                className="w-full max-h-[160px] sm:max-h-[240px] md:max-h-[320px] lg:max-h-[360px] object-contain"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </Link>
                     );
                 }
@@ -129,7 +181,7 @@ export function Hero() {
             })}
 
             {/* Content Container (Only for standard photographic slides) */}
-            {!activeSlide.isGraphicBanner && (
+            {!activeSlide.isBlackFridayBanner && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 animate-fade-in-up">
                     <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
                         <span className="uppercase tracking-[0.3em] mb-4 block text-xs font-semibold text-white/90 text-center">
@@ -157,13 +209,13 @@ export function Hero() {
             )}
 
             {/* Navigation Dots */}
-            <div className="absolute bottom-4 sm:bottom-8 md:bottom-12 left-0 right-0 z-20 flex justify-center gap-4">
+            <div className="absolute bottom-12 left-0 right-0 z-20 flex justify-center gap-4">
                 {SLIDES.map((_, index) => {
                     const isSelected = index === currentSlide;
-                    const dotColorClass = activeSlide.isGraphicBanner
+                    const dotColorClass = activeSlide.isBlackFridayBanner
                         ? isSelected
-                            ? 'w-12 bg-[#14294f]'
-                            : 'w-6 bg-[#14294f]/30 group-hover:bg-[#14294f]/60'
+                            ? 'w-12 bg-[#0c4a85]'
+                            : 'w-6 bg-[#0c4a85]/25 group-hover:bg-[#0c4a85]/50'
                         : isSelected
                           ? 'w-12 bg-white'
                           : 'w-6 bg-white/40 group-hover:bg-white/60';

@@ -410,61 +410,7 @@ export default function Collection() {
 
   return (
     <div className="collection-page bg-white min-h-screen">
-      {/* Visible SEO Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="border-b border-gray-100 bg-gray-50/60">
-        <div className="container mx-auto px-6 py-3 flex items-center gap-2 font-sans text-[11px] tracking-wider uppercase text-gray-500">
-          <Link to="/" className="hover:text-primary transition-colors">
-            Home
-          </Link>
-          <span>/</span>
-          <Link to="/collections/all" className="hover:text-primary transition-colors">
-            Shop
-          </Link>
-          <span>/</span>
-          <span className="text-primary font-semibold">{collection.title}</span>
-        </div>
-      </nav>
-
       <div className="container mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="block font-sans text-[10px] font-bold tracking-[0.3em] uppercase text-secondary mb-3">
-            {isShowersCollection
-              ? '6mm SABS Toughened Safety Glass · Nationwide SA Delivery'
-              : 'Genuine Architectural Hardware & Spares'}
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl text-primary mb-4">
-            {collection.title}
-          </h1>
-          {collection.description && (
-            <p className="font-sans text-gray-500 max-w-3xl mx-auto font-light leading-relaxed text-sm md:text-base">
-              {collection.description}
-            </p>
-          )}
-          {isShowersCollection && (
-            <div className="flex flex-wrap justify-center gap-3 mt-6">
-              <Link
-                to="/pages/frameless-showers"
-                className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
-              >
-                Custom Frameless Showers →
-              </Link>
-              <Link
-                to="/pages/custom-made-showers"
-                className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
-              >
-                Custom-Made Showers →
-              </Link>
-              <Link
-                to="/pages/design-your-shower"
-                className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 bg-primary text-white hover:bg-secondary transition-colors"
-              >
-                Design Your Custom Shower →
-              </Link>
-            </div>
-          )}
-        </div>
-
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap items-center gap-4">
