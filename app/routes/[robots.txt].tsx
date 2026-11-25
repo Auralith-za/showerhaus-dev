@@ -1,32 +1,42 @@
 import type {Route} from './+types/[robots.txt]';
 import {parseGid} from '@shopify/hydrogen';
+import {SITE_URL} from '~/lib/seo';
 
-export async function loader({request, context}: Route.LoaderArgs) {
-  const url = new URL(request.url);
+export async function loader({context}: Route.LoaderArgs) {
+  let shopId: string | undefined;
+  try {
+    const {shop} = await context.storefront.query(ROBOTS_QUERY);
+    shopId = parseGid(shop.id).id;
+  } catch {
+    shopId = undefined;
+  }
 
-  const {shop} = await context.storefront.query(ROBOTS_QUERY);
-
-  const shopId = parseGid(shop.id).id;
-  const body = robotsTxtData({url: url.origin, shopId});
+  const body = robotsTxtData({url: SITE_URL, shopId});
 
   return new Response(body, {
     status: 200,
     headers: {
-      'Content-Type': 'text/plain',
-
-      'Cache-Control': `max-age=${60 * 60 * 24}`,
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': `public, max-age=${60 * 60 * 24}`,
     },
   });
 }
 
 function robotsTxtData({url, shopId}: {shopId?: string; url?: string}) {
-  const sitemapUrl = url ? `${url}/sitemap.xml` : undefined;
+  const baseUrl = url || SITE_URL;
 
   return `
 User-agent: *
-${generalDisallowRules({sitemapUrl, shopId})}
+Allow: /
+Allow: /collections/showers
+Allow: /collections/semi-frameless-showers
+Allow: /collections/shower-spares
+Allow: /collections/all
+Allow: /products/
+Allow: /pages/
+${generalDisallowRules({baseUrl, shopId})}
 
-# Google adsbot ignores robots.txt unless specifically named!
+# Google AdsBot
 User-agent: adsbot-google
 Disallow: /checkouts/
 Disallow: /checkout
@@ -38,16 +48,41 @@ Disallow: /*?*oseid=*
 Disallow: /*preview_theme_id*
 Disallow: /*preview_script_id*
 
+# Allow Generative AI & Answer Engine Crawlers (GEO Optimization)
+User-agent: GPTBot
+Allow: /
+Disallow: /account
+Disallow: /cart
+Disallow: /checkout
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 User-agent: Nutch
 Disallow: /
 
 User-agent: AhrefsBot
 Crawl-delay: 10
-${generalDisallowRules({sitemapUrl, shopId})}
+${generalDisallowRules({baseUrl, shopId})}
 
 User-agent: AhrefsSiteAudit
 Crawl-delay: 10
-${generalDisallowRules({sitemapUrl, shopId})}
+${generalDisallowRules({baseUrl, shopId})}
 
 User-agent: MJ12bot
 Crawl-Delay: 10
@@ -57,16 +92,12 @@ Crawl-delay: 1
 `.trim();
 }
 
-/**
- * This function generates disallow rules that generally follow what Shopify's
- * Online Store has as defaults for their robots.txt
- */
 function generalDisallowRules({
   shopId,
-  sitemapUrl,
+  baseUrl,
 }: {
   shopId?: string;
-  sitemapUrl?: string;
+  baseUrl: string;
 }) {
   return `Disallow: /admin
 Disallow: /cart
@@ -104,7 +135,9 @@ Allow: /search/
 Disallow: /search/?*
 Disallow: /apple-app-site-association
 Disallow: /.well-known/shopify/monorail
-${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}`;
+Sitemap: ${baseUrl}/sitemap.xml
+Sitemap: ${baseUrl}/product-sitemap.xml
+Sitemap: ${baseUrl}/page-sitemap.xml`;
 }
 
 const ROBOTS_QUERY = `#graphql

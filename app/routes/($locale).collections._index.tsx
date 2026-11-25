@@ -3,6 +3,28 @@ import type {Route} from './+types/collections._index';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {buildSeoMeta, buildBreadcrumbJsonLd} from '~/lib/seo';
+
+export const meta: Route.MetaFunction = () => {
+  return buildSeoMeta({
+    title: 'Shower Collections | Standard Showers, Semi-Frameless & Spares | Shower Haus SA',
+    description:
+      'Explore all Shower Haus collections: ready-to-install standard and semi-frameless shower enclosures, pivot doors, sliding doors, walk-in screens, bath screens, and genuine shower spares.',
+    path: '/collections',
+    keywords: [
+      'shower collections south africa',
+      'standard showers collection',
+      'semi-frameless showers',
+      'shower spares collection',
+    ],
+    jsonLd: [
+      buildBreadcrumbJsonLd([
+        {name: 'Home', path: '/'},
+        {name: 'Collections', path: '/collections'},
+      ]),
+    ],
+  });
+};
 
 export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte

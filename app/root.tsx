@@ -19,8 +19,9 @@ import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
 import { PageLayout } from './components/PageLayout';
 import { CookieConsent } from '~/components/CookieConsent';
+import { getGlobalJsonLd } from '~/lib/seo';
 
-const CUSTOMER_NAME_QUERY = `#graphql
+const CUSTOMER_NAME_QUERY = `
   query CustomerName {
     customer {
       firstName
@@ -203,15 +204,27 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 
 export function Layout({ children }: { children?: React.ReactNode }) {
   const nonce = useNonce();
+  const globalJsonLd = getGlobalJsonLd();
 
   return (
-    <html lang="en">
+    <html lang="en-ZA">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#14294f" />
+        <meta name="format-detection" content="telephone=yes" />
         <link rel="stylesheet" href={tailwindCss}></link>
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+
+        {/* Global Organization, LocalBusiness (GEO) & WebSite Schema */}
+        <script
+          nonce={nonce}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(globalJsonLd),
+          }}
+        />
         
         {/* Google Analytics & Ads Tracking - nonce required for Hydrogen CSP compliance */}
         <script async nonce={nonce} src="https://www.googletagmanager.com/gtag/js?id=AW-17650233161"></script>

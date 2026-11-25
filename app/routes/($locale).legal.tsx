@@ -1,8 +1,20 @@
 import { Outlet, NavLink, Link, useLocation } from 'react-router';
 import type { Route } from './+types/legal';
+import { buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: 'Legal | Shower Haus' }];
+  return buildSeoMeta({
+    title: 'Legal, Shipping, Returns & Privacy Policies | Shower Haus South Africa',
+    description:
+      'Review Shower Haus terms and conditions, nationwide South African shipping and delivery details, refund and returns policy, privacy policy, and cookie policy.',
+    path: '/legal',
+    jsonLd: [
+      buildBreadcrumbJsonLd([
+        { name: 'Home', path: '/' },
+        { name: 'Legal & Policies', path: '/legal' },
+      ]),
+    ],
+  });
 };
 
 const POLICIES = [

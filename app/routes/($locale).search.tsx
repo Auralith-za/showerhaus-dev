@@ -12,10 +12,122 @@ import type {
   RegularSearchQuery,
   PredictiveSearchQuery,
 } from 'storefrontapi.generated';
+import {buildSeoMeta} from '~/lib/seo';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Search`}];
+export const meta: Route.MetaFunction = ({data}: any) => {
+  const term = data?.term ? `"${data.term}"` : 'Showers, Enclosures & Spares';
+  return buildSeoMeta({
+    title: `Search ${term} | Shower Haus South Africa`,
+    description:
+      'Search Shower Haus for standard semi-frameless shower enclosures, custom frameless shower doors, walk-in screens, bath screens, and genuine shower spares across South Africa.',
+    path: '/search',
+    noindex: true,
+  });
 };
+
+const SITE_SEARCHABLE_PAGES = [
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-standard-showers',
+    title: 'Standard & Semi-Frameless Showers Collection',
+    handle: '/collections/showers',
+    keywords: 'showers standard semi-frameless shower doors enclosures bath screens walk-in corner pivot sliding',
+    trackingParameters: null,
+  },
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-frameless-showers',
+    title: 'Frameless Showers — Custom Measured & Installed (Durban & KZN)',
+    handle: 'frameless-showers',
+    keywords: 'frameless showers custom glass shower doors enclosures walk-in durban kzn',
+    trackingParameters: null,
+  },
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-custom-made-showers',
+    title: 'Custom-Made Showers — Bespoke Enclosures & Doors',
+    handle: 'custom-made-showers',
+    keywords: 'custom made showers bespoke shower enclosures doors frameless semi-frameless framed installation durban',
+    trackingParameters: null,
+  },
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-design-your-shower',
+    title: 'Design Your Shower — Online Quote Configurator',
+    handle: 'design-your-shower',
+    keywords: 'design your shower quote calculator estimator custom dimensions price',
+    trackingParameters: null,
+  },
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-shower-spares',
+    title: 'Shower Spares — Seals, Wheels, Rollers, Hinges & Handles',
+    handle: '/collections/shower-spares',
+    keywords: 'shower spares replacement parts seals magnetic drip wheels rollers pivot blocks hinges clamps knobs',
+    trackingParameters: null,
+  },
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-about-us',
+    title: 'About Shower Haus Durban',
+    handle: 'about-us',
+    keywords: 'about us shower haus showroom springfield durban history',
+    trackingParameters: null,
+  },
+  {
+    __typename: 'Page' as const,
+    id: 'site-page-contact',
+    title: 'Contact Shower Haus — Book a Measure or Visit Showroom',
+    handle: '/contact',
+    keywords: 'contact us phone email showroom address durban book home measure',
+    trackingParameters: null,
+  },
+];
+
+function isShowerProduct(product: any): boolean {
+  if (!product) return false;
+  const pType = (product.productType || '').toLowerCase();
+  const handle = (product.handle || '').toLowerCase();
+  return pType === 'showers' || handle.startsWith('semi-frameless-');
+}
+
+function isSpareSpecificQuery(term: string): boolean {
+  const q = term.toLowerCase();
+  return (
+    q.includes('seal') ||
+    q.includes('wheel') ||
+    q.includes('roller') ||
+    q.includes('knob') ||
+    q.includes('block') ||
+    q.includes('spigot') ||
+    q.includes('stopper') ||
+    q.includes('guide') ||
+    q.includes('spare')
+  );
+}
+
+function prioritizeShowerProducts<T extends any[]>(products: T, term: string): T {
+  if (!Array.isArray(products) || products.length <= 1) return products;
+  if (isSpareSpecificQuery(term)) return products;
+
+  return [...products].sort((a, b) => {
+    const aShower = isShowerProduct(a);
+    const bShower = isShowerProduct(b);
+    if (aShower && !bShower) return -1;
+    if (!aShower && bShower) return 1;
+    return 0;
+  }) as T;
+}
+
+function matchSitePages(term: string) {
+  const q = term.trim().toLowerCase();
+  if (!q) return [];
+  const words = q.split(/\s+/).filter(Boolean);
+  return SITE_SEARCHABLE_PAGES.filter((page) => {
+    const hay = `${page.title} ${page.keywords}`.toLowerCase();
+    return words.some((w) => hay.includes(w));
+  });
+}
 
 export async function loader({request, context}: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -128,6 +240,7 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     handle
     id
     publishedAt
+    productType
     title
     tags
     trackingParameters
@@ -181,6 +294,9 @@ const SEARCH_ARTICLE_FRAGMENT = `#graphql
     id
     title
     trackingParameters
+    blog {
+      handle
+    }
   }
 ` as const;
 
@@ -264,7 +380,7 @@ async function regularSearch({
 >): Promise<RegularSearchReturn> {
   const {storefront} = context;
   const url = new URL(request.url);
-  const variables = getPaginationVariables(request, {pageBy: 8});
+  const variables = getPaginationVariables(request, {pageBy: 24});
   const term = String(url.searchParams.get('q') || '');
 
   // Search articles, pages, and products for the `q` term
@@ -284,6 +400,25 @@ async function regularSearch({
 
   if (!items) {
     throw new Error('No search data returned from Shopify API');
+  }
+
+  if (items.products?.nodes) {
+    items.products.nodes = prioritizeShowerProducts(items.products.nodes, term);
+  }
+
+  const matchedPages = matchSitePages(term);
+  if (matchedPages.length > 0) {
+    const existingHandles = new Set(
+      (items.pages?.nodes || []).map((p: any) => p.handle),
+    );
+    const mergedPages = [
+      ...matchedPages.filter((p) => !existingHandles.has(p.handle)),
+      ...(items.pages?.nodes || []).filter((p: any) => p.handle !== 'contact'),
+    ];
+    items.pages = {
+      ...items.pages,
+      nodes: mergedPages as any,
+    };
   }
 
   const total = Object.values(items).reduce(
@@ -353,6 +488,7 @@ const PREDICTIVE_SEARCH_PRODUCT_FRAGMENT = `#graphql
     id
     title
     handle
+    productType
     trackingParameters
     selectedOrFirstAvailableVariant(
       selectedOptions: []
@@ -469,6 +605,19 @@ async function predictiveSearch({
 
   if (!items) {
     throw new Error('No predictive search data returned from Shopify API');
+  }
+
+  if (items.products) {
+    items.products = prioritizeShowerProducts(items.products, term);
+  }
+
+  const matchedPages = matchSitePages(term);
+  if (matchedPages.length > 0) {
+    const existingHandles = new Set((items.pages || []).map((p: any) => p.handle));
+    items.pages = [
+      ...matchedPages.filter((p) => !existingHandles.has(p.handle)),
+      ...(items.pages || []).filter((p: any) => p.handle !== 'contact'),
+    ] as any;
   }
 
   const total = Object.values(items).reduce(

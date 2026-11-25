@@ -4,11 +4,42 @@ import { getPaginationVariables } from '@shopify/hydrogen';
 import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
 import type { BlogsQuery } from 'storefrontapi.generated';
 import { DRAFT_ARTICLES } from '~/lib/draftArticles';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 type BlogNode = BlogsQuery['blogs']['nodes'][0];
 
 export const meta: Route.MetaFunction = () => {
-    return [{ title: `Guides | Shower Haus` }];
+    const blogLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: 'Shower Haus Guides — Learning About Showers & Architectural Glass',
+        url: `${SITE_URL}/blogs`,
+        publisher: {
+            '@id': `${SITE_URL}/#organization`,
+        },
+    };
+
+    return buildSeoMeta({
+        title: 'Shower Guides, Architectural Glass & Bathroom Advice | Shower Haus South Africa',
+        description:
+            'Expert guides from the Shower Haus technical team on frameless vs semi-frameless showers, glass stabilisers, shower hardware, replacement seals, and bathroom design in South Africa.',
+        path: '/blogs',
+        image: '/images/hero-3.png',
+        keywords: [
+            'shower guides south africa',
+            'frameless shower hardware guide',
+            'shower glass stabilisers',
+            'what your shower is called',
+            'Shower Haus blog',
+        ],
+        jsonLd: [
+            buildBreadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Shower Guides & Blog', path: '/blogs' },
+            ]),
+            blogLd,
+        ],
+    });
 };
 
 export async function loader(args: Route.LoaderArgs) {

@@ -6,15 +6,39 @@ import type { Route } from './+types/contact';
 import ContactEmail from '~/components/ContactEmail';
 import { createTimestampToken, verifyFormSubmission } from '~/lib/antiSpam';
 import { syncLeadToKinabase } from '~/lib/kinabase.server';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 export const meta: Route.MetaFunction = () => {
-    return [
-        { title: 'Contact Us | Shower Haus' },
-        {
-            name: 'description',
-            content: 'Get in touch with Shower Haus Durban. Contact us for professional home measurements, advice, pricing, and installation of premium custom shower enclosures.',
+    const contactLd = {
+        '@context': 'https://schema.org',
+        '@type': 'ContactPage',
+        name: 'Contact Shower Haus Durban — Showroom, Quotes & Home Measurements',
+        url: `${SITE_URL}/contact`,
+        mainEntity: {
+            '@id': `${SITE_URL}/#organization`,
         },
-    ];
+    };
+
+    return buildSeoMeta({
+        title: 'Contact Shower Haus Durban | Showroom, Free Measure & Shower Enquiries',
+        description:
+            'Contact Shower Haus at 90A Intersite Avenue, Umgeni Business Park, Springfield, Durban (031 312 9095 / hello@showerhaus.co.za). Book an on-site home measurement in KZN or enquire about nationwide shower orders.',
+        path: '/contact',
+        image: '/images/contact-us.jpg',
+        keywords: [
+            'contact Shower Haus durban',
+            'Shower Haus phone number 031 312 9095',
+            'shower showroom springfield durban',
+            'book shower measurement durban kzn',
+        ],
+        jsonLd: [
+            buildBreadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Contact Us', path: '/contact' },
+            ]),
+            contactLd,
+        ],
+    });
 };
 
 export async function loader({ context }: Route.LoaderArgs) {

@@ -3,9 +3,77 @@ import type {Route} from './+types/blogs.$blogHandle.$articleHandle';
 import {Image} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import { DRAFT_ARTICLES } from '~/lib/draftArticles';
+import {
+  SITE_URL,
+  SITE_NAME,
+  buildSeoMeta,
+  buildBreadcrumbJsonLd,
+  stripHtml,
+  truncateText,
+} from '~/lib/seo';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.article.title ?? ''} article`}];
+export const meta: Route.MetaFunction = ({data, params}: any) => {
+  const article = data?.article;
+  const blogHandle = params?.blogHandle || article?.blog?.handle || 'guides';
+  const articleHandle = params?.articleHandle || article?.handle || '';
+  const canonicalUrl = `${SITE_URL}/blogs/${blogHandle}/${articleHandle}`;
+
+  const title = article?.seo?.title
+    ? `${article.seo.title} | ${SITE_NAME}`
+    : `${article?.title || 'Shower Guide'} | ${SITE_NAME} South Africa`;
+
+  const description =
+    article?.seo?.description ||
+    (article?.excerptHtml
+      ? truncateText(article.excerptHtml, 160)
+      : article?.contentHtml
+        ? truncateText(article.contentHtml, 160)
+        : `Expert shower enclosure and hardware guide from Shower Haus Durban & South Africa.`);
+
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    {name: 'Home', path: '/'},
+    {name: 'Shower Guides', path: '/blogs'},
+    {name: article?.title || 'Article', path: `/blogs/${blogHandle}/${articleHandle}`},
+  ]);
+
+  const articleLd = article
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: article.title,
+        description: stripHtml(description),
+        image: article.image?.url
+          ? [
+              article.image.url.startsWith('http')
+                ? article.image.url
+                : `${SITE_URL}${article.image.url}`,
+            ]
+          : [`${SITE_URL}/images/hero-3.png`],
+        datePublished: article.publishedAt || '2026-06-01T10:00:00Z',
+        dateModified: article.publishedAt || '2026-06-01T10:00:00Z',
+        author: {
+          '@type': 'Organization',
+          name: article.author?.name || SITE_NAME,
+          url: SITE_URL,
+        },
+        publisher: {
+          '@id': `${SITE_URL}/#organization`,
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': canonicalUrl,
+        },
+      }
+    : null;
+
+  return buildSeoMeta({
+    title,
+    description,
+    canonicalUrl,
+    image: article?.image?.url,
+    type: 'article',
+    jsonLd: [breadcrumbLd, ...(articleLd ? [articleLd] : [])],
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {

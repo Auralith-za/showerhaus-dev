@@ -1,15 +1,83 @@
 import { Link } from 'react-router';
 import { ReviewCarousel } from '~/components/ReviewCarousel';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 export function meta() {
-  return [
-    { title: 'Custom-Made Shower Enclosures & Doors | Shower Haus' },
-    {
-      name: 'description',
-      content:
-        "Individually measured, custom-made, and professionally installed shower enclosures in Durban & KwaZulu-Natal. Frameless, semi-frameless, and framed designs.",
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Custom-Made Showers', path: '/pages/custom-made-showers' },
+  ]);
+
+  const serviceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Custom-Made Shower Enclosures & Doors — Design, Measure & Installation',
+    serviceType: 'Custom Shower Enclosure Manufacturing & Installation',
+    provider: {
+      '@id': `${SITE_URL}/#organization`,
     },
-  ];
+    areaServed: [
+      { '@type': 'City', name: 'Durban' },
+      { '@type': 'City', name: 'Umhlanga' },
+      { '@type': 'City', name: 'Ballito' },
+      { '@type': 'City', name: 'Hillcrest' },
+      { '@type': 'City', name: 'Kloof' },
+      { '@type': 'City', name: 'Westville' },
+      { '@type': 'AdministrativeArea', name: 'KwaZulu-Natal' },
+    ],
+    description:
+      'Individually measured, custom-made frameless, semi-frameless, and framed shower enclosures and doors professionally installed across Durban and KwaZulu-Natal.',
+    url: `${SITE_URL}/pages/custom-made-showers`,
+  };
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How much does a custom-made shower enclosure cost in Durban & KZN?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Every custom shower is priced to your exact dimensions, glass type (frameless, semi-frameless, or framed), and hardware finish. Use our online Design Your Shower tool or book an on-site measurement in Durban & KZN for an obligation-free quote.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the lead time from measurement to installation?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Once your on-site measurement is confirmed and quoted, custom toughened safety glass manufacturing and professional installation typically takes 7 to 14 working days.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you also sell ready-to-install standard showers?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. In addition to bespoke custom-made enclosures, Shower Haus stocks a full range of standard semi-frameless shower doors, corner enclosures, walk-in screens, and bath screens available online for immediate pickup in Durban or nationwide delivery across South Africa.',
+        },
+      },
+    ],
+  };
+
+  return buildSeoMeta({
+    title:
+      'Custom-Made Shower Enclosures & Doors Durban & KZN | Measured & Installed | Shower Haus',
+    description:
+      'Individually measured, custom-made, and professionally installed shower enclosures and doors in Durban, Umhlanga, Ballito, Hillcrest & KwaZulu-Natal. Frameless, semi-frameless, walk-in, and framed designs with SABS safety glass.',
+    path: '/pages/custom-made-showers',
+    image: '/images/hero-1.png',
+    keywords: [
+      'custom made showers durban',
+      'custom shower enclosures kzn',
+      'bespoke shower doors durban',
+      'custom frameless showers umhlanga ballito',
+      'shower installation durban',
+      'Shower Haus custom showers',
+    ],
+    jsonLd: [breadcrumbLd, serviceLd, faqLd],
+  });
 }
 
 export default function CustomMadeShowersLanding() {

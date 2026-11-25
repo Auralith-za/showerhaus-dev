@@ -1,23 +1,50 @@
-import type {Route} from './+types/sitemap.$type.$page[.xml]';
-import {getSitemap} from '@shopify/hydrogen';
+import type {Route} from './+types/($locale).sitemap.$type.$page[.xml]';
+import {
+  STATIC_SITE_PAGES,
+  getArticlesSitemapEntries,
+  getCollectionsSitemapEntries,
+  getProductsSitemapEntries,
+  renderUrlSetXml,
+  xmlResponse,
+} from '~/lib/sitemap.server';
+import {SITE_URL} from '~/lib/seo';
 
 export async function loader({
-  request,
   params,
   context: {storefront},
 }: Route.LoaderArgs) {
-  const response = await getSitemap({
-    storefront,
-    request,
-    params,
-    locales: ['EN-US', 'EN-CA', 'FR-CA'],
-    getLink: ({type, baseUrl, handle, locale}) => {
-      if (!locale) return `${baseUrl}/${type}/${handle}`;
-      return `${baseUrl}/${locale}/${type}/${handle}`;
-    },
-  });
+  const type = (params.type || '').toLowerCase();
 
-  response.headers.set('Cache-Control', `max-age=${60 * 60 * 24}`);
+  if (type === 'products') {
+    const entries = await getProductsSitemapEntries(storefront);
+    return xmlResponse(renderUrlSetXml(entries));
+  }
 
-  return response;
+  if (type === 'collections') {
+    const entries = await getCollectionsSitemapEntries(storefront);
+    return xmlResponse(renderUrlSetXml(entries));
+  }
+
+  if (type === 'pages') {
+    return xmlResponse(renderUrlSetXml(STATIC_SITE_PAGES));
+  }
+
+  if (type === 'articles') {
+    const entries = await getArticlesSitemapEntries(storefront);
+    return xmlResponse(renderUrlSetXml(entries));
+  }
+
+  if (type === 'blogs') {
+    return xmlResponse(
+      renderUrlSetXml([
+        {
+          loc: `${SITE_URL}/blogs`,
+          changefreq: 'weekly',
+          priority: '0.80',
+        },
+      ]),
+    );
+  }
+
+  throw new Response('Sitemap type not found', {status: 404});
 }

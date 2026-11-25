@@ -1,16 +1,76 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { ReviewCarousel } from '~/components/ReviewCarousel';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 export function meta() {
-  return [
-    { title: 'Frameless Shower Enclosures & Doors | Shower Haus' },
-    {
-      name: 'description',
-      content:
-        "Individually measured, high-quality frameless shower enclosures in Durban & KwaZulu-Natal. Clean lines, more light, and premium safety glass.",
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Frameless Showers', path: '/pages/frameless-showers' },
+  ]);
+
+  const serviceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Frameless Shower Enclosures, Doors & Walk-In Screens — Durban & KZN',
+    serviceType: 'Frameless Glass Shower Design & Installation',
+    provider: {
+      '@id': `${SITE_URL}/#organization`,
     },
-  ];
+    areaServed: [
+      { '@type': 'City', name: 'Durban' },
+      { '@type': 'City', name: 'Umhlanga' },
+      { '@type': 'City', name: 'Ballito' },
+      { '@type': 'City', name: 'Hillcrest' },
+      { '@type': 'City', name: 'Kloof' },
+      { '@type': 'City', name: 'Westville' },
+      { '@type': 'AdministrativeArea', name: 'KwaZulu-Natal' },
+    ],
+    description:
+      '8mm and 10mm SABS-certified toughened safety glass frameless shower doors, corner enclosures, walk-in shower screens, and bath screens individually measured and installed across Durban and KwaZulu-Natal.',
+    url: `${SITE_URL}/pages/frameless-showers`,
+  };
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What glass thickness do you use for frameless showers?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We use 8mm and 10mm SABS-certified toughened safety glass with polished flat edges, matched with heavy-duty architectural brass or stainless steel hinges, clamps, and stabilisers.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Where does Shower Haus install frameless showers?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Our specialist in-house teams measure and install custom frameless showers across Durban, Umhlanga, La Lucia, Ballito, Salt Rock, Zimbali, Hillcrest, Kloof, Gillitts, Westville, Berea, Morningside, Durban North, and greater KwaZulu-Natal.',
+        },
+      },
+    ],
+  };
+
+  return buildSeoMeta({
+    title:
+      'Frameless Shower Enclosures, Doors & Walk-In Screens Durban & KZN | Shower Haus',
+    description:
+      'Specialist frameless shower enclosures, doors, walk-in screens, and bath screens in 8mm & 10mm SABS toughened safety glass. Individually measured and installed across Durban, Umhlanga, Ballito, Hillcrest & KwaZulu-Natal.',
+    path: '/pages/frameless-showers',
+    image: '/images/hero-2.png',
+    keywords: [
+      'frameless showers durban',
+      'frameless shower doors kzn',
+      'frameless glass shower enclosures umhlanga ballito',
+      'walk in frameless shower screen durban',
+      '8mm 10mm toughened glass shower south africa',
+      'Shower Haus frameless showers',
+    ],
+    jsonLd: [breadcrumbLd, serviceLd, faqLd],
+  });
 }
 
 interface GalleryItem {

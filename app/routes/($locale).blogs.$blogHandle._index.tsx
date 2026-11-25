@@ -4,9 +4,27 @@ import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {buildSeoMeta, buildBreadcrumbJsonLd} from '~/lib/seo';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.blog.title ?? ''} blog`}];
+export const meta: Route.MetaFunction = ({data, params}: any) => {
+  const handle = params?.blogHandle || data?.blog?.handle || 'guides';
+  const blogTitle = data?.blog?.seo?.title || data?.blog?.title || 'Shower Guides';
+  const description =
+    data?.blog?.seo?.description ||
+    `Read ${blogTitle} from Shower Haus — practical advice on shower doors, frameless glass hardware, seals, and bathroom design in South Africa.`;
+
+  return buildSeoMeta({
+    title: `${blogTitle} | Shower Haus South Africa`,
+    description,
+    path: `/blogs/${handle}`,
+    jsonLd: [
+      buildBreadcrumbJsonLd([
+        {name: 'Home', path: '/'},
+        {name: 'Guides', path: '/blogs'},
+        {name: blogTitle, path: `/blogs/${handle}`},
+      ]),
+    ],
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {

@@ -1,3 +1,25 @@
+import { buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
+
+export function meta() {
+    return buildSeoMeta({
+        title: 'Our Story | Established 2004 in Durban | Shower Haus South Africa',
+        description:
+            'Discover the heritage of Shower Haus — over two decades of precision engineering, custom frameless shower installations, and bathroom innovation across Durban, KwaZulu-Natal, and South Africa.',
+        path: '/pages/our-story',
+        keywords: [
+            'Shower Haus story',
+            'shower glass specialists durban since 2004',
+            'custom shower company south africa',
+        ],
+        jsonLd: [
+            buildBreadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Our Story', path: '/pages/our-story' },
+            ]),
+        ],
+    });
+}
+
 export async function loader() {
     return {};
 }

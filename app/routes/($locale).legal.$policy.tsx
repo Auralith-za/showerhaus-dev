@@ -1,6 +1,7 @@
 import { useLoaderData } from 'react-router';
 import { marked } from 'marked';
 import type { Route } from './+types/legal.$policy';
+import { buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 // Load all markdown files from the Legal pages directory at build time
 const policyFiles = import.meta.glob('../../Legal pages/*.md', { query: '?raw', import: 'default', eager: true });
@@ -23,8 +24,21 @@ const POLICY_TITLE_MAP: Record<string, string> = {
   'shipping-and-delivery': 'Shipping and Delivery',
 };
 
-export const meta: Route.MetaFunction = ({ data }) => {
-  return [{ title: `${data?.title || 'Legal'} | Shower Haus` }];
+export const meta: Route.MetaFunction = ({ data, params }: any) => {
+  const policyHandle = params?.policy || '';
+  const title = data?.title || 'Legal Policy';
+  return buildSeoMeta({
+    title: `${title} | Shower Haus South Africa`,
+    description: `Read the official ${title} for Shower Haus (www.showerhaus.co.za) covering online orders, nationwide delivery across South Africa, and custom shower installations in KZN.`,
+    path: `/legal/${policyHandle}`,
+    jsonLd: [
+      buildBreadcrumbJsonLd([
+        { name: 'Home', path: '/' },
+        { name: 'Legal & Policies', path: '/legal' },
+        { name: title, path: `/legal/${policyHandle}` },
+      ]),
+    ],
+  });
 };
 
 export async function loader({ params }: Route.LoaderArgs) {

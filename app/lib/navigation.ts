@@ -19,6 +19,24 @@ export interface MegaMenuItem {
 
 export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
     {
+        title: 'Black Friday',
+        handle: 'black-friday',
+        featuredImage: '/images/black-friday-hero.jpg',
+        featuredTitle: 'BLACK FRIDAY SALE',
+        categories: [
+            {
+                title: 'Black Friday Specials',
+                handle: 'black-friday',
+                items: [
+                    { title: 'Semi-Frameless Pivot Door', handle: 'semi-frameless-pivot-door' },
+                    { title: 'Semi-Frameless Shower Screen', handle: 'semi-frameless-shower-screen' },
+                    { title: 'Semi-Frameless Single Bath Screen', handle: 'semi-frameless-single-bath-screen' },
+                    { title: 'Pivot Door with Return Panel', handle: 'semi-frameless-pivot-shower-door-with-return-panel' },
+                ],
+            },
+        ],
+    },
+    {
         title: 'Showers',
         handle: 'showers',
         featuredImage: 'https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/Modern_Bathroom_Ideas_We_Know_Will_Inspire_You_To_Create_LARGE.jpg.webp',
@@ -78,10 +96,11 @@ export const MEGA_MENU_ITEMS: MegaMenuItem[] = [
 ];
 
 export const PRIMARY_MENU_ITEMS = [
+    { title: 'Black Friday', handle: 'black-friday', to: '/collections/black-friday' },
     { title: 'Shop', handle: 'all', to: '/collections/all' },
     { title: 'Custom-made Showers', handle: 'custom-made-showers', to: '/pages/custom-made-showers' },
     { title: 'Frameless Showers', handle: 'frameless-showers', to: '/pages/frameless-showers' },
-    { title: 'Standard Showers', handle: 'showers', to: '/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D' },
+    { title: 'Standard Showers', handle: 'showers', to: '/collections/showers' },
     { 
         title: 'About Us', 
         handle: 'about-us',
@@ -97,9 +116,10 @@ export const PRIMARY_MENU_ITEMS = [
 
 export const FOOTER_MENU = {
     showers: [
+        { title: 'Black Friday Sale', handle: 'black-friday', to: '/collections/black-friday' },
         { title: 'Custom Showers', handle: 'custom-made-showers', to: '/pages/custom-made-showers' },
         { title: 'Frameless Showers', handle: 'frameless-showers', to: '/pages/frameless-showers' },
-        { title: 'Standard Showers', handle: 'showers', to: '/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D' },
+        { title: 'Standard Showers', handle: 'showers', to: '/collections/showers' },
     ],
     company: [
         { title: 'About Us', handle: 'about-us' },
@@ -109,6 +129,7 @@ export const FOOTER_MENU = {
         { title: 'Newsletter', handle: 'newsletter' },
     ],
     categories: [
+        { title: 'Black Friday', handle: 'black-friday' },
         { title: 'Spares', handle: 'shower-spares' },
         { title: 'Shower Care', handle: 'shower-care' },
     ],

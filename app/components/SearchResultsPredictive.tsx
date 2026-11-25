@@ -186,8 +186,11 @@ function SearchResultsPredictivePages({
       <h5 className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-primary border-b border-gray-100 pb-2 mb-4">Pages</h5>
       <ul className="space-y-2">
         {pages.map((page) => {
+          const basePath = page.handle.startsWith('/')
+            ? page.handle
+            : `/pages/${page.handle}`;
           const pageUrl = urlWithTrackingParams({
-            baseUrl: `/pages/${page.handle}`,
+            baseUrl: basePath,
             trackingParams: page.trackingParameters,
             term: term.current,
           });

@@ -1,9 +1,26 @@
 import { useLoaderData } from 'react-router';
 import type { Route } from './+types/pages.$handle';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import { buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
-export const meta: Route.MetaFunction = ({ data }) => {
-  return [{ title: `Hydrogen | ${data?.page.title ?? ''}` }];
+export const meta: Route.MetaFunction = ({ data, params }: any) => {
+  const handle = params?.handle || data?.page?.handle || '';
+  const title = data?.page?.seo?.title || data?.page?.title || 'Shower Haus';
+  const description =
+    data?.page?.seo?.description ||
+    `Learn more about ${data?.page?.title || 'our custom and standard shower solutions'} at Shower Haus Durban & South Africa.`;
+
+  return buildSeoMeta({
+    title: `${title} | Shower Haus South Africa`,
+    description,
+    path: `/pages/${handle}`,
+    jsonLd: [
+      buildBreadcrumbJsonLd([
+        { name: 'Home', path: '/' },
+        { name: data?.page?.title || 'Page', path: `/pages/${handle}` },
+      ]),
+    ],
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {

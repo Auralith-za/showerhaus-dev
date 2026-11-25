@@ -1,3 +1,25 @@
+import { buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
+
+export function meta() {
+    return buildSeoMeta({
+        title: 'Selected Shower Installations & Portfolio | Shower Haus South Africa',
+        description:
+            'Explore selected custom frameless shower installations, walk-in shower screens, and architectural glass projects by Shower Haus across residential homes and estates in South Africa.',
+        path: '/pages/projects',
+        keywords: [
+            'frameless shower gallery south africa',
+            'custom shower installations portfolio',
+            'Shower Haus projects',
+        ],
+        jsonLd: [
+            buildBreadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Selected Projects', path: '/pages/projects' },
+            ]),
+        ],
+    });
+}
+
 export async function loader() {
     return {};
 }

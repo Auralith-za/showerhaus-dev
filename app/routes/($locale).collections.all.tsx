@@ -7,9 +7,70 @@ import type { ProductItemFragment } from 'storefrontapi.generated';
 import { MEGA_MENU_ITEMS } from '~/lib/navigation';
 import { useState, useMemo } from 'react';
 import { CollectionFilters } from '~/components/CollectionFilters';
+import {
+  SITE_URL,
+  SITE_NAME,
+  buildSeoMeta,
+  buildBreadcrumbJsonLd,
+} from '~/lib/seo';
 
-export const meta: Route.MetaFunction = () => {
-  return [{ title: `Shower Haus | Shop All` }];
+export const meta: Route.MetaFunction = ({ data }: any) => {
+  const activeTypes: string[] = data?.selectedProductTypes || [];
+  const isShowersFilter = activeTypes.some(
+    (t) => t.toLowerCase() === 'showers',
+  );
+  const canonicalUrl = isShowersFilter
+    ? `${SITE_URL}/collections/showers`
+    : `${SITE_URL}/collections/all`;
+
+  const title = isShowersFilter
+    ? `Standard & Semi-Frameless Showers | Shower Doors, Enclosures & Screens | ${SITE_NAME} SA`
+    : `Shop All Showers, Shower Doors, Screens & Spares Online | ${SITE_NAME} South Africa`;
+
+  const description = isShowersFilter
+    ? 'Shop our range of standard semi-frameless shower enclosures, pivot doors, sliding doors, corner showers, walk-in screens, and bath screens. In stock in Durban with nationwide SA delivery.'
+    : 'Browse the complete Shower Haus online catalogue: ready-to-install semi-frameless shower enclosures, pivot and sliding shower doors, bath screens, walk-in screens, and genuine replacement shower spares delivered across South Africa.';
+
+  const products = data?.products?.nodes || [];
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    {
+      name: isShowersFilter ? 'Showers' : 'Full Online Catalogue',
+      path: isShowersFilter ? '/collections/showers' : '/collections/all',
+    },
+  ]);
+
+  const itemListLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    url: canonicalUrl,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: products.length,
+      itemListElement: products.slice(0, 30).map((p: any, idx: number) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        url: `${SITE_URL}/products/${p.handle}`,
+        name: p.title,
+      })),
+    },
+  };
+
+  return buildSeoMeta({
+    title,
+    description,
+    canonicalUrl,
+    keywords: [
+      'buy showers online south africa',
+      'shower doors durban',
+      'semi-frameless shower enclosures',
+      'shower spares south africa',
+      'Shower Haus catalogue',
+    ],
+    jsonLd: [breadcrumbLd, itemListLd],
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -136,7 +197,8 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   return {
     products,
     collections: data.collections?.nodes || [],
-    sort
+    sort,
+    selectedProductTypes,
   };
 }
 
@@ -151,9 +213,12 @@ const placeholderImages: Record<string, string> = {
 };
 
 export default function ShopAll() {
-  const { products, collections, sort } = useLoaderData<typeof loader>();
+  const { products, collections, sort, selectedProductTypes } = useLoaderData<typeof loader>();
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState(sort || 'Featured');
+  const isShowersView = (selectedProductTypes || []).some(
+    (t: string) => t.toLowerCase() === 'showers',
+  );
 
   const categories = collections.filter(
     (cat) => cat.handle !== 'all' && cat.handle !== 'frontpage'
@@ -163,6 +228,52 @@ export default function ShopAll() {
     <div className="shop-all-page bg-white min-h-screen">
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
+        {/* SEO Header */}
+        <div className="text-center mb-12">
+          <span className="block font-sans text-[10px] font-bold tracking-[0.3em] uppercase text-secondary mb-3">
+            Shower Haus Online Store · Nationwide South African Delivery
+          </span>
+          <h1 className="font-display text-4xl md:text-5xl text-primary mb-4">
+            {isShowersView
+              ? 'Standard & Semi-Frameless Showers'
+              : 'Showers, Enclosures & Shower Spares'}
+          </h1>
+          <p className="font-sans text-gray-500 max-w-3xl mx-auto font-light leading-relaxed text-sm md:text-base">
+            {isShowersView
+              ? 'Ready-to-install 6mm SABS toughened safety glass shower enclosures, pivot doors, sliding doors, walk-in screens, and bath screens — in stock at our Springfield, Durban warehouse for nationwide delivery.'
+              : 'Shop our complete online range of ready-to-install semi-frameless shower enclosures, doors, walk-in screens, bath screens, and replacement shower spares.'}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 mt-6">
+            <Link
+              to="/collections/showers"
+              className={`font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border transition-colors ${
+                isShowersView
+                  ? 'bg-primary text-white border-primary'
+                  : 'border-gray-200 text-primary hover:border-primary'
+              }`}
+            >
+              Standard Showers
+            </Link>
+            <Link
+              to="/collections/shower-spares"
+              className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
+            >
+              Shower Spares
+            </Link>
+            <Link
+              to="/pages/frameless-showers"
+              className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
+            >
+              Custom Frameless Showers
+            </Link>
+            <Link
+              to="/pages/custom-made-showers"
+              className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase px-5 py-2.5 border border-gray-200 text-primary hover:border-primary transition-colors"
+            >
+              Custom-Made Showers
+            </Link>
+          </div>
+        </div>
         {/* Modern Filter Bar */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-8">

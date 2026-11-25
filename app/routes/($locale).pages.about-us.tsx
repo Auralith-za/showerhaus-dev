@@ -1,14 +1,36 @@
 import { Link } from 'react-router';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 export function meta() {
-  return [
-    { title: 'About Us | Shower Haus Durban' },
-    {
-      name: 'description',
-      content:
-        'For over 20 years, Shower Haus has been Durban’s trusted specialist in custom shower enclosures, doors, and spares. Over 30,000 professional installations across KZN.',
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'About Shower Haus', path: '/pages/about-us' },
+  ]);
+
+  const aboutLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'About Shower Haus Durban — The Shower Specialists Since 2004',
+    url: `${SITE_URL}/pages/about-us`,
+    mainEntity: {
+      '@id': `${SITE_URL}/#organization`,
     },
-  ];
+  };
+
+  return buildSeoMeta({
+    title: 'About Shower Haus Durban | 20+ Years & 30,000+ Showers Installed in KZN & SA',
+    description:
+      'For over 20 years, Shower Haus has been Durban & KwaZulu-Natal’s trusted specialist in custom frameless shower enclosures, standard ready-to-install showers, and shower spares. Visit our Springfield, Durban showroom or shop online nationwide.',
+    path: '/pages/about-us',
+    image: '/images/about-us-hero.png',
+    keywords: [
+      'about Shower Haus',
+      'shower specialists durban',
+      'shower showroom springfield durban',
+      'custom shower installers kzn',
+    ],
+    jsonLd: [breadcrumbLd, aboutLd],
+  });
 }
 
 export async function loader() {

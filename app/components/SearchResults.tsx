@@ -42,9 +42,10 @@ function SearchResultsArticles({
   return (
     <div className="search-result">
       <div className="space-y-1">
-        {articles?.nodes?.map((article) => {
+        {articles?.nodes?.map((article: any) => {
+          const blogHandle = article?.blog?.handle || 'guides';
           const articleUrl = urlWithTrackingParams({
-            baseUrl: `/blogs/${article.handle}`,
+            baseUrl: `/blogs/${blogHandle}/${article.handle}`,
             trackingParams: article.trackingParameters,
             term,
           });
@@ -71,8 +72,11 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
     <div className="search-result">
       <div className="space-y-1">
         {pages?.nodes?.map((page) => {
+          const basePath = page.handle.startsWith('/')
+            ? page.handle
+            : `/pages/${page.handle}`;
           const pageUrl = urlWithTrackingParams({
-            baseUrl: `/pages/${page.handle}`,
+            baseUrl: basePath,
             trackingParams: page.trackingParameters,
             term,
           });

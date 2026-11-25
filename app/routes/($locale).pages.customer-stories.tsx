@@ -1,14 +1,24 @@
 import { useState } from 'react';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
 
 export function meta() {
-  return [
-    { title: 'Customer Stories & Testimonials | Shower Haus' },
-    {
-      name: 'description',
-      content:
-        'Read what our clients say about our custom shower designs, professional installations, and exceptional service in Durban and KwaZulu-Natal.',
-    },
-  ];
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Customer Stories & Reviews', path: '/pages/customer-stories' },
+  ]);
+
+  return buildSeoMeta({
+    title: 'Customer Stories, Reviews & Testimonials | Shower Haus Durban & South Africa',
+    description:
+      'Read verified Google reviews and customer stories from homeowners, architects, and contractors who chose Shower Haus for custom frameless showers, standard shower doors, and shower spares across Durban, KZN, and South Africa.',
+    path: '/pages/customer-stories',
+    keywords: [
+      'Shower Haus reviews',
+      'Shower Haus testimonials durban',
+      'frameless shower reviews south africa',
+    ],
+    jsonLd: [breadcrumbLd],
+  });
 }
 
 export async function loader() {
@@ -59,6 +69,14 @@ export default function CustomerStories() {
             {/* Carousel */}
             <section className="py-28 bg-[#F9F8F6]">
                 <div className="container mx-auto px-6 max-w-5xl">
+                    <div className="text-center mb-16">
+                        <span className="block font-sans text-[10px] font-bold tracking-[0.35em] uppercase text-secondary mb-3">
+                            Verified Client Reviews
+                        </span>
+                        <h1 className="font-display text-4xl md:text-5xl text-primary tracking-tight">
+                            Customer Stories &amp; Testimonials
+                        </h1>
+                    </div>
 
                     {/* Quote Display */}
                     <div className="text-center mb-20 min-h-[200px] flex flex-col items-center justify-center">

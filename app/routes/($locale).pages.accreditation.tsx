@@ -1,3 +1,26 @@
+import { buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
+
+export function meta() {
+    return buildSeoMeta({
+        title: 'SABS & SAGGA Accreditation | Toughened Safety Glass Standards | Shower Haus',
+        description:
+            'Shower Haus uses SABS-approved high-impact toughened safety glass and adheres to SAGGA and international quality standards across all custom and standard shower enclosures in South Africa.',
+        path: '/pages/accreditation',
+        keywords: [
+            'SABS approved shower glass south africa',
+            'SAGGA glass accreditation',
+            'toughened safety glass showers durban',
+            'Shower Haus accreditation',
+        ],
+        jsonLd: [
+            buildBreadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Accreditation & Safety Standards', path: '/pages/accreditation' },
+            ]),
+        ],
+    });
+}
+
 export async function loader() {
     return {};
 }

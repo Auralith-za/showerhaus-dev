@@ -52,9 +52,10 @@ export function Header({
             <span className="text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all" style={{ fontWeight: 400 }}>Showers</span>
             <div className="absolute top-[30px] left-0 pt-2 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-300 z-[150]">
               <div className="bg-white border border-gray-100 shadow-xl p-6 flex flex-col gap-4 min-w-[240px]">
+                <Link to="/collections/black-friday" className="font-sans text-[12px] font-bold uppercase tracking-[0.2em] text-red-600 hover:text-red-700 hover:underline hover:underline-offset-4 transition-all">Black Friday Sale</Link>
                 <Link to="/pages/custom-made-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Custom-made Showers</Link>
                 <Link to="/pages/frameless-showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Frameless Showers</Link>
-                <Link to="/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Standard Showers</Link>
+                <Link to="/collections/showers" className="font-sans text-[12px] font-normal uppercase tracking-[0.2em] text-[#111] hover:text-gray-500 hover:underline hover:underline-offset-4 transition-all">Standard Showers</Link>
               </div>
             </div>
           </div>
@@ -210,13 +211,13 @@ export function Header({
                       </div>
                       <div className="w-[320px] flex-shrink-0">
                         <Link to={path} className="block group/link">
-                          <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[3/4] bg-gray-50' : 'aspect-square'}`}>
+                          <div className={`relative overflow-hidden group/image ${isSpares ? 'aspect-[3/4] bg-gray-50' : item.handle === 'black-friday' ? 'aspect-[16/9] bg-white border border-gray-100' : 'aspect-square'}`}>
                             <img 
-                              src={isSpares ? "/spares-menu.jpg" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
+                              src={isSpares ? "/spares-menu.jpg" : item.handle === 'black-friday' ? "/images/black-friday-hero.jpg" : (shopifyCol?.image?.url || item.featuredImage || "https://cloudsplash.co.za/wp/wp-content/uploads/2026/03/PH_Andersen_Faci_Leboreiro_15.jpg.webp")} 
                               alt={shopifyCol?.title || item.title} 
-                              className="w-full h-full block transition-transform duration-700 group-hover/image:scale-110 object-cover" 
+                              className={`w-full h-full block transition-transform duration-700 group-hover/image:scale-105 ${item.handle === 'black-friday' ? 'object-contain p-2' : 'object-cover'}`} 
                             />
-                            {!isSpares && (
+                            {!isSpares && item.handle !== 'black-friday' && (
                               <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-6">
                                 <span className="text-white font-sans text-[9px] font-bold tracking-[0.2em] uppercase mb-1 opacity-80">
                                   Store
@@ -246,7 +247,7 @@ export function Header({
                         <Link to="/pages/frameless-showers" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
                           Frameless Showers
                         </Link>
-                        <Link to="/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
+                        <Link to="/collections/showers" className="bg-white !text-[#14294f] border border-[#14294f] hover:bg-[#14294f] hover:!text-white transition-all px-6 py-4 text-[11px] tracking-[0.2em] font-bold uppercase rounded-none block hover:no-underline">
                           Standard Showers
                         </Link>
                       </div>
@@ -381,7 +382,7 @@ export function HeaderMenu({
                       <NavLink to="/pages/frameless-showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
                         Frameless Showers
                       </NavLink>
-                      <NavLink to="/collections/all?filter=%7B%22productType%22%3A%22Showers%22%7D" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
+                      <NavLink to="/collections/showers" className="text-base font-sans text-gray-500 hover:text-primary pl-4" onClick={close}>
                         Standard Showers
                       </NavLink>
                     </div>

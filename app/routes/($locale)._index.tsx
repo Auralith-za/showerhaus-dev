@@ -16,16 +16,44 @@ import { QuotingSection } from '~/components/QuotingSection';
 import { InspirationSection } from '~/components/InspirationSection';
 import { ProjectsSection } from '~/components/ProjectsSection';
 import { ServicesSection } from '~/components/ServicesSection';
+import { SITE_URL, buildSeoMeta } from '~/lib/seo';
 
 export const meta: Route.MetaFunction = () => {
-  return [
-    { title: 'Shower Haus | The Shower Specialists' },
-    {
-      name: 'description',
-      content:
-        'Premium custom-made and ready-to-install showers, expertly installed. Shop our comprehensive range of shower spares, online and in-store.',
+  const homeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/#webpage`,
+    url: SITE_URL,
+    name: 'Shower Haus | Custom Frameless Showers, Standard Showers & Spares | Durban & South Africa',
+    description:
+      'Durban and South Africa’s shower enclosure specialists since 2004. Custom-made frameless shower doors & enclosures installed across KZN, plus ready-to-install standard semi-frameless showers, bath screens, and genuine shower spares delivered nationwide.',
+    isPartOf: {
+      '@id': `${SITE_URL}/#website`,
     },
-  ];
+    about: {
+      '@id': `${SITE_URL}/#organization`,
+    },
+  };
+
+  return buildSeoMeta({
+    title:
+      'Shower Haus | Custom Frameless Showers, Standard Showers & Spares | Durban & South Africa',
+    description:
+      'Durban and South Africa’s shower specialists since 2004. Custom-made frameless shower enclosures installed across KZN, plus ready-to-install standard showers, bath screens, and shower spares delivered nationwide.',
+    path: '/',
+    keywords: [
+      'Shower Haus',
+      'shower doors durban',
+      'frameless showers durban',
+      'custom made showers kzn',
+      'buy shower enclosures online south africa',
+      'semi-frameless showers south africa',
+      'walk in shower screens',
+      'glass bath screens',
+      'shower spares south africa',
+    ],
+    jsonLd: homeJsonLd,
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -136,15 +164,23 @@ function RecommendedProducts({
           )}
         </Await>
       </Suspense>
-      <div className="text-center mt-12">
-        <a
-          href="/collections/all"
+      <div className="flex flex-wrap items-center justify-center gap-8 mt-12">
+        <Link
+          to="/collections/showers"
+          className="inline-flex items-center gap-3 font-sans text-[10px] font-bold tracking-[0.3em] uppercase text-primary hover:text-secondary transition-colors"
+        >
+          <span className="w-8 h-[1px] bg-primary"></span>
+          Shop Standard Showers
+          <span className="w-8 h-[1px] bg-primary"></span>
+        </Link>
+        <Link
+          to="/collections/all"
           className="inline-flex items-center gap-3 font-sans text-[10px] font-bold tracking-[0.3em] uppercase text-primary hover:text-secondary transition-colors"
         >
           <span className="w-8 h-[1px] bg-primary"></span>
           View Full Catalogue
           <span className="w-8 h-[1px] bg-primary"></span>
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -178,7 +214,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 5, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 5, query: "product_type:\\"Showers\\"", sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }

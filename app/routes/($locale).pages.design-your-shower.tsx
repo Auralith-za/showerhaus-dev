@@ -5,6 +5,50 @@ import { Resend } from 'resend';
 import BespokeEmail from '~/components/BespokeEmail';
 import { createTimestampToken, verifyFormSubmission } from '~/lib/antiSpam';
 import { syncLeadToKinabase } from '~/lib/kinabase.server';
+import { SITE_URL, buildSeoMeta, buildBreadcrumbJsonLd } from '~/lib/seo';
+
+export function meta() {
+  const breadcrumbLd = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Custom-Made Showers', path: '/pages/custom-made-showers' },
+    { name: 'Design Your Shower', path: '/pages/design-your-shower' },
+  ]);
+
+  const appLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Shower Haus — Design Your Custom Shower Online Quote Configurator',
+    url: `${SITE_URL}/pages/design-your-shower`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'ZAR',
+      description: 'Free online custom shower design and obligation-free quote request',
+    },
+    provider: {
+      '@id': `${SITE_URL}/#organization`,
+    },
+  };
+
+  return buildSeoMeta({
+    title:
+      'Design Your Custom Shower Online | Free Quote & Home Measure | Shower Haus Durban & KZN',
+    description:
+      'Configure your custom frameless, semi-frameless, or framed shower enclosure online in under 2 minutes. Choose your shower shape, dimensions, glass finish, and hardware for an obligation-free quote from Shower Haus Durban.',
+    path: '/pages/design-your-shower',
+    image: '/images/hero-1.png',
+    keywords: [
+      'design your shower online',
+      'custom shower quote south africa',
+      'frameless shower price calculator durban',
+      'custom shower configurator kzn',
+      'Shower Haus quote',
+    ],
+    jsonLd: [breadcrumbLd, appLd],
+  });
+}
 
 // --- DATA STRUCTURES BASED ON LOGIC MATRIX ---
 
