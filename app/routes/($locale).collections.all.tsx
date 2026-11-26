@@ -228,7 +228,7 @@ export default function ShopAll() {
     <div className="shop-all-page bg-white min-h-screen">
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        {/* Modern Filter Bar */}
+        {/* Modern Filter Bar (Disabled for now)
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-y border-gray-100 mb-12 -mx-6 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap items-center gap-4">
             <Link
@@ -293,6 +293,7 @@ export default function ShopAll() {
             </div>
           </div>
         </div>
+        */}
 
         {/* Filter Drawer / Panel (Disabled for now)
         <div style={{ display: activeFilter === 'filter' ? 'block' : 'none' }}>
